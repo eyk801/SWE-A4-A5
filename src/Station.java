@@ -71,11 +71,18 @@ public class Station {
         return this.name;
     }
 
-    public String toString() {
-        return (this.name + "," + this.bikes + ","
+    public String toSaveString() {
+        return (this.id + "," + this.name + "," + this.bikes + ","
 				+ this.pedelecs + "," + this.avDocks +
 				"," + this.mainReq + ","
 				+ this.capacity + "," + this.kiosk + "," + this.address);
+    }
+    
+    public String toViewString(){
+    	 return (Integer.toString(this.id) + "\t" + Integer.toString(this.bikes) + "\t" + Integer.toString(this.pedelecs)
+    	                + "\t\t" + Integer.toString(this.avDocks) + "\t" + Integer.toString(this.mainReq) + "\t"
+    	                + Integer.toString(this.capacity) + "\t" + Boolean.toString(this.kiosk) + "\t" + this.name + " - "
+    	                + this.address + "\n");  
     }
 
 }

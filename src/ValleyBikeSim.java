@@ -1,7 +1,5 @@
-
 /*
  * Assignment 1: ValleyBike Simulator
- * Authors: Mai Ngo, Jemimah Charles
  */
 
 import java.io.BufferedReader;
@@ -14,13 +12,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ValleyBikeSim {
-	private HashMap<Integer, Station> stationData;
+	private Map<Integer, Station> stationData = new TreeMap<>();
 	private Scanner sc = new Scanner(System.in);
 
 	/**
-	 * ValleyBikeSim object constructor
+	 * ValleyBikeSim class constructor
 	 * 
 	 * TODO: Remove and re-organize program so that this is no longer necessary
 	 */
@@ -35,9 +36,9 @@ public class ValleyBikeSim {
 	 *
 	 * @return stationData hashmap for the whole vallybikesim object to access
 	 */
-	public HashMap<Integer, Station> readStationData() {
+	public TreeMap<Integer, Station> readStationData() {
 
-		HashMap<Integer, Station> stationData = new HashMap<>();
+		TreeMap<Integer, Station> stationData = new TreeMap<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
 			String line = br.readLine();
@@ -62,17 +63,14 @@ public class ValleyBikeSim {
 	/**
 	 * Function to print out list of stations ordered by id and formatted to console.
 	 * 
-	 * TODO: Add error handling, potentially use key iterator instead of extra data structure
 	 */
 
 	public void viewStationList() {
-
-		ArrayList<Integer> idList = new ArrayList<Integer>(this.stationData.keySet());
-		Collections.sort(idList);
-
 		System.out.println("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
-		for (int id : idList) {
-			System.out.println(this.stationData.get(id).toString());
+		Iterator<Integer> keyIterator = stationData.keySet().iterator();
+		while(keyIterator.hasNext()){
+			Integer id = (Integer) keyIterator.next();
+			System.out.println(this.stationData.get(id).toViewString());
 		}
 	}
 
@@ -81,7 +79,7 @@ public class ValleyBikeSim {
 	 * Function that reads in a ride data file that contains all the rides for one
 	 * day of service and outputs stats for the day
 	 * 
-	 * TODO: Ride validation
+	 * TODO: Ride validation (waiting on Alicia answer)
 	 */
 
 	public void resolveRideData() {
@@ -109,18 +107,28 @@ public class ValleyBikeSim {
 					String[] values = line.split(",");
 					String startTime = values[3];
 					String endTime = values[4];
+					Integer from = Integer.parseInt(values[1]);
+					Integer to = Integer.parseInt(values[2]);
 					Date tempStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
-					if (endTime.split(" ")[1].split(":")[0].equals("24")) {
-						int tempEndMinute = Integer.parseInt(endTime.split(" ")[1].split(":")[1]);
-						Date midnight = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-								.parse(startTime.split(" ")[0] + " 23:59:00");
-						totalTime += (int) ((midnight.getTime() - tempStart.getTime()) / (60 * 1000));
-						totalTime += tempEndMinute + 1;
-					} else {
-						Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
-						totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
+					Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
+					if (tempEnd.before(tempStart)){
+						System.out.println(tempStart + " - " + tempEnd);
+						continue;
 					}
-					totalRides++;
+					if (addRide(from, to)){
+						if (endTime.split(" ")[1].split(":")[0].equals("24")) {
+							int tempEndMinute = Integer.parseInt(endTime.split(" ")[1].split(":")[1]);
+							Date midnight = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+									.parse(startTime.split(" ")[0] + " 23:59:00");
+							totalTime += (int) ((midnight.getTime() - tempStart.getTime()) / (60 * 1000));
+							totalTime += tempEndMinute + 1;
+						} else {
+							totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
+						}
+						totalRides ++;
+					} else {
+						continue;
+					}
 				}
 				cont = false;
 				br.close();
@@ -141,7 +149,7 @@ public class ValleyBikeSim {
 	 * ASSUMPTION: There is no possibility to rent a bike. Only pedelecs are
 	 * available.
 	 * 
-	 * TODO: Potentially save rides to ride list? Further ride validation?
+	 * TODO: Potentially save rides to ride list? Further ride validation? Waiting on Alicia and team consensus
 	 */
 	public void recordRide() {
 		
@@ -189,14 +197,42 @@ public class ValleyBikeSim {
 			System.out.println("Ride sucessfully added");
 			
 	}
+	
+	public boolean addRide(Integer userStartStation, Integer userEndStation){
+		Station endStation = stationData.get(userEndStation);
+		Station startStation = stationData.get(userStartStation);
+		int endAvDocks = stationData.get(userEndStation).getAvDocks();
+		int startPed = stationData.get(userStartStation).getPedelecs();
+		
+		if(endStation != null && startStation != null && endAvDocks >= 1 && startPed >=1 ){
+			endStation.setAvDocks(endAvDocks - 1);
+			startStation.setAvDocks(stationData.get(userStartStation).getAvDocks() + 1);
+
+			endStation.setPedelecs(stationData.get(userEndStation).getPedelecs() + 1);
+			startStation.setPedelecs(startPed - 1);
+			
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	/**
-	 * Adds station to program's hashmap of stations
+	 * Adds station to program's treemap of stations
 	 * Station ID is automatically assigned
-	 * TODO: Add station editing
+	 * 
+	 * TODO: Add error handling
 	 */
 	public void addStation() {
 
+		int id = this.getIntResponse("Please enter the id of the station you would like to edit/add", 0, 1000);
+		if (stationData.get(id) != null){
+			System.out.println("You are attempting to edit station "+stationData.get(id).getName() + 
+					" continue? y/n: ");
+			if (sc.next().toLowerCase().equals("n")){
+				return;
+			}
+		}
 		System.out.println("Please enter the name of this station: ");
 		sc.nextLine();
 		String name = sc.nextLine();
@@ -216,9 +252,6 @@ public class ValleyBikeSim {
 			sc.next();
 		}
 		boolean kiosk = (sc.next().toLowerCase().equals("y"));
-		
-		// initializing new station
-		int id = Collections.max(this.stationData.keySet()) + 1;
 
 		Station s = new Station(id, bikes, pedelecs, capacity - bikes - pedelecs, 0, capacity, kiosk, address, name);
 		this.stationData.put(id, s);
@@ -239,7 +272,7 @@ public class ValleyBikeSim {
 		
 			for (Station s : this.stationData.values()) {
 				writer.write("\n");
-				writer.write(s.toString());
+				writer.write(s.toSaveString());
 			}
 			writer.flush();
 			writer.close();
@@ -252,8 +285,9 @@ public class ValleyBikeSim {
 	 * 
 	 * Does not prioritize larger capacity stations. 
 	 * Essentially empties all stations and then gradually reassigns
+	 * by iterating through each station adding 1 if it is below percentage
+	 * and continuing on while there are still extras to reassign
 	 * 
-	 * TODO: Correct method
 	 */
 	public void equalizeStations() {
 
@@ -341,6 +375,7 @@ public class ValleyBikeSim {
 			System.out.println("Input must be an integer from 0-6.");
 			this.execute();
 		}
+		this.execute();
 	}
 	
 	/**
@@ -351,7 +386,6 @@ public class ValleyBikeSim {
 	 */
 	public static void main(String[] args) {
 		ValleyBikeSim sim = new ValleyBikeSim();
-		sim.readStationData();
 		System.out.println("Welcome to the ValleyBike Simulator.\n");
 		// calls option menu
 		try {
