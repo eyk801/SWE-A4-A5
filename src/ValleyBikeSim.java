@@ -1,5 +1,6 @@
 /*
  * Assignment 1: ValleyBike Simulator
+ * @authors: Ali Eshghi, Ester Zhao, Charlotte Gephart, Emily Kim
  */
 
 import java.io.BufferedReader;
