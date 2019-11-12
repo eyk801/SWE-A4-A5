@@ -8,9 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.Iterator;
@@ -24,6 +22,8 @@ public class ValleyBikeSim {
 	 * ValleyBikeSim class constructor
 	 * 
 	 * TODO: Remove and re-organize program so that this is no longer necessary
+	 * or so that the object does more - Alicia says object could be potentially useful
+	 * can also avoid the issue with static method stuff
 	 */
 	public ValleyBikeSim() {
 		this.stationData = readStationData();
@@ -79,7 +79,8 @@ public class ValleyBikeSim {
 	 * Function that reads in a ride data file that contains all the rides for one
 	 * day of service and outputs stats for the day
 	 * 
-	 * TODO: Ride validation (waiting on Alicia answer)
+	 * TODO: Ok for now but could simulate bike movement by pushing events to stack to further validate
+	 * and check stations for Available Docks, pedelecs, etc
 	 */
 
 	public void resolveRideData() {
@@ -109,26 +110,19 @@ public class ValleyBikeSim {
 					String endTime = values[4];
 					Integer from = Integer.parseInt(values[1]);
 					Integer to = Integer.parseInt(values[2]);
+					if (Integer.parseInt(startTime.split(" ")[1].split(":")[0]) >= 24
+							|| Integer.parseInt(endTime.split(" ")[1].split(":")[0]) >= 24
+							|| stationData.containsKey(to) == false
+							|| stationData.containsKey(from) == false){ continue; }
 					Date tempStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
 					Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
-					if (tempEnd.before(tempStart)){
-						System.out.println(tempStart + " - " + tempEnd);
-						continue;
-					}
-					if (addRide(from, to)){
-						if (endTime.split(" ")[1].split(":")[0].equals("24")) {
-							int tempEndMinute = Integer.parseInt(endTime.split(" ")[1].split(":")[1]);
-							Date midnight = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-									.parse(startTime.split(" ")[0] + " 23:59:00");
-							totalTime += (int) ((midnight.getTime() - tempStart.getTime()) / (60 * 1000));
-							totalTime += tempEndMinute + 1;
-						} else {
-							totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
-						}
-						totalRides ++;
-					} else {
-						continue;
-					}
+
+					if (tempEnd.before(tempStart)){ continue; }
+					
+					totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
+					totalRides ++;
+						
+					
 				}
 				cont = false;
 				br.close();
