@@ -1,6 +1,5 @@
 /*
  * Assignment 1: ValleyBike Simulator
- * @authors: Ali Eshghi, Ester Zhao, Charlotte Gephart, Emily Kim
  */
 
 import java.io.BufferedReader;
@@ -48,7 +47,7 @@ public class ValleyBikeSim {
 				int id = Integer.parseInt(values[0]);
 				Station station = new Station(id, Integer.parseInt(values[2]), 
 						Integer.parseInt(values[3]), Integer.parseInt(values[4]), Integer.parseInt(values[5]), 
-						Integer.parseInt(values[6]), (values[7].equals("1")), values[8], values[1]);
+						Integer.parseInt(values[6]), Integer.parseInt(values[7]), values[8], values[1]);
 				stationData.put(id, station);
 			}
 			br.close();
@@ -239,14 +238,7 @@ public class ValleyBikeSim {
 		int bikes = this.getIntResponse("Please enter the number of bikes for this station",0,1000);
 		int pedelecs = this.getIntResponse("Please enter the number of pedelecs for this station",0, 1000);
 		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
-		
-		System.out.println("Does this station have a kiosk? y/n:");
-		while (!sc.hasNext()) {
-			System.out.println("Input must be y or n.");
-			System.out.println("Does this station have a kiosk? Y/N:");
-			sc.next();
-		}
-		boolean kiosk = (sc.next().toLowerCase().equals("y"));
+		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
 
 		Station s = new Station(id, bikes, pedelecs, capacity - bikes - pedelecs, 0, capacity, kiosk, address, name);
 		this.stationData.put(id, s);

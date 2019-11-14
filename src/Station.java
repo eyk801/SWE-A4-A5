@@ -6,11 +6,11 @@ public class Station {
     private int avDocks = 0;
     private int mainReq = 0;
     private int capacity = 0;
-    private boolean kiosk = false;
+    private int kiosk = 0;
     private String address = new String();
     private String name = new String();
 
-    public Station(int id, int bikes, int pedelecs, int avDocks, int mainReq, int capacity, boolean kiosk,
+    public Station(int id, int bikes, int pedelecs, int avDocks, int mainReq, int capacity, int kiosk,
             String address, String name) {
         this.id = id;
         this.bikes = bikes;
@@ -59,8 +59,8 @@ public class Station {
         return this.capacity;
     }
 
-    public boolean getKiosk() {
-        return this.kiosk;
+    public int getKiosk(){
+    	return this.kiosk;
     }
 
     public String getAddress() {
@@ -79,9 +79,13 @@ public class Station {
     }
     
     public String toViewString(){
+    	boolean kioskBool = true;
+    	 if (this.kiosk == 0){
+    		 kioskBool = false;
+    	 }
     	 return (Integer.toString(this.id) + "\t" + Integer.toString(this.bikes) + "\t" + Integer.toString(this.pedelecs)
     	                + "\t\t" + Integer.toString(this.avDocks) + "\t" + Integer.toString(this.mainReq) + "\t"
-    	                + Integer.toString(this.capacity) + "\t" + Boolean.toString(this.kiosk) + "\t" + this.name + " - "
+    	                + Integer.toString(this.capacity) + "\t" + Boolean.toString(kioskBool) + "\t" + this.name + " - "
     	                + this.address + "\n");  
     }
 
