@@ -1,22 +1,17 @@
 /*
- * Assignment 1: ValleyBike Simulator
+ * hello
  */
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.TreeMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class ValleyBikeSim {
-	private Map<Integer, Station> stationData = new TreeMap<>();
-	private Scanner sc = new Scanner(System.in);
+	private Map<Integer, Station> stationData = new HashMap<>();
+	private Map<Integer, User> users = new HashMap<>();
+	private Map<Integer, Bike> bikes = new HashMap<>();
+	private Map<Integer, Ride> rides = new HashMap<>();
+
 
 	/**
 	 * ValleyBikeSim class constructor
@@ -27,6 +22,12 @@ public class ValleyBikeSim {
 	 */
 	public ValleyBikeSim() {
 		this.stationData = readStationData();
+
+		// CREATE CSVS
+		
+		//this.users = readUserData();
+		//this.bikes = readBikeData();
+		// this.rides = readRideData();
 	}
 
 	/**
@@ -36,7 +37,7 @@ public class ValleyBikeSim {
 	 *
 	 * @return stationData hashmap for the whole vallybikesim object to access
 	 */
-	public TreeMap<Integer, Station> readStationData() {
+	public HashMap<Integer, Station> readStationData() {
 
 		TreeMap<Integer, Station> stationData = new TreeMap<>();
 		try {
@@ -60,11 +61,11 @@ public class ValleyBikeSim {
 		}
 	}
 
+	
 	/**
 	 * Function to print out list of stations ordered by id and formatted to console.
 	 * 
 	 */
-
 	public void viewStationList() {
 		System.out.println("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
 		Iterator<Integer> keyIterator = stationData.keySet().iterator();
@@ -81,6 +82,8 @@ public class ValleyBikeSim {
 	 * 
 	 * TODO: Ok for now but could simulate bike movement by pushing events to stack to further validate
 	 * and check stations for Available Docks, pedelecs, etc
+	 * 
+	 * Employee can access, but not user
 	 */
 
 	public void resolveRideData() {
@@ -143,7 +146,9 @@ public class ValleyBikeSim {
 	 * ASSUMPTION: There is no possibility to rent a bike. Only pedelecs are
 	 * available.
 	 * 
-	 * TODO: Potentially save rides to ride list? Further ride validation? Waiting on Alicia and team consensus
+	 * TODO: Save rides to ride list? Further ride validation? Waiting on Alicia and team consensus
+	 * CHANGE - two methods, checkInBike() and checkOutBike()
+	 * 
 	 */
 	public void recordRide() {
 		
@@ -189,33 +194,16 @@ public class ValleyBikeSim {
 			startStation.setPedelecs(startPed - 1);
 			
 			System.out.println("Ride sucessfully added");
-			
 	}
 	
-	public boolean addRide(Integer userStartStation, Integer userEndStation){
-		Station endStation = stationData.get(userEndStation);
-		Station startStation = stationData.get(userStartStation);
-		int endAvDocks = stationData.get(userEndStation).getAvDocks();
-		int startPed = stationData.get(userStartStation).getPedelecs();
-		
-		if(endStation != null && startStation != null && endAvDocks >= 1 && startPed >=1 ){
-			endStation.setAvDocks(endAvDocks - 1);
-			startStation.setAvDocks(stationData.get(userStartStation).getAvDocks() + 1);
-
-			endStation.setPedelecs(stationData.get(userEndStation).getPedelecs() + 1);
-			startStation.setPedelecs(startPed - 1);
-			
-			return true;
-		}else{
-			return false;
-		}
-	}
 
 	/**
 	 * Adds station to program's treemap of stations
 	 * Station ID is automatically assigned
 	 * 
-	 * TODO: Add error handling
+	 * TODO: Add error handling, change to just take in capacity, don't just add bikes
+	 * 
+	 * Company method
 	 */
 	public void addStation() {
 
@@ -234,13 +222,10 @@ public class ValleyBikeSim {
 		System.out.println("Please enter the address of this station: ");
 		String address = sc.nextLine();
 
-
-		int bikes = this.getIntResponse("Please enter the number of bikes for this station",0,1000);
-		int pedelecs = this.getIntResponse("Please enter the number of pedelecs for this station",0, 1000);
 		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
 		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
 
-		Station s = new Station(id, bikes, pedelecs, capacity - bikes - pedelecs, 0, capacity, kiosk, address, name);
+		Station s = new Station(id, 0, 0, capacity, 0, capacity, kiosk, address, name);
 		this.stationData.put(id, s);
 		System.out.println("Station successfully added to the system.");
 	}
@@ -319,51 +304,7 @@ public class ValleyBikeSim {
 		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
 	}
 
-	/**
-	 * Menu selector for user options. 
-	 * Runs until user selects 0 to quit program.
-	 * 
-	 * @throws IOException
-	 */
-	public void execute() throws IOException {
 
-		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
-				+ "1. View station list.\n" + "2. Add station.\n" + "3. Save station list.\n" + "4. Record ride.\n"
-				+ "5. Resolve ride data.\n" + "6. Equalize stations.\n");
-
-		Integer option = this.getIntResponse("Please enter your selection (0-6)", 0, 6);
-	
-		switch (option) {
-		/* 0. Quit program */
-		case 0:
-			sc.close();
-			System.out.println("Thank you for using ValleyBike, have a great day!");
-			System.exit(0);
-			break;
-		case 1:
-			this.viewStationList();
-			break;
-		case 2:
-			this.addStation();
-			break;
-		case 3:
-			saveStationList();
-			break;
-		case 4:
-			recordRide();
-			break;
-		case 5:
-			resolveRideData();
-			break;
-		case 6:
-			equalizeStations();
-			break;
-		default:
-			System.out.println("Input must be an integer from 0-6.");
-			this.execute();
-		}
-		this.execute();
-	}
 	
 	/**
 	 * Main function. Creates new ValleyBikeSim Object, reads station data for that object
