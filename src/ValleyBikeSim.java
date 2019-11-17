@@ -201,29 +201,28 @@ public class ValleyBikeSim {
 	 * Adds station to program's treemap of stations
 	 * Station ID is automatically assigned
 	 * 
-	 * TODO: Add error handling, change to just take in capacity, don't just add bikes
 	 * 
 	 * Company method
 	 */
-	public void addStation() {
+	public void addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
 
-		int id = this.getIntResponse("Please enter the id of the station you would like to edit/add", 0, 1000);
-		if (stationData.get(id) != null){
-			System.out.println("You are attempting to edit station "+stationData.get(id).getName() + 
-					" continue? y/n: ");
-			if (sc.next().toLowerCase().equals("n")){
-				return;
-			}
-		}
-		System.out.println("Please enter the name of this station: ");
-		sc.nextLine();
-		String name = sc.nextLine();
-
-		System.out.println("Please enter the address of this station: ");
-		String address = sc.nextLine();
-
-		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
-		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
+//		int id = this.getIntResponse("Please enter the id of the station you would like to edit/add", 0, 1000);
+//		if (stationData.get(id) != null){
+//			System.out.println("You are attempting to edit station "+stationData.get(id).getName() + 
+//					" continue? y/n: ");
+//			if (sc.next().toLowerCase().equals("n")){
+//				return;
+//			}
+//		}
+//		System.out.println("Please enter the name of this station: ");
+//		sc.nextLine();
+//		String name = sc.nextLine();
+//
+//		System.out.println("Please enter the address of this station: ");
+//		String address = sc.nextLine();
+//
+//		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
+//		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
 
 		Station s = new Station(id, 0, 0, capacity, 0, capacity, kiosk, address, name);
 		this.stationData.put(id, s);
@@ -303,7 +302,89 @@ public class ValleyBikeSim {
 		}
 		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
 	}
-
+	
+	/**
+	 * Checkout bike method for user
+	 * TODO: Implement method
+	 * @param username
+	 * @param stationId 
+	 * @return
+	 */
+	public String checkOutBike(String username, Integer stationId) {
+		return "Bike checked out by " + username;
+	};
+	
+	/**
+	 * Check in bike method for user
+	 * TODO: Implement method
+	 * @param username
+	 * @param stationId 
+	 * @return
+	 */
+	public String checkInBike(String username, Integer stationId) {
+		return "Bike checked in by " + username;
+	}
+	
+	/**
+	 * View user history
+	 * TODO: Implement method
+	 * @param username
+	 * @return
+	 */
+	public String viewHistory(String username) {
+		return username + " history";
+	}
+	
+	/**
+	 * view account information for user
+	 * TODO: Implement method
+	 * @param username
+	 * @return
+	 */
+	public String viewAccount(String username) {
+		return username + " account information";
+	}
+	
+	//TODO: Implement method
+	public String reportIssue(String username, String issueMessage) {
+		return "Issue reported";
+	}
+	
+	//TODO: Implement method
+	public String checkStats() {
+		return "system stats";
+	}
+	
+	//TODO: Implement method
+	public String viewIssues() {
+		return "current issues";
+	}
+	
+	//TODO: Implement method
+	public String viewCurrentRides() {
+		return "current rides";
+	}
+	
+	// TODO Implement method
+	public String addBikes(Integer numBikes) {
+		return numBikes.toString() + " bikes added";
+	}
+	
+	// TODO Implement method
+	public String moveBikes(Integer stationFrom, Integer stationTo) {
+		return null;
+	}
+	
+	// TODO Implement method
+	public String resolveIssues(int[] issues) {
+		return issues.toString() + " resolved";
+	}
+	
+	// TODO implement method
+	public boolean createUser(String username, String password, Integer membership) {
+		return true; // if user sucessfully created
+	}
+	
 
 	
 	/**

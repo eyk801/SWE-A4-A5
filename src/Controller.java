@@ -1,9 +1,10 @@
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Controller {
-
+	ValleyBikeSim valleyBike = new ValleyBikeSim();
 	private Scanner sc = new Scanner(System.in);
 	private Map<String, String> userAccounts = new HashMap<>();
 	//private Map<String, String> employeeAccounts = new HashMap<>();
@@ -13,18 +14,16 @@ public class Controller {
 		System.out.println("Welcome to ValleyBike! "
 				+ "Please enter 'user' for user and 'employee' for employee: ");
 		String response = sc.next();
-		ValleyBikeSim valleyBike = new ValleyBikeSim();
 		if (response == "user") {
 			String username = accountLogin();
-			executeUser(valleyBike, username);
+			executeUser(username);
 		} else if (response == "employee") {
 			//TODO: Add employee login in A5
-			executeEmployee(valleyBike);
+			executeEmployee();
 		} else {
 			System.out.println("Invalid input, try again.");
 			chooseView();
 		}
-		
 	}
 	
 	/**
@@ -33,10 +32,10 @@ public class Controller {
 	 * 
 	 * @throws IOException
 	 */
-	public void executeUser(ValleyBikeSim valleyBike, String username) throws IOException {
+	public void executeUser(String username) throws IOException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
-				+ "1. View station list.\n" + "2. Add station.\n" + "3. Save station list.\n" + "4. Record ride.\n"
-				+ "5. Resolve ride data.\n" + "6. Equalize stations.\n");
+				+ "1. View station list.\n" + "2. Check out bike.\n" + "3. Check in bike.\n" + "4. View history.\n"
+				+ "5. View account info.\n" + "6. Report issue.\n");
 
 		Integer option = this.getIntResponse("Please enter your selection (0-6)", 0, 6);
 		
@@ -54,30 +53,29 @@ public class Controller {
 			break;
 		case 2:
 			// Take in all ride data
-			//user.checkOutBike();
+			checkOutBike(username);
 			break;
 		case 3: 
-			//user.checkInBike();
+			checkInBike(username);
 			break;
 		case 4:
-			//user.viewHistory();
+			valleyBike.viewHistory(username);
 			break;
 		case 5:
-			//user.viewInfo();
+			valleyBike.viewAccount(username);
 			break;
 		case 6:
-			//user.reportIssue();
+			reportIssue(username);
 			break;
 		default:
 			System.out.println("Input must be an integer from 0-6.");
-			executeUser(valleyBike, username);
+			executeUser(username);
 		}
 		// execute call again after each switch thingy
-		executeUser(valleyBike, username);
+		executeUser(username);
 	}
 	
-	
-	public void executeEmployee(ValleyBikeSim valleyBike) {
+	public void executeEmployee() {
 		// ALL SWITCH STATEMENTS FOR COMPANY METHODS
 		
 		// viewStationList()
@@ -86,7 +84,7 @@ public class Controller {
 		// moveBike() ??????
 		// viewIssues()
 		// resolveIssue()
-		// addBike() - autogenerate ids, give an int of how many bikes to add, dock at a specific station
+		// addBike() - 
 		// addStation()
 		// checkStats() - resolveRideData() sorta
 		
@@ -110,35 +108,36 @@ public class Controller {
 			break;
 		case 2:
 			// Take in all ride data
-			//valleyBike.viewCurrentRides();
+			valleyBike.viewCurrentRides();
 			break;
 		case 3: 
-			//valleyBike.viewIssues();
+			valleyBike.viewIssues();
 			break;
 		case 4:
-			//valleyBike.resolveIssues();
+			resolveIssues();
 			break;
 		case 5:
-			//valleyBike.addStation();
+			addStation();
 			break;
 		case 6:
-			//valleyBike.equalizeStation();
+			valleyBike.equalizeStations();
 			break;
 		case 7:
-			//valleyBike.checkStats();
+			valleyBike.checkStats();
 			break;
 		case 8:
-			//valleyBike.addBikes();
+			//autogenerate ids, give an int of how many bikes to add, dock at a specific station
+			addBikes();
 			break;
 		case 9:
-			//valleyBike.moveBikes();
+			moveBikes();
 			break;
 		default:
 			System.out.println("Input must be an integer from 0-8.");
-			executeEmployee(valleyBike);
+			executeEmployee();
 		}
 		// execute call again after each switch thingy
-		executeEmployee(valleyBike);
+		executeEmployee();
 		
 		
 	}
@@ -190,10 +189,13 @@ public class Controller {
 		if (userAccounts.containsKey(username) == true) {
 			return false;
 		} else {
-			//choose membership type
+			Integer membership = 0;
 			userAccounts.put(username, password);
-			//call create user on ValleyBikeSim
-			return true;
+			if (valleyBike.createUser(username, password, membership) == true) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		
@@ -221,4 +223,44 @@ public class Controller {
 		return entry;
 	}
 	
+	private String checkOutBike(String username) {
+		Integer stationId = 0;
+		return valleyBike.checkOutBike(username, stationId);
+	}
+	
+	private String checkInBike(String username){
+		Integer stationId = 0;
+		return valleyBike.checkInBike(username, stationId);
+	}
+	
+	private String reportIssue(String username){
+		String issueMessage = "";
+		return valleyBike.reportIssue(username, issueMessage);
+	}
+	
+	private void addStation() {
+		Integer id = 0;
+		Integer capacity = 0;
+		Integer kiosk = 0;
+		String address = "temp";
+		String name = "temp";
+		valleyBike.addStation(id, capacity, kiosk, address, name);
+	}
+	
+	private String addBikes() {
+		Integer numBikes = getIntResponse("How many bikes would you like to add?", 
+				0, 100);
+		return valleyBike.addBikes(numBikes);
+	}
+	
+	private String moveBikes() {
+		Integer stationFrom = 0;
+		Integer stationTo = 0;
+		return valleyBike.moveBikes(stationFrom, stationTo);
+	}
+	
+	private String resolveIssues() {
+		int[] issues = {1,2,3};
+		return valleyBike.resolveIssues(issues);
+	}
 }
