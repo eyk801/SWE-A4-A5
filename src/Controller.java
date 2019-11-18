@@ -223,27 +223,52 @@ public class Controller {
 		return entry;
 	}
 	
+	private Integer getUnboundedIntResponse(String request, Integer min) {
+		Integer entry = 0;
+		System.out.println(request + ": ");
+		while (sc.hasNext()){
+			if(!sc.hasNextInt()){
+				System.out.println("Entry must be an integer");
+				System.out.println(request + ": ");
+				sc.next();
+			}else{
+				entry = sc.nextInt();
+				if(min <= entry){
+					break;
+				} else{
+					System.out.println("Entry must be an integer equal to or above "+min);
+					System.out.println(request + ": ");
+					sc.nextLine();
+				}	
+			}
+		}
+		return entry;
+	}
+	
 	private String checkOutBike(String username) {
-		Integer stationId = 0;
+		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		return valleyBike.checkOutBike(username, stationId);
 	}
 	
 	private String checkInBike(String username){
-		Integer stationId = 0;
+		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		return valleyBike.checkInBike(username, stationId);
 	}
 	
 	private String reportIssue(String username){
-		String issueMessage = "";
+		System.out.println("Please enter issue message: ");
+		String issueMessage = sc.nextLine();
 		return valleyBike.reportIssue(username, issueMessage);
 	}
 	
 	private void addStation() {
-		Integer id = 0;
-		Integer capacity = 0;
-		Integer kiosk = 0;
-		String address = "temp";
-		String name = "temp";
+		Integer id = getUnboundedIntResponse("Please enter station ID", 0);
+		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
+		Integer kiosk = getUnboundedIntResponse("Please enter number of kiosks", 0);
+		System.out.println("Please enter station address: ");
+		String address = sc.nextLine();
+		System.out.println("Please enter station name: ");
+		String name = sc.nextLine();
 		valleyBike.addStation(id, capacity, kiosk, address, name);
 	}
 	
@@ -254,13 +279,21 @@ public class Controller {
 	}
 	
 	private String moveBikes() {
-		Integer stationFrom = 0;
-		Integer stationTo = 0;
-		return valleyBike.moveBikes(stationFrom, stationTo);
+		Integer stationFrom = getUnboundedIntResponse("Please enter station ID to move from", 0);
+		Integer stationTo = getUnboundedIntResponse("Please enter station ID to move to", 0);
+		Integer numBikes = getUnboundedIntResponse("Please enter number of bikes to move", 0);
+		return valleyBike.moveBikes(stationFrom, stationTo, numBikes);
 	}
 	
 	private String resolveIssues() {
-		int[] issues = {1,2,3};
+		ArrayList<Integer> issues = new ArrayList<Integer>();
+		String response = "y";
+		while (response == "y") {
+			Integer issue = getUnboundedIntResponse("Please enter issue number", 0);
+			issues.add(issue);
+			System.out.println("Would you like to add another issue to resolve? (y/n): ");
+			response = sc.next().toLowerCase();
+		}
 		return valleyBike.resolveIssues(issues);
 	}
 }

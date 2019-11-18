@@ -371,12 +371,12 @@ public class ValleyBikeSim {
 	}
 	
 	// TODO Implement method
-	public String moveBikes(Integer stationFrom, Integer stationTo) {
+	public String moveBikes(Integer stationFrom, Integer stationTo, Integer numBikes) {
 		return null;
 	}
 	
 	// TODO Implement method
-	public String resolveIssues(int[] issues) {
+	public String resolveIssues(ArrayList<Integer> issues) {
 		return issues.toString() + " resolved";
 	}
 	
