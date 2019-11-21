@@ -38,6 +38,10 @@ public class User {
 		return true;
 	}
 	
+	public void addUserRide(Integer rideID) {
+		rideHistory.add(rideID);
+	}
+	
 	public String getId() {
 		return this.username;	
 	}
@@ -50,9 +54,14 @@ public class User {
 		this.password = newPass;
 	}
 	
+	public String getPassword() {
+		return this.password;
+	}
+	
 	public int getType() {
 		return this.membershipType;
 	}
+	
 	
 	public void setType(int newMembershipType) {
 		this.membershipType = newMembershipType;

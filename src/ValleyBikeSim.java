@@ -6,12 +6,15 @@ import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.Map.Entry;
+import java.sql.Timestamp;
 
 public class ValleyBikeSim {
 	private Map<Integer, Station> stationData = new HashMap<>();
 	private Map<String, User> users = new HashMap<>();
 	private Map<Integer, Bike> bikes = new HashMap<>();
 	private Map<Integer, Ride> rides = new HashMap<>();
+	private List<Integer> currRides = new ArrayList<>();
+	private Integer rideID = 0;
 
 
 	/**
@@ -305,14 +308,50 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Checkout bike method for user
-	 * TODO: Implement method
+	 * Check out bike method for user
+	 * TODO check membership status and charge account accordingly
 	 * @param username
 	 * @param stationId 
+	 * @param bikeID
 	 * @return
 	 */
-	public String checkOutBike(String username, Integer stationId) {
-		return "Bike checked out by " + username;
+	public String checkOutBike(String username, Integer stationId, Integer bikeID) {
+		// assign ride ID
+		rideID += 1;
+
+		// check membership status and charge accordingly, add ride to user ride list
+		Iterator userIterator = users.entrySet().iterator();
+		while(userIterator.hasNext()){
+			Map.Entry user = (Map.Entry)userIterator.next();
+			if (user.getKey().equals(username)) {
+				User currentUser = users.get(user);
+				// membership type 0 = pay-per-ride
+				if (currentUser.getType() == 0) {
+					System.out.println("Pay-per-ride. Your card will be charged $2");
+				}				
+				currentUser.addUserRide(rideID);
+			}
+		}
+
+		// create new Ride and add to current rides list
+		Ride ride = new Ride(rideID, username, stationId, bikeID);
+		currRides.add(rideID);
+
+		// iterate through bikes hashmap to find bike and update values to show in use
+		Iterator<Integer> bikeKeyIterator = bikes.keySet().iterator();
+		while(bikeKeyIterator.hasNext()){
+			Integer id = (Integer) bikeKeyIterator.next();
+			if (id == bikeID) {
+				Bike b = bikes.get(id);
+				b.setCheckedOut(true);
+				b.setLastStationId(stationId);
+				b.setUserId(username);
+			}
+		}		
+		// add ride to rides hashmap
+		rides.put(rideID, ride);
+
+		return "Bike " + bikeID + " successfully checked out by " + username + ", Ride ID " + rideID;
 	};
 	
 	/**
@@ -320,10 +359,34 @@ public class ValleyBikeSim {
 	 * TODO: Implement method
 	 * @param username
 	 * @param stationId 
-	 * @return
+	 * @param ridID
+	 * @return String "success"
 	 */
-	public String checkInBike(String username, Integer stationId) {
-		return "Bike checked in by " + username;
+	public String checkInBike(String username, Integer stationId, Integer rideID) {
+
+		// iterate through rides hashmap to find ride and call end method
+		Iterator<Integer> rideKeyIterator = rides.keySet().iterator();
+		while(rideKeyIterator.hasNext()){
+			Integer rID = (Integer) rideKeyIterator.next();
+			if (rID == rideID) {
+				Ride r = rides.get(rID);
+				int bikeID = r.getBikeId();
+				// iterate through rides hashmap to find bike and update values
+				Iterator<Integer> bikeKeyIterator = bikes.keySet().iterator();
+				while(bikeKeyIterator.hasNext()){
+					Integer bID = (Integer) bikeKeyIterator.next();
+					if (bID == bikeID) {
+						Bike b = bikes.get(bID);
+						b.setLastStationId(stationId);
+						b.setUserId("");
+						b.setCheckedOut(false);
+					}
+				}
+				r.end(stationId);
+			}
+		}
+
+		return "Successfully checked in.";
 	}
 	
 	/**
@@ -333,7 +396,18 @@ public class ValleyBikeSim {
 	 * @return
 	 */
 	public String viewHistory(String username) {
-		return username + " history";
+		Iterator userIterator = users.entrySet().iterator();
+		while(userIterator.hasNext()){
+			Map.Entry user = (Map.Entry)userIterator.next();
+			if (user.getKey().equals(username)) {
+				User currentUser = users.get(user);
+				System.out.println("Ride History: \n");
+				for (int r : currentUser.getRides()) {
+					System.out.println("Ride " + r);
+				}
+			}
+		}
+		return "";
 	}
 	
 	/**
@@ -343,7 +417,15 @@ public class ValleyBikeSim {
 	 * @return
 	 */
 	public String viewAccount(String username) {
-		return username + " account information";
+		Iterator userIterator = users.entrySet().iterator();
+		while(userIterator.hasNext()){
+			Map.Entry user = (Map.Entry)userIterator.next();
+			if (user.getKey().equals(username)) {
+				User currentUser = users.get(user);
+				System.out.println("Account Information: \n" + currentUser.toViewString());
+			}
+		}
+		return "";
 	}
 	
 	//TODO: Implement method

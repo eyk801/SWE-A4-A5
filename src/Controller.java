@@ -250,14 +250,21 @@ public class Controller {
 		return entry;
 	}
 	
+	/* 
+	 * TODO: fix to check what are available bikes
+	 */
 	private String checkOutBike(String username) {
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		return valleyBike.checkOutBike(username, stationId);
-	}
+		Integer bikeID = getUnboundedIntResponse("Please enter the bike ID number", 0);
+		return valleyBike.checkOutBike(username, stationId, bikeID);	}
 	
+	/* 
+	 * TODO: fix to auto get ride ID number
+	 */
 	private String checkInBike(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		return valleyBike.checkInBike(username, stationId);
+		Integer rideID = getUnboundedIntResponse("Please enter the ride ID number", 0);
+		return valleyBike.checkInBike(username, stationId, rideID);
 	}
 	
 	private String reportIssue(String username){

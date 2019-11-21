@@ -4,6 +4,7 @@ public class Ride {
 	
 	private int id = 0;
 	private String userId = "";
+	private int bikeId = 0;
 	private int startStationId = 0;
 	private int endStationId = 0;
 	private Timestamp startTime = new Timestamp(System.currentTimeMillis());
@@ -16,9 +17,10 @@ public class Ride {
 	 * 
 	 * TODO: Figure out time stamp things
 	 */
-	public Ride(int id, String userId, int startStationId) {
+	public Ride(int id, String userId, int startStationId, int bikeId) {
 		this.id = id;
 		this.userId = userId;
+		this.bikeId = bikeId;
 		this.startStationId = startStationId;
 	}
 
@@ -46,6 +48,18 @@ public class Ride {
 	
 	public String getUserId() {
 		return this.userId;
+	}
+	
+	public void setUserId(String userID) {
+		this.userId = userID;
+	}
+
+	public int getBikeId() {
+		return this.bikeID;
+	}
+
+	public void setBikeId(int bikeID) {
+		this.bikeID = bikeID;
 	}
 	
 	public int getStartStationId() {

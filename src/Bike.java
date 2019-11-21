@@ -31,8 +31,20 @@ public class Bike {
     	return this.getUserId();
     }
     
+    public void setUserId(String userID) {
+    	this.userId = userID;
+    }
+    
     public boolean checkedOut() {
     	return this.checkedOut;
+    }
+    
+    public void setCheckedOut(boolean status) {
+    	this.checkedOut = status;
+    }
+    
+    public void setLastStationId(Integer stationID) {
+    	this.lastStationId = stationID;
     }
     
     public String toSaveString() {
