@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class User {
-	private String id = "";
+	private String username = "";
 	private String password = "";
 	private int membershipType = 0;
 	private int currentRideId = 0;
@@ -16,8 +16,8 @@ public class User {
 	 * 
 	 * TODO: Include any methods involving payment system, check toString methods
 	 */
-	public User(String id, String password, int membershipType, int currentRideId, 
-			int creditCardNum, int CVV, String expirationDate, List<Integer> rideHistory) {
+	public User(String username, String password, int membershipType, 
+			int creditCardNum, int CVV, String expirationDate) {
 		this.id = id;
 		this.password = password;
 		this.membershipType = membershipType;
@@ -28,12 +28,22 @@ public class User {
 		this.rideHistory = rideHistory;
 	}
 	
+
+	/**
+	 * This is where we will check that user is valid (re: payment methods)
+	 * @return
+	 * TODO: implement
+	 */
+	public boolean validUser() {
+		return true;
+	}
+	
 	public String getId() {
-		return this.id;
+		return this.username;	
 	}
 	
 	public void setId(String newId) {
-		this.id = newId;
+		this.username = newId;
 	}
 	
 	public void setPassword(String newPass) {
@@ -85,14 +95,14 @@ public class User {
     public String toSaveString() {
     	String rideIds = this.ridesToString();
     	
-        return (this.id + "," + this.password + "," + this.membershipType + "," + 
+        return (this.username + "," + this.password + "," + this.membershipType + "," + 
         		this.currentRideId + "," + this.creditCardNum + "," + this.CVV + "," +
         		this.expirationDate + "," + rideIds);
     }
     
     public String toViewString(){
     	String rideIds = this.ridesToString();
-    	return (this.id + "\t" 
+    	return (this.username + "\t" 
     					+ this.password + "\t"
     					+ this.membershipType + "\t"
     					+ this.currentRideId + "\t" 

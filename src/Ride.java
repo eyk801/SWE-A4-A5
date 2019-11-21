@@ -8,6 +8,7 @@ public class Ride {
 	private int endStationId = 0;
 	private Timestamp startTime = new Timestamp(System.currentTimeMillis());
 	private Timestamp endTime = new Timestamp(System.currentTimeMillis());
+	private boolean currentRide = true;
 
 	
 	/**
@@ -20,10 +21,23 @@ public class Ride {
 		this.userId = userId;
 		this.startStationId = startStationId;
 	}
+
+    /**
+     * Can update when ride class updates
+     * @return
+     */
+    public boolean isCurrentRide() {
+    	if(currentRide == true) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
 	
 	public void end(int stationId) {
 		this.endStationId = stationId;
 		this.endTime = new Timestamp(System.currentTimeMillis());
+		this.currentRide = false;
 	}
 	
 	public int getId() {

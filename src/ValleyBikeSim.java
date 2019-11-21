@@ -5,10 +5,11 @@
 import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.util.Map.Entry;
 
 public class ValleyBikeSim {
 	private Map<Integer, Station> stationData = new HashMap<>();
-	private Map<Integer, User> users = new HashMap<>();
+	private Map<String, User> users = new HashMap<>();
 	private Map<Integer, Bike> bikes = new HashMap<>();
 	private Map<Integer, Ride> rides = new HashMap<>();
 
@@ -352,6 +353,31 @@ public class ValleyBikeSim {
 	
 	//TODO: Implement method
 	public String checkStats() {
+		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
+		systemStats.concat("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
+		Iterator<Entry<Integer, Station>> stationsIterator = stationData.entrySet().iterator();
+		while(stationsIterator.hasNext()){
+			Map.Entry<Integer, Station> stationElement = (Map.Entry<Integer, Station>)stationsIterator.next();
+			systemStats.concat("\n" + stationElement.toViewString());
+			Map<Integer, Bike> stationBikes = stationElement.bikes;
+			Iterator<Entry<Integer, Bike>> stationBikeIterator = stationBikes.entrySet().iterator();
+			systemStats.concat("\n" + "Station Bikes: ");
+			while (stationBikeIterator.hasNext()) {
+				Map.Entry<Integer, Bike> stationBikeElement = (Map.Entry<Integer, Bike>)stationBikeIterator.next();
+				systemStats.concat(Integer.toString(stationBikeElement.getKey()) + " ");
+			}
+			}
+		systemStats.concat("Bikes currently checked out: \n");
+		systemStats.concat("Bike \t User \n");
+
+		Iterator<Entry<Integer, Bike>> bikeIterator = bikes.entrySet().iterator();
+		while (bikeIterator.hasNext()) {
+			Map.Entry<Integer, Bike> bikeElement = (Map.Entry<Integer, Bike>)bikeIterator.next();
+			if (bikeElement.getValue().checkedOut == true) {
+				systemStats.concat(Integer.toString(bikeElement.getValue().getId()) + "\t" + bikeElement.getValue().userId + "\n");
+			}
+
+		}
 		return "system stats";
 	}
 	
@@ -360,9 +386,22 @@ public class ValleyBikeSim {
 		return "current issues";
 	}
 	
-	//TODO: Implement method
+	/**
+	 * Iterates through hashmap of rides
+	 * picks out current rides and concatenates them to string
+	 * 
+	 * @return string of current rides to controller
+	 */
 	public String viewCurrentRides() {
-		return "current rides";
+		String currentRides = "Current Rides:";
+		Iterator<Entry<Integer, Ride>> ridesIterator = rides.entrySet().iterator();
+		while(ridesIterator.hasNext()){
+			Map.Entry<Integer, Ride> mapElement = (Map.Entry<Integer, Ride>)ridesIterator.next();
+			if (mapElement.getValue().isCurrentRide());{
+				currentRides = "/n" + Integer.toString(mapElement.getValue().getId());
+			}
+		}
+		return currentRides;
 	}
 	
 	// TODO Implement method
@@ -380,9 +419,22 @@ public class ValleyBikeSim {
 		return issues.toString() + " resolved";
 	}
 	
-	// TODO implement method
-	public boolean createUser(String username, String password, Integer membership) {
-		return true; // if user sucessfully created
+	/**
+	 * Method creates a new user object
+	 * Checks if payment params are valid
+	 * and adds it to user hashmap if so 
+	 *
+	 * @return boolean to controller for whether or not user was successfully added to system
+	 */
+	public boolean createUser(String username, String password, Integer membership, Integer cardNum, Integer CVV, String expDate) {
+
+		User newUser = new User(username,password,membership,cardNum,CVV, expDate);
+		if (newUser.validUser() == true) {
+			users.put(username, newUser);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 

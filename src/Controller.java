@@ -166,7 +166,7 @@ public class Controller {
 			if (createAccount(username, password) == true) {
 				return username;
 			} else {
-				System.out.println("Error creating account (username taken)");
+				System.out.println("Error creating account (username taken or payment invalid)");
 				accountLogin();
 			};
 			
@@ -189,9 +189,14 @@ public class Controller {
 		if (userAccounts.containsKey(username) == true) {
 			return false;
 		} else {
-			Integer membership = 0;
+			Integer membership = getIntResponse("Please enter your preferred membership? (0,1,2)", 0, 2);
+			Integer cardNum = getUnboundedIntResponse("Please enter you credit card number",0);
+			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
+			System.out.println("Please enter experation date(MM/YY): ");
+			String expDate = sc.next(); 
 			userAccounts.put(username, password);
-			if (valleyBike.createUser(username, password, membership) == true) {
+			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
+				userAccounts.put(username, password);				
 				return true;
 			} else {
 				return false;
