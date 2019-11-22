@@ -1,3 +1,5 @@
+package src;
+
 public class Bike {
 	
     private int id = 0;

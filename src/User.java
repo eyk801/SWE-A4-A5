@@ -1,3 +1,5 @@
+package src;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,6 +12,7 @@ public class User {
 	private int CVV = 0;
 	private String expirationDate = "";
 	private List<Integer> rideHistory = new ArrayList<>();
+	private int currentRide = 0;
 	
 	/**
 	 * User class constructor
@@ -18,14 +21,12 @@ public class User {
 	 */
 	public User(String username, String password, int membershipType, 
 			int creditCardNum, int CVV, String expirationDate) {
-		this.id = id;
+		this.username = username;
 		this.password = password;
 		this.membershipType = membershipType;
-		this.currentRideId = currentRideId;
 		this.creditCardNum = creditCardNum;
 		this.CVV = CVV;
 		this.expirationDate = expirationDate;
-		this.rideHistory = rideHistory;
 	}
 	
 
@@ -44,6 +45,14 @@ public class User {
 	
 	public String getId() {
 		return this.username;	
+	}
+	
+	public int getCurrentRide() {
+		return this.currentRide;
+	}
+	
+	public void setCurrentRide(int currRideId) {
+		this.currentRide = currRideId;
 	}
 	
 	public void setId(String newId) {

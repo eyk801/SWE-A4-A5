@@ -1,3 +1,5 @@
+package src;
+
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -120,18 +122,18 @@ public class Controller {
 			addStation();
 			break;
 		case 6:
-			valleyBike.equalizeStations();
+			String string = valleyBike.viewSystemOverview();
 			break;
 		case 7:
-			valleyBike.checkStats();
-			break;
-		case 8:
 			//autogenerate ids, give an int of how many bikes to add, dock at a specific station
 			addBikes();
 			break;
-		case 9:
+		case 8:
 			moveBikes();
 			break;
+//		// update equalizeStations(), then uncomment
+//		case 10:
+//			valleyBike.equalizeStations();
 		default:
 			System.out.println("Input must be an integer from 0-8.");
 			executeEmployee();
@@ -202,8 +204,6 @@ public class Controller {
 				return false;
 			}
 		}
-		
-		
 	}
 	
 	private Integer getIntResponse(String request, Integer min, Integer max){

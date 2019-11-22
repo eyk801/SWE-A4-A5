@@ -1,5 +1,6 @@
-import java.util.Map;
-import java.util.HashMap;
+package src;
+
+import java.util.*;
 
 public class Station {
 
@@ -9,7 +10,7 @@ public class Station {
     private int kiosk = 0;
     private String address = new String();
     private String name = new String();
-    public Map<Integer, Bike> bikes = new HashMap<>();
+    private List<Integer> bikeIds = new ArrayList<>();
 
     
 	/**
@@ -18,14 +19,14 @@ public class Station {
 	 * TODO: 
 	 */
     public Station(int id, int avDocks, int capacity, int kiosk,
-            String address, String name, Map<Integer, Bike> bikes) {
+            String address, String name, List<Integer> bikeIds) {
         this.id = id;
         this.avDocks = avDocks;
         this.capacity = capacity;
         this.kiosk = kiosk;
         this.address = address;
         this.name = name;
-        this.bikes = bikes;
+        this.bikeIds = bikeIds;
     }
 
     public int getId() {
@@ -56,18 +57,26 @@ public class Station {
         return this.name;
     }
     
-    public void addBike(Bike bike) {
+    public int getNumBikes() {
+    	return this.bikeIds.size();
+    }
+    
+    public List<Integer> getBikeIds() {
+    	return this.bikeIds;
+    }
+    
+    public void addBike(int bikeId) {
     	// Add input bike to Station list of bikes
-    	this.bikes.put(bike.getId(), bike);
+    	this.bikeIds.add(bikeId);
     }
     
     public void removeBike(int bikeId) {
     	// Remove bike based on bike id
-    	this.bikes.remove(bikeId);
+    	this.bikeIds.remove(bikeId);
     }
 
     public String toSaveString() {
-        return (this.id + "," + this.name + "," + this.bikes.size() + "," + this.avDocks + ","
+        return (this.id + "," + this.name + "," + this.bikeIds.size() + "," + this.avDocks + ","
 				+ this.capacity + "," + this.kiosk + "," + this.address);
     }
     
@@ -76,7 +85,7 @@ public class Station {
     	 if (this.kiosk == 0){
     		 kioskBool = false;
     	 }
-    	 return (Integer.toString(this.id) + "\t" + Integer.toString(this.bikes.size())
+    	 return (Integer.toString(this.id) + "\t" + Integer.toString(this.bikeIds.size())
     	                + "\t\t" + Integer.toString(this.avDocks) + "\t"
     	                + Integer.toString(this.capacity) + "\t" 
     	                + Boolean.toString(kioskBool) 

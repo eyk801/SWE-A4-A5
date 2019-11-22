@@ -1,3 +1,5 @@
+package src;
+
 import java.sql.Timestamp;
 
 public class Ride {
@@ -55,11 +57,11 @@ public class Ride {
 	}
 
 	public int getBikeId() {
-		return this.bikeID;
+		return this.bikeId;
 	}
 
 	public void setBikeId(int bikeID) {
-		this.bikeID = bikeID;
+		this.id = bikeId;
 	}
 	
 	public int getStartStationId() {

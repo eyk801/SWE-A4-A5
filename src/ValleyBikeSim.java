@@ -1,3 +1,5 @@
+package src;
+
 /*
  * hello
  */
@@ -38,12 +40,14 @@ public class ValleyBikeSim {
 	 * Read in station data from file 
 	 * Parse values into new station objects 
 	 * and add objects to a Hashmap using id-station key-value pair
-	 *
+	 * 
+	 * TODO: Update to only upload bike ids
+	 * 
 	 * @return stationData hashmap for the whole vallybikesim object to access
 	 */
 	public HashMap<Integer, Station> readStationData() {
 
-		TreeMap<Integer, Station> stationData = new TreeMap<>();
+		HashMap<Integer, Station> stationData = new HashMap<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
 			String line = br.readLine();
@@ -69,6 +73,8 @@ public class ValleyBikeSim {
 	/**
 	 * Function to print out list of stations ordered by id and formatted to console.
 	 * 
+	 * TODO: update for station info format
+	 * 
 	 */
 	public void viewStationList() {
 		System.out.println("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
@@ -86,120 +92,62 @@ public class ValleyBikeSim {
 	 * 
 	 * TODO: Ok for now but could simulate bike movement by pushing events to stack to further validate
 	 * and check stations for Available Docks, pedelecs, etc
+	 * TODO: update??? move all system input to the controller
 	 * 
 	 * Employee can access, but not user
 	 */
-
-	public void resolveRideData() {
-
-		boolean cont = true;
-		int totalTime = 0;
-		int totalRides = 0;
-
-		while (cont) {
-			// prompt for address
-			String path = "";
-			do {
-				System.out.println(
-						"What is the path of the ride data file (Example: data-files/sample-ride-data-0820.csv)? ");
-				while (!sc.hasNext()) {
-					System.out.println("Please try again, input must be a valid file path. ");
-					sc.nextLine();
-				}
-				path = sc.nextLine();
-			} while (path.length() < 4);
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(path));
-				String line = br.readLine();
-				while ((line = br.readLine()) != null) {
-					String[] values = line.split(",");
-					String startTime = values[3];
-					String endTime = values[4];
-					Integer from = Integer.parseInt(values[1]);
-					Integer to = Integer.parseInt(values[2]);
-					if (Integer.parseInt(startTime.split(" ")[1].split(":")[0]) >= 24
-							|| Integer.parseInt(endTime.split(" ")[1].split(":")[0]) >= 24
-							|| stationData.containsKey(to) == false
-							|| stationData.containsKey(from) == false){ continue; }
-					Date tempStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
-					Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
-
-					if (tempEnd.before(tempStart)){ continue; }
-					
-					totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
-					totalRides ++;
-						
-					
-				}
-				cont = false;
-				br.close();
-			} catch (Exception e) {
-				System.err.format("Exception occurred trying to read station data file.");
-				e.printStackTrace();
-			}
-		}
-		int avg = totalTime / totalRides;
-		System.out.println("This ride list contains: " + Integer.toString(totalRides)
-				+ " rides with average ride time of " + Integer.toString(avg) + " minutes.");
-	}
-
-	/**
-	 * Function to record a user's ride. It will update the station's data after all
-	 * information has been verified.
-	 * 
-	 * ASSUMPTION: There is no possibility to rent a bike. Only pedelecs are
-	 * available.
-	 * 
-	 * TODO: Save rides to ride list? Further ride validation? Waiting on Alicia and team consensus
-	 * CHANGE - two methods, checkInBike() and checkOutBike()
-	 * 
-	 */
-	public void recordRide() {
-		
-		// list of existing stations
-		ArrayList<Integer> idList = new ArrayList<Integer>(this.stationData.keySet());
-		int userStartStation;
-		int userEndStation;
-
-		do {
-			System.out.println(
-					"Please enter Starting Station ID: ");
-			while (!sc.hasNextInt()) {
-				System.out.println(
-						"The station ID must be an integer");
-				sc.next();
-			}
-			userStartStation = sc.nextInt();
-		} while (!(idList.contains(userStartStation))
-				|| (idList.contains(userStartStation) && ((stationData.get(userStartStation).getPedelecs() < 1))));
-
-		// prompt user for the station where the ride ended
-		
-		do {
-			System.out.println("Please enter Docking Station ID: ");
-			while (!sc.hasNextInt()) {
-				System.out.println("The station ID must be an integer");
-				sc.next();
-			}
-			userEndStation = sc.nextInt();
-		} while (!idList.contains(userEndStation)
-				|| (stationData.get(userEndStation).getAvDocks() - 1 < 0));
-
-			Station endStation = stationData.get(userEndStation);
-			Station startStation = stationData.get(userStartStation);
-			int endPed = stationData.get(userEndStation).getPedelecs();
-			int startPed = stationData.get(userStartStation).getPedelecs();
-
-			// updating the station data
-			endStation.setAvDocks(stationData.get(userEndStation).getAvDocks() - 1);
-			startStation.setAvDocks(stationData.get(userStartStation).getAvDocks() + 1);
-
-			endStation.setPedelecs(endPed + 1);
-			startStation.setPedelecs(startPed - 1);
-			
-			System.out.println("Ride sucessfully added");
-	}
-	
+//	public void resolveRideData() {
+//
+//		boolean cont = true;
+//		int totalTime = 0;
+//		int totalRides = 0;
+//
+//		while (cont) {
+//			// prompt for address
+//			String path = "";
+//			do {
+//				System.out.println(
+//						"What is the path of the ride data file (Example: data-files/sample-ride-data-0820.csv)? ");
+//				while (!sc.hasNext()) {
+//					System.out.println("Please try again, input must be a valid file path. ");
+//					sc.nextLine();
+//				}
+//				path = sc.nextLine();
+//			} while (path.length() < 4);
+//			try {
+//				BufferedReader br = new BufferedReader(new FileReader(path));
+//				String line = br.readLine();
+//				while ((line = br.readLine()) != null) {
+//					String[] values = line.split(",");
+//					String startTime = values[3];
+//					String endTime = values[4];
+//					Integer from = Integer.parseInt(values[1]);
+//					Integer to = Integer.parseInt(values[2]);
+//					if (Integer.parseInt(startTime.split(" ")[1].split(":")[0]) >= 24
+//							|| Integer.parseInt(endTime.split(" ")[1].split(":")[0]) >= 24
+//							|| stationData.containsKey(to) == false
+//							|| stationData.containsKey(from) == false){ continue; }
+//					Date tempStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
+//					Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
+//
+//					if (tempEnd.before(tempStart)){ continue; }
+//					
+//					totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
+//					totalRides ++;
+//						
+//					
+//				}
+//				cont = false;
+//				br.close();
+//			} catch (Exception e) {
+//				System.err.format("Exception occurred trying to read station data file.");
+//				e.printStackTrace();
+//			}
+//		}
+//		int avg = totalTime / totalRides;
+//		System.out.println("This ride list contains: " + Integer.toString(totalRides)
+//				+ " rides with average ride time of " + Integer.toString(avg) + " minutes.");
+//	}
 
 	/**
 	 * Adds station to program's treemap of stations
@@ -227,8 +175,8 @@ public class ValleyBikeSim {
 //
 //		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
 //		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
-
-		Station s = new Station(id, 0, 0, capacity, 0, capacity, kiosk, address, name);
+		List<Integer> bikeIds = new ArrayList<>();
+		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stationData.put(id, s);
 		System.out.println("Station successfully added to the system.");
 	}
@@ -263,49 +211,51 @@ public class ValleyBikeSim {
 	 * by iterating through each station adding 1 if it is below percentage
 	 * and continuing on while there are still extras to reassign
 	 * 
+	 * TODO: update this for just bikes
+	 * 
 	 */
-	public void equalizeStations() {
-
-		// find the total number of bikes, pedelecs, and total capacity
-		int totalBikes = 0;
-		int totalPedelecs = 0;
-		int totalCap = 0;
-
-		for (Station s : this.stationData.values()) {
-			totalBikes += s.getBikes();
-			totalPedelecs += s.getPedelecs();
-			totalCap += s.getCapacity();
-			s.setBikes(0);
-			s.setPedelecs(0);
-			s.setAvDocks(s.getCapacity());
-		}
-		// find the average percentage of bikes/pedelecs to capacity
-		double percentBikes = (double) totalBikes / (double) totalCap;
-		double percentPeds = (double) totalPedelecs / (double) totalCap;
-		
-		while(totalBikes + totalPedelecs > 0){
-			for (Station s : this.stationData.values()){
-				double sPercentBikes = (double)s.getBikes()/s.getCapacity();
-				double sPercentPeds = (double)s.getPedelecs()/s.getCapacity();
-				
-				if(totalBikes >0){
-					if(sPercentBikes < percentBikes){
-						s.setBikes(s.getBikes() + 1);
-						s.setAvDocks(s.getAvDocks() - 1);
-						totalBikes = totalBikes - 1;
-					}
-				}
-				if(totalPedelecs>0){
-					if(sPercentPeds < percentPeds){
-						s.setPedelecs(s.getPedelecs() + 1);
-						s.setAvDocks(s.getAvDocks() - 1);
-						totalPedelecs = totalPedelecs - 1;
-					}
-				}
-			}
-		}
-		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
-	}
+//	public void equalizeStations() {
+//
+//		// find the total number of bikes, pedelecs, and total capacity
+//		int totalBikes = 0;
+//		int totalPedelecs = 0;
+//		int totalCap = 0;
+//
+//		for (Station s : this.stationData.values()) {
+//			totalBikes += s.getBikes();
+//			totalPedelecs += s.getPedelecs();
+//			totalCap += s.getCapacity();
+//			s.setBikes(0);
+//			s.setPedelecs(0);
+//			s.setAvDocks(s.getCapacity());
+//		}
+//		// find the average percentage of bikes/pedelecs to capacity
+//		double percentBikes = (double) totalBikes / (double) totalCap;
+//		double percentPeds = (double) totalPedelecs / (double) totalCap;
+//		
+//		while(totalBikes + totalPedelecs > 0){
+//			for (Station s : this.stationData.values()){
+//				double sPercentBikes = (double)s.getBikes()/s.getCapacity();
+//				double sPercentPeds = (double)s.getPedelecs()/s.getCapacity();
+//				
+//				if(totalBikes >0){
+//					if(sPercentBikes < percentBikes){
+//						s.setBikes(s.getBikes() + 1);
+//						s.setAvDocks(s.getAvDocks() - 1);
+//						totalBikes = totalBikes - 1;
+//					}
+//				}
+//				if(totalPedelecs>0){
+//					if(sPercentPeds < percentPeds){
+//						s.setPedelecs(s.getPedelecs() + 1);
+//						s.setAvDocks(s.getAvDocks() - 1);
+//						totalPedelecs = totalPedelecs - 1;
+//					}
+//				}
+//			}
+//		}
+//		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
+//	}
 	
 	/**
 	 * Check out bike method for user
@@ -433,8 +383,12 @@ public class ValleyBikeSim {
 		return "Issue reported";
 	}
 	
-	//TODO: Implement method
-	public String checkStats() {
+	/*
+	 * TODO: Return system stats string
+	 * TODO: update to correct class calls: calls toViewString on a map? no station.bikes, use getter
+	 * 
+	 */
+	public String viewSystemOverview() {
 		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
 		systemStats.concat("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
 		Iterator<Entry<Integer, Station>> stationsIterator = stationData.entrySet().iterator();
@@ -505,7 +459,7 @@ public class ValleyBikeSim {
 	 * Method creates a new user object
 	 * Checks if payment params are valid
 	 * and adds it to user hashmap if so 
-	 *
+	 * TODO: call payment system method on user
 	 * @return boolean to controller for whether or not user was successfully added to system
 	 */
 	public boolean createUser(String username, String password, Integer membership, Integer cardNum, Integer CVV, String expDate) {
@@ -519,8 +473,6 @@ public class ValleyBikeSim {
 		}
 	}
 	
-
-	
 	/**
 	 * Main function. Creates new ValleyBikeSim Object, reads station data for that object
 	 * And then calls the execute function which runs simulator until program is quit
@@ -528,43 +480,14 @@ public class ValleyBikeSim {
 	 * TODO: Remove ValleyBikeSim Object and find more streamlined way to run program
 	 */
 	public static void main(String[] args) {
-		ValleyBikeSim sim = new ValleyBikeSim();
-		System.out.println("Welcome to the ValleyBike Simulator.\n");
-		// calls option menu
-		try {
-			sim.execute();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Function to get integer input from user with ability to dictate minimum entries
-	 * 
-	 * @param request - quality that is being asked for
-	 * @param min - minimum integer value to be accepted
-	 * @return validated user input
-	 */
-	private Integer getIntResponse(String request, Integer min, Integer max){
-		Integer entry = 0;
-		System.out.println(request + ": ");
-		while (sc.hasNext()){
-			if(!sc.hasNextInt()){
-				System.out.println("Entry must be an integer");
-				System.out.println(request + ": ");
-				sc.next();
-			}else{
-				entry = sc.nextInt();
-				if(min <= entry && entry <= max){
-					break;
-				} else{
-					System.out.println("Entry must be an integer in range "+min + "-" + max);
-					System.out.println(request + ": ");
-					sc.nextLine();
-				}	
-			}
-		}
-		return entry;
+//		ValleyBikeSim sim = new ValleyBikeSim();
+//		System.out.println("Welcome to the ValleyBike Simulator.\n");
+//		// calls option menu
+//		try {
+//			sim.execute();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }
