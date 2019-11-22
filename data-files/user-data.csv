@@ -1,0 +1,6 @@
+ID,Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History
+1,esterzhao,password1,0,1234123412341234,123,01/21,0,1,2
+2,emilykim,password2,0,1234567812345678,123,01/21,0,3
+3,charlottegephart,password3,0,8765432187654321,01/21,0,4
+4,alieshghi,password4,0,1234432112344321,01/21,0,5
+5,aliciagrubb,password5,0,1111222233334444,01/22,0,6,7,8
