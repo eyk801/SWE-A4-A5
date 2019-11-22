@@ -262,24 +262,26 @@ public class ValleyBikeSim {
 	 * TODO check membership status and charge account accordingly
 	 * @param username
 	 * @param stationId 
-	 * @param bikeID
 	 * @return
 	 */
-	public String checkOutBike(String username, Integer stationId, Integer bikeID) {
+	public String checkOutBike(String username, Integer stationId) {
 		// assign ride ID
 		rideID += 1;
 
 		// check membership status and charge accordingly, add ride to user ride list
-		Iterator userIterator = users.entrySet().iterator();
-		while(userIterator.hasNext()){
-			Map.Entry user = (Map.Entry)userIterator.next();
-			if (user.getKey().equals(username)) {
-				User currentUser = users.get(user);
-				// membership type 0 = pay-per-ride
-				if (currentUser.getType() == 0) {
-					System.out.println("Pay-per-ride. Your card will be charged $2");
-				}				
-				currentUser.addUserRide(rideID);
+		User currentUser = users.get(username);
+		if (currentUser.getType() == 0) {
+			System.out.println("Pay-per-ride. Your card will be charged $2");
+		}				
+		currentUser.addUserRide(rideID);
+		
+		Integer bikeID = 0;
+		Station s = stationData.get(stationId);
+		ArrayList bikesList = s.getBikeIds();
+		for (Integer bID : bikesList) {
+			Bike currBike = bikes.get(bID);
+			if (currBike.getUserId().equals("")) {
+				bikeID = bID;
 			}
 		}
 
@@ -287,17 +289,11 @@ public class ValleyBikeSim {
 		Ride ride = new Ride(rideID, username, stationId, bikeID);
 		currRides.add(rideID);
 
-		// iterate through bikes hashmap to find bike and update values to show in use
-		Iterator<Integer> bikeKeyIterator = bikes.keySet().iterator();
-		while(bikeKeyIterator.hasNext()){
-			Integer id = (Integer) bikeKeyIterator.next();
-			if (id == bikeID) {
-				Bike b = bikes.get(id);
-				b.setCheckedOut(true);
-				b.setLastStationId(stationId);
-				b.setUserId(username);
-			}
-		}		
+		Bike b = bikes.get(bikeID);
+		b.setCheckedOut(true);
+		b.setLastStationId(stationId);
+		b.setUserId(username);
+				
 		// add ride to rides hashmap
 		rides.put(rideID, ride);
 
@@ -309,32 +305,23 @@ public class ValleyBikeSim {
 	 * TODO: Implement method
 	 * @param username
 	 * @param stationId 
-	 * @param ridID
 	 * @return String "success"
 	 */
-	public String checkInBike(String username, Integer stationId, Integer rideID) {
+	public String checkInBike(String username, Integer stationId) {
+		
+		User currentUser = users.get(username);
+		
+		Integer currRideID = currentUser.getCurrentRide();
 
-		// iterate through rides hashmap to find ride and call end method
-		Iterator<Integer> rideKeyIterator = rides.keySet().iterator();
-		while(rideKeyIterator.hasNext()){
-			Integer rID = (Integer) rideKeyIterator.next();
-			if (rID == rideID) {
-				Ride r = rides.get(rID);
-				int bikeID = r.getBikeId();
-				// iterate through rides hashmap to find bike and update values
-				Iterator<Integer> bikeKeyIterator = bikes.keySet().iterator();
-				while(bikeKeyIterator.hasNext()){
-					Integer bID = (Integer) bikeKeyIterator.next();
-					if (bID == bikeID) {
-						Bike b = bikes.get(bID);
-						b.setLastStationId(stationId);
-						b.setUserId("");
-						b.setCheckedOut(false);
-					}
-				}
-				r.end(stationId);
-			}
-		}
+		Ride r = rides.get(currRideID);
+		Integer bikeID = r.getBikeId();
+		
+		Bike b = bikes.get(bikeID);
+		b.setLastStationId(stationId);
+		b.setUserId("");
+		b.setCheckedOut(false);
+				
+		r.end(stationId);
 
 		return "Successfully checked in.";
 	}
@@ -346,18 +333,13 @@ public class ValleyBikeSim {
 	 * @return
 	 */
 	public String viewHistory(String username) {
-		Iterator userIterator = users.entrySet().iterator();
-		while(userIterator.hasNext()){
-			Map.Entry user = (Map.Entry)userIterator.next();
-			if (user.getKey().equals(username)) {
-				User currentUser = users.get(user);
-				System.out.println("Ride History: \n");
-				for (int r : currentUser.getRides()) {
-					System.out.println("Ride " + r);
-				}
-			}
+		User currentUser = users.get(username);
+		String rideList = "";
+		
+		for (int r : currentUser.getRides()) {
+			rideList = rideList + ("Ride " + r + "\n");
 		}
-		return "";
+		return "Ride History: \n" + rideList;
 	}
 	
 	/**
@@ -367,15 +349,8 @@ public class ValleyBikeSim {
 	 * @return
 	 */
 	public String viewAccount(String username) {
-		Iterator userIterator = users.entrySet().iterator();
-		while(userIterator.hasNext()){
-			Map.Entry user = (Map.Entry)userIterator.next();
-			if (user.getKey().equals(username)) {
-				User currentUser = users.get(user);
-				System.out.println("Account Information: \n" + currentUser.toViewString());
-			}
-		}
-		return "";
+		User currentUser = users.get(username);
+		return "Account Information: \n" + currentUser.toViewString();
 	}
 	
 	//TODO: Implement method
