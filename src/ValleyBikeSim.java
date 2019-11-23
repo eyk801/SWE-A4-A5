@@ -79,31 +79,124 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * TODO: finish implementing
+	 * Reads in data from stored .csv file 
+	 * Parse values into new objects 
+	 * Add objects to a HashMap using key-value pair
+	 * 
+	 * @return users HashMap for the whole ValleyBikeSim object to access
 	 */
 	public HashMap<String, User> readUserData() {
-		
+
+		HashMap<String, User> users = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/user-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				String username = values[1];
+				List<Integer> rideHistory = new ArrayList<>();
+				User user = new User(username,values[2],Integer.parseInt(values[3]),
+									Integer.parseInt(values[4]),Integer.parseInt(values[5]),
+									values[6]);
+				// Loop to end of line for all ride history
+				for (int i=8; i < values.length;i++) {
+					rideHistory.add(Integer.parseInt(values[i]));
+				}
+				// Add ride history to ride object
+				user.setRides(rideHistory);
+				// Add user to users hashmap
+				users.put(username,user);
+			}
+			br.close();
+			return users;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read user data file.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
-	 * TODO: finish implementing
+	 * Reads in data from stored .csv file 
+	 * Parse values into new objects 
+	 * Add objects to a HashMap using key-value pair
+	 * 
+	 * @return bikes HashMap for the whole ValleyBikeSim object to access
 	 */
 	public HashMap<Integer, Bike> readBikeData() {
-		
+
+		HashMap<Integer, Bike> bikes = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/bike-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				int id = Integer.parseInt(values[0]);
+				// Create bike object
+				Bike bike = new Bike(id, Integer.parseInt(values[1]),
+									values[2],Boolean.parseBoolean(values[3]));
+				// Add bike object to bikes hash
+				bikes.put(id,bike);
+			}
+			br.close();
+			return bikes;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read bike data file.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
-	 * TODO: finish implementing
+	 * TODO: FIGURE OUT HOW TO DO THE FUCKING TIME STAMPS
 	 */
 	public HashMap<Integer, Ride> readRideData() {
-		
+
+		HashMap<Integer, Ride> rides = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				int id = Integer.parseInt(values[0]);
+				Ride ride = new Ride(id, values[1], Integer.parseInt(values[2]),Integer.parseInt(values[3]));
+				// Convert Timestamp strings to objects and update ride object
+				// HELP
+				rides.put(id,ride);
+			}
+			br.close();
+			return rides;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read station data file.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
 	 * TODO: finish implementing
 	 */
 	public HashMap<Integer, MainReq> readMainReqData() {
-		
+
+		HashMap<Integer, MainReq> mainReqs = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				int id = Integer.parseInt(values[0]);
+			}
+			br.close();
+			return mainReqs;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read station data file.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	

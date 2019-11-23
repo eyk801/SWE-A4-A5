@@ -101,6 +101,10 @@ public class User {
 		return this.rideHistory;
 	}
 	
+	public void setRides(List<Integer> rides) {
+		this.rideHistory = rides;
+	}
+	
 	public String ridesToString() {
     	// Make List rideHistory into a csv line
     	String rideIds = "";
