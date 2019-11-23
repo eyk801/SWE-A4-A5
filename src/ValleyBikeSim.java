@@ -11,10 +11,11 @@ import java.util.Map.Entry;
 import java.sql.Timestamp;
 
 public class ValleyBikeSim {
-	private Map<Integer, Station> stationData = new HashMap<>();
+	private Map<Integer, Station> stations = new HashMap<>();
 	private Map<String, User> users = new HashMap<>();
 	private Map<Integer, Bike> bikes = new HashMap<>();
 	private Map<Integer, Ride> rides = new HashMap<>();
+	private Map<Integer, MainReq> mainReqs = new HashMap<>();
 	private List<Integer> currRides = new ArrayList<>();
 	private Integer rideID = 0;
 	private PaymentSys paymentSystem = new PaymentSys();
@@ -28,46 +29,81 @@ public class ValleyBikeSim {
 	 * can also avoid the issue with static method stuff
 	 */
 	public ValleyBikeSim() {
-		this.stationData = readStationData();
-
-		// CREATE CSVS
-		
-		//this.users = readUserData();
-		//this.bikes = readBikeData();
-		// this.rides = readRideData();
+		this.stations = readStationData();
+		this.users = readUserData();
+		this.bikes = readBikeData();
+		this.rides = readRideData();
+		this.mainReqs = readMainReqData();
 	}
 
 	/**
-	 * Read in station data from file 
-	 * Parse values into new station objects 
-	 * and add objects to a Hashmap using id-station key-value pair
+	 * Reads in station data from stored .csv file 
+	 * Parse values into new Station objects 
+	 * Add objects to a HashMap using stationId:Station key-value pair
 	 * 
-	 * TODO: Update to only upload bike ids
-	 * 
-	 * @return stationData hashmap for the whole vallybikesim object to access
+	 * @return stations HashMap for the whole ValleyBikeSim object to access
 	 */
 	public HashMap<Integer, Station> readStationData() {
 
-		HashMap<Integer, Station> stationData = new HashMap<>();
+		HashMap<Integer, Station> stations = new HashMap<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
+				// Parse all values
 				int id = Integer.parseInt(values[0]);
-				Station station = new Station(id, Integer.parseInt(values[2]), 
-						Integer.parseInt(values[3]), Integer.parseInt(values[4]), Integer.parseInt(values[5]), 
-						Integer.parseInt(values[6]), Integer.parseInt(values[7]), values[8], values[1]);
-				stationData.put(id, station);
+				String name = values[1];
+				int avDocks = Integer.parseInt(values[2]);
+				int cap = Integer.parseInt(values[3]);
+				int kiosk = Integer.parseInt(values[4]);
+				String address = values[5];
+				List<Integer> bikeIds = new ArrayList<>();
+				// Loop to end of csv line for all bikeIds
+				for (int i=6; i < values.length;i++) {
+					// Add bike ids to ArrayList
+					bikeIds.add(Integer.parseInt(values[i]));
+				}
+				// Create station object using parsed data
+				Station station = new Station(id, avDocks, cap, kiosk, address, name, bikeIds);
+				// Add station to stations
+				stations.put(id, station);
 			}
 			br.close();
-			return stationData;
-
+			return stations;
 		} catch (Exception e) {
 			System.err.format("Exception occurred trying to read station data file.");
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	/**
+	 * TODO: finish implementing
+	 */
+	public HashMap<String, User> readUserData() {
+		
+	}
+	
+	/**
+	 * TODO: finish implementing
+	 */
+	public HashMap<Integer, Bike> readBikeData() {
+		
+	}
+	
+	/**
+	 * TODO: finish implementing
+	 */
+	public HashMap<Integer, Ride> readRideData() {
+		
+	}
+	
+	/**
+	 * TODO: finish implementing
+	 */
+	public HashMap<Integer, MainReq> readMainReqData() {
+		
 	}
 
 	
@@ -79,10 +115,10 @@ public class ValleyBikeSim {
 	 */
 	public void viewStationList() {
 		System.out.println("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
-		Iterator<Integer> keyIterator = stationData.keySet().iterator();
+		Iterator<Integer> keyIterator = stations.keySet().iterator();
 		while(keyIterator.hasNext()){
 			Integer id = (Integer) keyIterator.next();
-			System.out.println(this.stationData.get(id).toViewString());
+			System.out.println(this.stations.get(id).toViewString());
 		}
 	}
 
@@ -160,8 +196,8 @@ public class ValleyBikeSim {
 	public void addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
 
 //		int id = this.getIntResponse("Please enter the id of the station you would like to edit/add", 0, 1000);
-//		if (stationData.get(id) != null){
-//			System.out.println("You are attempting to edit station "+stationData.get(id).getName() + 
+//		if (stations.get(id) != null){
+//			System.out.println("You are attempting to edit station "+stations.get(id).getName() + 
 //					" continue? y/n: ");
 //			if (sc.next().toLowerCase().equals("n")){
 //				return;
@@ -178,7 +214,7 @@ public class ValleyBikeSim {
 //		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
 		List<Integer> bikeIds = new ArrayList<>();
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
-		this.stationData.put(id, s);
+		this.stations.put(id, s);
 		System.out.println("Station successfully added to the system.");
 	}
 
@@ -194,7 +230,7 @@ public class ValleyBikeSim {
 		FileWriter writer = new FileWriter("data-files/station-data.csv");
 		writer.write("ID,Name,Bikes,Pedelecs,Available Docks,Maintainence Request,Capacity,Kiosk,Address");
 		
-			for (Station s : this.stationData.values()) {
+			for (Station s : this.stations.values()) {
 				writer.write("\n");
 				writer.write(s.toSaveString());
 			}
@@ -277,7 +313,7 @@ public class ValleyBikeSim {
 		currentUser.addUserRide(rideID);
 		
 		Integer bikeID = 0;
-		Station s = stationData.get(stationId);
+		Station s = stations.get(stationId);
 		ArrayList bikesList = s.getBikeIds();
 		for (Integer bID : bikesList) {
 			Bike currBike = bikes.get(bID);
@@ -367,7 +403,7 @@ public class ValleyBikeSim {
 	public String viewSystemOverview() {
 		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
 		systemStats.concat("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
-		Iterator<Entry<Integer, Station>> stationsIterator = stationData.entrySet().iterator();
+		Iterator<Entry<Integer, Station>> stationsIterator = stations.entrySet().iterator();
 		while(stationsIterator.hasNext()){
 			Map.Entry<Integer, Station> stationElement = (Map.Entry<Integer, Station>)stationsIterator.next();
 			Station station = stationElement.getValue();
