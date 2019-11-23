@@ -11,6 +11,7 @@ public class User {
 	private String expirationDate = "";
 	private List<Integer> rideHistory = new ArrayList<>();
 	private int currentRide = 0;
+	private int totalBill = 0;
 	
 	/**
 	 * User class constructor
@@ -101,6 +102,14 @@ public class User {
 	
 	public void setRides(List<Integer> rides) {
 		this.rideHistory = rides;
+	}
+	
+	public Integer getBill() {
+		return this.totalBill;
+	}
+	
+	public void addToBill(Integer bill) {
+		this.totalBill += bill;
 	}
 	
 	public String ridesToString() {

@@ -342,7 +342,7 @@ public class ValleyBikeSim {
 	 * TODO: update this for just bikes
 	 * 
 	 */
-	public void equalizeStations() {
+	public String equalizeStations() {
 
 		// find the total number of bikes, pedelecs, and total capacity
 		int totalBikes = 0;
@@ -374,7 +374,7 @@ public class ValleyBikeSim {
 			}
 		}
 			
-		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
+		return "The number of bikes and pedelecs at all stations have been equalized.";
 	}
 	
 	public ArrayList<Integer> removeExtraBikes(Station s, double percentBikes, ArrayList<Integer> spareBikes){
@@ -518,6 +518,23 @@ public class ValleyBikeSim {
 
 		}
 		return systemStats;
+	}
+	
+	//TODO: Implement method
+	public String viewStats() {
+		Integer numUsers = 0;
+		Integer numRides = 0;
+		String stats = "";
+		Iterator<Entry<String, User>> userIterator = users.entrySet().iterator();
+		while(userIterator.hasNext()) {
+			numUsers += 1;
+			Map.Entry<String, User> userElement = (Map.Entry<String, User>)userIterator.next();
+			numRides += userElement.getValue().getRides().size();
+		}
+		stats = "Total number of users for the system is "+numUsers + " with a "
+				+ "total number of " + numRides + " rides";
+				
+		return stats;
 	}
 	
 	//TODO: Implement method
