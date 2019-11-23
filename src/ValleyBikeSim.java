@@ -342,48 +342,49 @@ public class ValleyBikeSim {
 	 * TODO: update this for just bikes
 	 * 
 	 */
-//	public void equalizeStations() {
-//
-//		// find the total number of bikes, pedelecs, and total capacity
-//		int totalBikes = 0;
-//		int totalPedelecs = 0;
-//		int totalCap = 0;
-//
-//		for (Station s : this.stationData.values()) {
-//			totalBikes += s.getBikes();
-//			totalPedelecs += s.getPedelecs();
-//			totalCap += s.getCapacity();
-//			s.setBikes(0);
-//			s.setPedelecs(0);
-//			s.setAvDocks(s.getCapacity());
-//		}
-//		// find the average percentage of bikes/pedelecs to capacity
-//		double percentBikes = (double) totalBikes / (double) totalCap;
-//		double percentPeds = (double) totalPedelecs / (double) totalCap;
-//		
-//		while(totalBikes + totalPedelecs > 0){
-//			for (Station s : this.stationData.values()){
-//				double sPercentBikes = (double)s.getBikes()/s.getCapacity();
-//				double sPercentPeds = (double)s.getPedelecs()/s.getCapacity();
-//				
-//				if(totalBikes >0){
-//					if(sPercentBikes < percentBikes){
-//						s.setBikes(s.getBikes() + 1);
-//						s.setAvDocks(s.getAvDocks() - 1);
-//						totalBikes = totalBikes - 1;
-//					}
-//				}
-//				if(totalPedelecs>0){
-//					if(sPercentPeds < percentPeds){
-//						s.setPedelecs(s.getPedelecs() + 1);
-//						s.setAvDocks(s.getAvDocks() - 1);
-//						totalPedelecs = totalPedelecs - 1;
-//					}
-//				}
-//			}
-//		}
-//		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
-//	}
+	public void equalizeStations() {
+
+		// find the total number of bikes, pedelecs, and total capacity
+		int totalBikes = 0;
+		int totalCap = 0;
+
+		for (Station s : this.stations.values()) {
+			totalBikes += s.getNumBikes();
+			totalCap += s.getCapacity();
+		}
+		// find the average percentage of bikes to capacity
+		double percentBikes = (double) totalBikes / (double) totalCap;
+		ArrayList<Integer> spareBikes = new ArrayList<Integer>();
+		
+		//remove all the extra bikes from stations that are greater than 15% away from average percentage
+		for (Station s : this.stations.values()) {
+			if((double)s.getNumBikes()/(double)s.getCapacity() > percentBikes + .15){
+				spareBikes = removeExtraBikes(s, percentBikes, spareBikes);
+			} 
+		}
+		//while there are still bikes left to add, add them to stations that are under
+		//average percentage by more than 15%
+		while(spareBikes.size() > 0) {
+			for (Station s : this.stations.values()) {
+				if((double)s.getNumBikes()/(double)s.getCapacity() < percentBikes - .15) {
+					Integer bikeToAdd = spareBikes.remove(0);
+					s.addBike(bikeToAdd);
+					bikes.get(bikeToAdd).setLastStationId(s.getId());
+				}
+			}
+		}
+			
+		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
+	}
+	
+	public ArrayList<Integer> removeExtraBikes(Station s, double percentBikes, ArrayList<Integer> spareBikes){
+		while ((double)s.getNumBikes()/(double)s.getCapacity() > percentBikes + .15) {
+			Integer bikeToMove = s.getBikeIds().get(0);
+			s.removeBike(bikeToMove);
+			spareBikes.add(bikeToMove);
+		}
+		return spareBikes;
+	}
 	
 	/**
 	 * Check out bike method for user
