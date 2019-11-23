@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 /*
  * hello
@@ -17,6 +17,7 @@ public class ValleyBikeSim {
 	private Map<Integer, Ride> rides = new HashMap<>();
 	private List<Integer> currRides = new ArrayList<>();
 	private Integer rideID = 0;
+	private PaymentSys paymentSystem = new PaymentSys();
 
 
 	/**
@@ -360,7 +361,7 @@ public class ValleyBikeSim {
 	
 	/*
 	 * TODO: Return system stats string
-	 * TODO: update to correct class calls: calls toViewString on a map? no station.bikes, use getter
+	 * 
 	 * 
 	 */
 	public String viewSystemOverview() {
@@ -369,13 +370,12 @@ public class ValleyBikeSim {
 		Iterator<Entry<Integer, Station>> stationsIterator = stationData.entrySet().iterator();
 		while(stationsIterator.hasNext()){
 			Map.Entry<Integer, Station> stationElement = (Map.Entry<Integer, Station>)stationsIterator.next();
-			systemStats.concat("\n" + stationElement.toViewString());
-			Map<Integer, Bike> stationBikes = stationElement.bikes;
-			Iterator<Entry<Integer, Bike>> stationBikeIterator = stationBikes.entrySet().iterator();
+			Station station = stationElement.getValue();
+			systemStats.concat("\n" + station.toViewString());
+			List<Integer> stationBikes = station.getBikeIds();
 			systemStats.concat("\n" + "Station Bikes: ");
-			while (stationBikeIterator.hasNext()) {
-				Map.Entry<Integer, Bike> stationBikeElement = (Map.Entry<Integer, Bike>)stationBikeIterator.next();
-				systemStats.concat(Integer.toString(stationBikeElement.getKey()) + " ");
+			for (Integer id : stationBikes) {
+				systemStats.concat(Integer.toString(id) + " ");
 			}
 			}
 		systemStats.concat("Bikes currently checked out: \n");
@@ -389,7 +389,7 @@ public class ValleyBikeSim {
 			}
 
 		}
-		return "system stats";
+		return systemStats;
 	}
 	
 	//TODO: Implement method
@@ -431,16 +431,14 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Method creates a new user object
-	 * Checks if payment params are valid
-	 * and adds it to user hashmap if so 
+	 * Method checks if payment params are valid
+	 * and creates a new user object and adds it to user hashmap if so 
 	 * TODO: call payment system method on user
 	 * @return boolean to controller for whether or not user was successfully added to system
 	 */
 	public boolean createUser(String username, String password, Integer membership, Integer cardNum, Integer CVV, String expDate) {
-
-		User newUser = new User(username,password,membership,cardNum,CVV, expDate);
-		if (newUser.validUser() == true) {
+		if(paymentSystem.validate(cardNum, CVV, expDate) == true) {
+			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
 			users.put(username, newUser);
 			return true;
 		} else {
