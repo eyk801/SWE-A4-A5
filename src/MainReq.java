@@ -1,6 +1,3 @@
-//package src;
-
-
 public class MainReq {
 
 	private String message = "";
