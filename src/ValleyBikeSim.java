@@ -148,7 +148,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * TODO: FIGURE OUT HOW TO DO THE FUCKING TIME STAMPS
+	 * TODO: Test
 	 */
 	public HashMap<Integer, Ride> readRideData() {
 
@@ -161,8 +161,11 @@ public class ValleyBikeSim {
 				// Parse all values
 				int id = Integer.parseInt(values[0]);
 				Ride ride = new Ride(id, values[1], Integer.parseInt(values[2]),Integer.parseInt(values[3]));
-				// Convert Timestamp strings to objects and update ride object
-				// HELP
+				// Set end station id
+				ride.setEndStation(Integer.parseInt(values[4]));
+				// Reset timestamps
+				ride.setStartTime(values[5]);
+				ride.setEndTime(values[6]);
 				rides.put(id,ride);
 			}
 			br.close();

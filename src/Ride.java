@@ -1,4 +1,6 @@
+import java.util.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Ride {
 	
@@ -42,6 +44,24 @@ public class Ride {
 		this.currentRide = false;
 	}
 	
+	public void setStartTime(String time) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = formatter.parse(time);
+		Timestamp ts = new Timestamp(date.getTime()); 
+		this.startTime = ts;
+	}
+	
+	public void setEndTime(String time) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = formatter.parse(time);
+		Timestamp ts = new Timestamp(date.getTime()); 
+		this.startTime = ts;
+	}
+	
+	public void setEndStation(int station) {
+		this.endStationId = station;
+	}
+	
 	public int getId() {
 		return this.id;
 	}
@@ -70,17 +90,25 @@ public class Ride {
 		return this.endStationId;
 	}
 	
-	public Timestamp getStartTime() {
-		return this.startTime;
+	public String getStartTime() {
+		Date date = new Date();
+		date.setTime(this.startTime.getTime());
+		String stringDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+		return stringDate;
 	}
 	
-	public Timestamp getEndTime() {
-		return this.endTime;
+	public String getEndTime() {
+		Date date = new Date();
+		date.setTime(this.endTime.getTime());
+		String stringDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+		return stringDate;
 	}
 	
     public String toSaveString() {
+    	String start = getStartTime();
+    	String end = getEndTime();
         return (this.id + "," + this.userId + "," + this.startStationId + "," + 
-        		this.endStationId + "," + this.startTime + "," + this.endTime);
+        		this.endStationId + "," this.bikeId + "," + start + "," + end);
     }
     
     public String toViewString(){
@@ -88,10 +116,8 @@ public class Ride {
     					+ this.userId + "\t"
     					+ this.startStationId + "\t"
     					+ this.endStationId + "\t" 
+    					+ this.bikeId + "\t"
     					+ this.startTime + "\t"
     					+ this.endTime + "\n");  
     }
-	
-	
-
 }
