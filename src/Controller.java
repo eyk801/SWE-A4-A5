@@ -44,6 +44,9 @@ public class Controller {
 		/* 0. Quit program */
 		case 0:
 			sc.close();
+			// Save all system data to csvs
+			System.out.println(valleyBike.saveData());
+			// Exit statement
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
 			break;
@@ -99,6 +102,9 @@ public class Controller {
 		/* 0. Quit program */
 		case 0:
 			sc.close();
+			// Save all system data to csvs
+			System.out.println(valleyBike.saveData());
+			// Exit message
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
 			break;
@@ -126,11 +132,7 @@ public class Controller {
 			addBikes();
 			break;
 		case 8:
-			moveBikes();
-			break;
-//		// update equalizeStations(), then uncomment
-//		case 10:
-//			valleyBike.equalizeStations();
+			valleyBike.equalizeStations();
 		default:
 			System.out.println("Input must be an integer from 0-8.");
 			executeEmployee();
