@@ -1,7 +1,9 @@
 public class MainReq {
-
-	private String message = "";
+	
+	private int id = 0;
+	private String username = "";
 	private int stationId = 0;
+	private String message = "";
 	
 	/**
 	 * Maintenance Requests class constructor
@@ -9,9 +11,11 @@ public class MainReq {
 	 * TODO: Figure out how to toString for a message that may have comments in it
 	 */
 	
-	public MainReq(String message, int stationId) {
-		this.message = message;
+	public MainReq(int id, String username, int stationId, String message) {
+		this.id = id;
+		this.username = username;
 		this.stationId = stationId;
+		this.message = message;
 	}
 	
 	public void changeMessage(String newMessage) {
@@ -27,8 +31,7 @@ public class MainReq {
 	}
 	
     public String toSaveString() {
-    	// FIX THIS LATER
-        return "";
+        return (this.id + "," + this.username + "," + this.stationId + "," + this.message + "\n");
     }
     
     public String toViewString(){

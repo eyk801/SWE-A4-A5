@@ -154,7 +154,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Ride> rides = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader("data-files/ride-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -184,12 +184,16 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, MainReq> mainReqs = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader("data-files/mainreq-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
 				// Parse all values
 				int id = Integer.parseInt(values[0]);
+				// Create new mainreq object
+				MainReq req = new MainReq(id, values[1], Integer.parseInt(values[2]), values[3]);
+				// Add req to hash
+				mainReqs.put(id,req);
 			}
 			br.close();
 			return mainReqs;
