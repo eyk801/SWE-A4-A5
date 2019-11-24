@@ -31,11 +31,7 @@ public class Ride {
      * @return
      */
     public boolean isCurrentRide() {
-    	if(currentRide == true) {
-    		return true;
-    	} else {
-    		return false;
-    	}
+    	return this.currentRide;
     }
 	
 	public void end(int stationId) {
@@ -60,6 +56,10 @@ public class Ride {
 	
 	public void setEndStation(int station) {
 		this.endStationId = station;
+	}
+	
+	public void setCurrentRide(boolean bool) {
+		this.currentRide = bool;
 	}
 	
 	public int getId() {
@@ -107,8 +107,8 @@ public class Ride {
     public String toSaveString() {
     	String start = getStartTime();
     	String end = getEndTime();
-        return (this.id + "," + this.userId + "," + this.startStationId + "," + 
-        		this.endStationId + "," this.bikeId + "," + start + "," + end);
+        return (this.id + "," + this.userId + "," + this.bikeId + "," + this.startStationId + "," + 
+        		this.endStationId + "," + start + "," + end);
     }
     
     public String toViewString(){

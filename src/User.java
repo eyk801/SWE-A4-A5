@@ -123,10 +123,10 @@ public class User {
 	
     public String toSaveString() {
     	String rideIds = this.ridesToString();
-    	
         return (this.username + "," + this.password + "," + this.membershipType + "," + 
-        		this.currentRideId + "," + this.creditCardNum + "," + this.CVV + "," +
-        		this.expirationDate + "," + rideIds);
+        		this.creditCardNum + "," + this.CVV + "," +
+        		this.expirationDate + 
+        		this.currentRideId + "," + rideIds + "\n");
     }
     
     public String toViewString(){

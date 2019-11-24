@@ -48,7 +48,7 @@ public class Bike {
     }
     
     public String toSaveString() {
-        return (this.id + "," + this.lastStationId + "," + this.userId + "," + this.checkedOut);
+        return (this.id + "," + this.lastStationId + "," + this.userId + "," + this.checkedOut + "\n");
     }
     
     public String toViewString(){

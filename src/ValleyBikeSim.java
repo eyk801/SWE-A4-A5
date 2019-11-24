@@ -92,11 +92,11 @@ public class ValleyBikeSim {
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
 				// Parse all values
-				String username = values[1];
+				String username = values[0];
 				List<Integer> rideHistory = new ArrayList<>();
-				User user = new User(username,values[2],Integer.parseInt(values[3]),
-									Integer.parseInt(values[4]),Integer.parseInt(values[5]),
-									values[6]);
+				User user = new User(username,values[1],Integer.parseInt(values[2]),
+									Integer.parseInt(values[3]),Integer.parseInt(values[4]),
+									values[5]);
 				// Loop to end of line for all ride history
 				for (int i=8; i < values.length;i++) {
 					rideHistory.add(Integer.parseInt(values[i]));
@@ -117,7 +117,7 @@ public class ValleyBikeSim {
 	
 	/**
 	 * Reads in data from stored .csv file 
-	 * Parse values into new objects 
+	 * Parse values into new bike objects 
 	 * Add objects to a HashMap using key-value pair
 	 * 
 	 * @return bikes HashMap for the whole ValleyBikeSim object to access
@@ -148,7 +148,12 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * TODO: Test
+	 * Reads in data from stored .csv file
+	 * Parse values into new ride objects
+	 * Add objects to Hashmap using key-value pair
+	 * Adds current rides to currRides list
+	 * 
+	 * @return rides Hashmap
 	 */
 	public HashMap<Integer, Ride> readRideData() {
 
@@ -166,19 +171,30 @@ public class ValleyBikeSim {
 				// Reset timestamps
 				ride.setStartTime(values[5]);
 				ride.setEndTime(values[6]);
+				// Set currentRide boolean
+				ride.setCurrentRide(Boolean.parseBoolean(values[4]));
+				// If current ride == true, add ride id to currRides list
+				if (Boolean.parseBoolean(values[4])) {
+					currRides.add(id);
+				}
+				// Add ride to rides hash
 				rides.put(id,ride);
 			}
 			br.close();
 			return rides;
 		} catch (Exception e) {
-			System.err.format("Exception occurred trying to read station data file.");
+			System.err.format("Exception occurred trying to read ride data file.");
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
 	/**
-	 * TODO: finish implementing
+	 * Reads in data from stored .csv file 
+	 * Parse values into new mainReq objects 
+	 * Add objects to a HashMap using key-value pair
+	 * 
+	 * @return mainReqs HashMap for the whole ValleyBikeSim object to access
 	 */
 	public HashMap<Integer, MainReq> readMainReqData() {
 
@@ -198,10 +214,61 @@ public class ValleyBikeSim {
 			br.close();
 			return mainReqs;
 		} catch (Exception e) {
-			System.err.format("Exception occurred trying to read station data file.");
+			System.err.format("Exception occurred trying to read maintenance requests data file.");
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	/**
+	 * Overwrites current data files with the station updates in the program
+	 * (rides, new stations, etc)
+	 * 
+	 * @throws IOException
+	 * TODO: test - implement exception throw
+	 */
+	public String saveData() throws IOException {
+		// Save station data
+		FileWriter stationWriter = new FileWriter("data-files/station-data.csv");
+		stationWriter.write("ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids\n");
+			for (Station s : this.stations.values()) {
+				stationWriter.write(s.toSaveString());
+			}
+			stationWriter.flush();
+			stationWriter.close();
+		// Save user data
+		FileWriter userWriter = new FileWriter("data-files/user-data.csv");
+		userWriter.write("Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History\n");
+			for (User u : this.users.values()) {
+				userWriter.write(u.toSaveString());
+			}
+			userWriter.flush();
+			userWriter.close();
+		// Save ride data
+		FileWriter rideWriter = new FileWriter("data-files/ride-data.csv");
+		rideWriter.write("ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time\n");
+			for (Ride r : this.rides.values()) {
+				rideWriter.write(r.toSaveString());
+			}
+			rideWriter.flush();
+			rideWriter.close();
+		// Save bike data
+		FileWriter bikeWriter = new FileWriter("data-files/bike-data.csv");
+		bikeWriter.write("ID,Last Station Id,User Id,Checked Out\n");
+			for (Bike b  : this.bikes.values()) {
+				bikeWriter.write(b.toSaveString());
+			}
+			bikeWriter.flush();
+			bikeWriter.close();
+		// Save maintenance requests data
+		FileWriter reqWriter = new FileWriter("data-files/mainreq-data.csv");
+		reqWriter.write("ID,User Id,Station Id,Message\n");
+			for (MainReq req : this.mainReqs.values()) {
+				reqWriter.write(req.toSaveString());
+			}
+			reqWriter.flush();
+			reqWriter.close();
+		return "System data successfully saved.";
 	}
 
 	
@@ -296,27 +363,6 @@ public class ValleyBikeSim {
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);
 		System.out.println("Station successfully added to the system.");
-	}
-
-	/**
-	 * Overwrites current station data file with the station updates in the program
-	 * (rides, new stations, etc)
-	 * 
-	 * @throws IOException
-	 * TODO: Handle exceptions/errors
-	 */
-
-	public void saveStationList() throws IOException {
-		FileWriter writer = new FileWriter("data-files/station-data.csv");
-		writer.write("ID,Name,Bikes,Pedelecs,Available Docks,Maintainence Request,Capacity,Kiosk,Address");
-		
-			for (Station s : this.stations.values()) {
-				writer.write("\n");
-				writer.write(s.toSaveString());
-			}
-			writer.flush();
-			writer.close();
-		System.out.println("Station list successfully saved.");
 	}
 
 	/**

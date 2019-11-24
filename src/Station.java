@@ -74,8 +74,13 @@ public class Station {
     }
 
     public String toSaveString() {
-        return (this.id + "," + this.name + "," + this.bikeIds.size() + "," + this.avDocks + ","
-				+ this.capacity + "," + this.kiosk + "," + this.address);
+    	// Put bikeIds in csv format
+    	String bikes = "";
+    	for (int bike : bikeIds) {
+    		bikes = bikes + bike + ",";
+    	}
+        return (this.id + "," + this.name + "," + this.avDocks + "," + this.capacity + "," +
+				this.kiosk + "," + this.address + "," + bikes + "\n");
     }
     
     public String toViewString(){
