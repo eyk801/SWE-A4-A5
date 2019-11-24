@@ -293,24 +293,6 @@ public class ValleyBikeSim {
 	 */
 	public void addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
 
-//		int id = this.getIntResponse("Please enter the id of the station you would like to edit/add", 0, 1000);
-//		if (stations.get(id) != null){
-//			System.out.println("You are attempting to edit station "+stations.get(id).getName() + 
-//					" continue? y/n: ");
-//			if (sc.next().toLowerCase().equals("n")){
-//				return;
-//			}
-//		}
-//		System.out.println("Please enter the name of this station: ");
-//		sc.nextLine();
-//		String name = sc.nextLine();
-//
-//		System.out.println("Please enter the address of this station: ");
-//		String address = sc.nextLine();
-//
-//		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
-//		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
-		List<Integer> bikeIds = new ArrayList<>();
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);
 		System.out.println("Station successfully added to the system.");
@@ -569,6 +551,18 @@ public class ValleyBikeSim {
 	
 	// TODO Implement method
 	public String addBikes(Integer numBikes) {
+		int bikeId = 0;
+
+		for (numBikes : this.bikes.values()){
+			numBikes = numBikes.get(); 
+		}
+		// create new Bike and add to HashMap
+		boolean checkedOut;
+		Bike bike = new Bike(id, lastStationId, userId, checkedOut);
+
+		Bike b = bikes.get(bikeId);
+		b.setCheckedOut(false);
+		bikes.put(bikeId, bike);
 		return numBikes.toString() + " bikes added";
 	}
 	
