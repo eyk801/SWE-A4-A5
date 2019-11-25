@@ -13,10 +13,10 @@ public class Controller {
 		System.out.println("Welcome to ValleyBike! "
 				+ "Please enter 'user' for user and 'employee' for employee: ");
 		String response = sc.next();
-		if (response == "user") {
+		if (response.equalsIgnoreCase("user")) {
 			String username = accountLogin();
 			executeUser(username);
-		} else if (response == "employee") {
+		} else if (response.equalsIgnoreCase("employee")) {
 			//TODO: Add employee login in A5
 			executeEmployee();
 		} else {
