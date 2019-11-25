@@ -306,69 +306,6 @@ public class ValleyBikeSim {
 	}
 
 	/**
-	 * 
-	 * Function that reads in a ride data file that contains all the rides for one
-	 * day of service and outputs stats for the day
-	 * 
-	 * TODO: Could simulate bike movement by pushing events to stack to further validate
-	 * and check stations for Available Docks, pedelecs, etc
-	 * TODO: Implement as a viewStats() method in A5?
-	 * 
-	 *
-//	public void resolveRideData() {
-//
-//		boolean cont = true;
-//		int totalTime = 0;
-//		int totalRides = 0;
-//
-//		while (cont) {
-//			// prompt for address
-//			String path = "";
-//			do {
-//				System.out.println(
-//						"What is the path of the ride data file (Example: data-files/sample-ride-data-0820.csv)? ");
-//				while (!sc.hasNext()) {
-//					System.out.println("Please try again, input must be a valid file path. ");
-//					sc.nextLine();
-//				}
-//				path = sc.nextLine();
-//			} while (path.length() < 4);
-//			try {
-//				BufferedReader br = new BufferedReader(new FileReader(path));
-//				String line = br.readLine();
-//				while ((line = br.readLine()) != null) {
-//					String[] values = line.split(",");
-//					String startTime = values[3];
-//					String endTime = values[4];
-//					Integer from = Integer.parseInt(values[1]);
-//					Integer to = Integer.parseInt(values[2]);
-//					if (Integer.parseInt(startTime.split(" ")[1].split(":")[0]) >= 24
-//							|| Integer.parseInt(endTime.split(" ")[1].split(":")[0]) >= 24
-//							|| stationData.containsKey(to) == false
-//							|| stationData.containsKey(from) == false){ continue; }
-//					Date tempStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
-//					Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
-//
-//					if (tempEnd.before(tempStart)){ continue; }
-//					
-//					totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
-//					totalRides ++;
-//						
-//					
-//				}
-//				cont = false;
-//				br.close();
-//			} catch (Exception e) {
-//				System.err.format("Exception occurred trying to read station data file.");
-//				e.printStackTrace();
-//			}
-//		}
-//		int avg = totalTime / totalRides;
-//		System.out.println("This ride list contains: " + Integer.toString(totalRides)
-//				+ " rides with average ride time of " + Integer.toString(avg) + " minutes.");
-//	}
-
-	/**
 	 * Adds station to program's Hashmap stations
 	 * Station ID is automatically assigned
 	 * 
