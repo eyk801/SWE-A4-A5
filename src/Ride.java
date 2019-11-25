@@ -116,7 +116,7 @@ public class Ride {
     	String start = getStartTime();
     	String end = getEndTime();
         return (this.id + "," + this.userId + "," + this.bikeId + "," + this.startStationId + "," + 
-        		this.endStationId + "," + start + "," + end+ "/n");
+        		this.endStationId + "," + start + "," + end+ "\n");
     }
     
     public String toViewString(){
