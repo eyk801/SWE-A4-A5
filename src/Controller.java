@@ -308,5 +308,11 @@ public class Controller {
 	}
 	public static void main(String[] args) {
 		Controller controller = new Controller();
+		try {
+			controller.chooseView();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
