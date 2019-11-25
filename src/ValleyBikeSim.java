@@ -108,7 +108,6 @@ public class ValleyBikeSim {
 					if (Integer.parseInt(values[i]) != 0) {
 						rideHistory.add(Integer.parseInt(values[i]));
 					}
-					System.out.println(user.getId() + ": " + Integer.parseInt(values[i]));
 				}
 				// Add ride history to ride object
 				user.setRides(rideHistory);
