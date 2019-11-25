@@ -453,7 +453,7 @@ public class ValleyBikeSim {
 		// Check membership status and charge accordingly
 		User currentUser = users.get(username);
 		// Right now, we only one type of membership (0)
-		int cost;
+		int cost = 0;
 		if (currentUser.getType() == 0) {
 			// TODO: @ali implement payment system here
 			// Add cost to user bill?
