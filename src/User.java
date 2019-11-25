@@ -116,7 +116,11 @@ public class User {
     	// Make List rideHistory into a csv line
     	String rideIds = "";
     	for (int ride : rideHistory) {
-    		rideIds = rideIds + Integer.toString(ride)+ ",";
+    		if (rideIds.equals("")) {
+    			rideIds = rideIds + Integer.toString(ride);
+    		} else {
+    			rideIds = rideIds + "," + Integer.toString(ride);
+    		}
     	}
     	return rideIds;
 	}

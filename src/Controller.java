@@ -320,6 +320,7 @@ public class Controller {
 	
 	private String reportIssue(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
+		sc.nextLine(); //throw away the \n not consumed by nextInt()
 		System.out.println("Please enter issue message: ");
 		String issueMessage = sc.nextLine();
 		return valleyBike.reportIssue(username, stationId, issueMessage);
