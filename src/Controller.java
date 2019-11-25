@@ -1,19 +1,24 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
+ * @version     1.0
+ */
 public class Controller {
-	// Get ValleyBikeSim singleton 
+	/** Instance of the ValleyBikeSim */
 	ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
+	/** Global Scanner object */
 	private Scanner sc = new Scanner(System.in);
+	/** Hashmap of all user login info username:password)*/
 	private Map<String, String> userAccounts = new HashMap<>();
+	/** Hashmap of all employee login info username:password)*/
 	private Map<String, String> employeeAccounts = new HashMap<>();
 	
 	/**
-	 * Controller class constructor
-	 * Calls methods to read csv data files
-	 * Populates class HashMaps
-	 * 
+	 * Controller class constructor. 
+	 * </p>
+	 * Calls methods to read csv data files populates user/employee HashMaps.
 	 */
 	public Controller() {
 		// Read in csv data
@@ -22,8 +27,8 @@ public class Controller {
 	}
 	
 	/**
-	 * Choose employee or user view 
-	 * 
+	 * Choose employee or user view.
+	 * </p>
 	 * @throws IOException
 	 */
 	public void chooseView() throws IOException {
@@ -44,8 +49,9 @@ public class Controller {
 	
 	/**
 	 * Menu selector for user options. 
+	 * </p>
 	 * Runs until user selects 0 to quit program.
-	 * 
+	 * </p>
 	 * @throws IOException
 	 */
 	public void executeUser(String username) throws IOException {
@@ -55,8 +61,6 @@ public class Controller {
 
 		Integer option = this.getIntResponse("Please enter your selection (0-6)", 0, 6);
 		
-		
-		// NOTE: WITHIN SWITCH, VALIDATE INPUT TYPES
 		switch (option) {
 		/* 0. Quit program */
 		case 0:
@@ -95,14 +99,15 @@ public class Controller {
 			System.out.println("Input must be an integer from 0-6.");
 			executeUser(username);
 		}
-		// execute call again after each switch thingy
+		// execute call again after each switch case
 		executeUser(username);
 	}
 	
 	/**
 	 * Menu selector for employee options. 
+	 * </p>
 	 * Runs until employee selects 0 to quit program.
-	 * 
+	 * </p>
 	 * @throws IOException
 	 */
 	public void executeEmployee() throws IOException {
@@ -112,8 +117,6 @@ public class Controller {
 
 		Integer option = this.getIntResponse("Please enter your selection (0-9)", 0, 9);
 		
-		
-		// NOTE: WITHIN SWITCH, VALIDATE INPUT TYPES
 		switch (option) {
 		/* 0. Quit program */
 		case 0:
@@ -160,18 +163,18 @@ public class Controller {
 			System.out.println("Input must be an integer from 0-9.");
 			executeEmployee();
 		}
-		// execute call again after each switch thingy
+		// execute call again after each switch case
 		executeEmployee();
-		
-		
 	}
 	
 	/**
+	 * Populate user login data Hashmaps.
+	 * </p>
 	 * Reads in data from stored csv file 
 	 * Parse values into new objects 
 	 * Add objects to a HashMap using key-value pair
-	 * 
-	 * @return users-passwords hashmap
+	 * </p>
+	 * @return users:passwords global Hashmap
 	 */
 	public HashMap<String, String> readUserData() {
 
@@ -197,11 +200,13 @@ public class Controller {
 	
 	
 	/**
+	 * Populate employee login data Hashmaps.
+	 * </p>
 	 * Reads in data from stored csv file 
 	 * Parse values into new objects 
 	 * Add objects to a HashMap using key-value pair
-	 * 
-	 * @return employee-passwords hashmap
+	 * </p>
+	 * @return employee:password global Hashmap
 	 */
 	public HashMap<String, String> readEmployeeData() {
 
@@ -226,11 +231,13 @@ public class Controller {
 	}
 	
 	/**
+	 * Allows a user to login or create a new account.
+	 * </p>
 	 * User chooses to either log in or create a new account 
 	 * Log in prompts user to enter username and password and verifies
 	 * New account prompts user to enter new account information and saves new user
-	 * 
-	 * @return username
+	 * </p>
+	 * @return username		current user's username
 	 */
 	private String accountLogin() {
 		String username = "";
@@ -268,12 +275,13 @@ public class Controller {
 	}
 	
 	/**
-	 * Verifies login information
+	 * Verifies login information.
+	 * </p>
 	 * Checks if the entered username and password match an entry in the userAccounts hashmap
-	 * 
-	 * @param username
-	 * @param password
-	 * @return true if username and password match entry in userAccounts hashmap
+	 * </p>
+	 * @param username		current user
+	 * @param password		current user's oassword
+	 * @return boolean 		If username and password match entry in userAccounts hashmap
 	 */
 	private boolean login(String username, String password) {
 		if (userAccounts.containsKey(username) && userAccounts.get(username).equals(password)) {
@@ -284,13 +292,14 @@ public class Controller {
 	}
 	
 	/**
-	 * Creates new user account
+	 * Creates new user account.
+	 * </p>
 	 * User provides payment information for validation
 	 * If valid, the valleyBike object creates the user and the new user info is added to the userAccounts hashmap
-	 * 
+	 * </p>
 	 * @param username
 	 * @param password
-	 * @return true if account can be successfully created and validated
+	 * @return boolean		True if account can be successfully created and validated.
 	 */
 	private boolean createAccount(String username, String password){
 		if (userAccounts.containsKey(username) == true) {
@@ -314,8 +323,8 @@ public class Controller {
 	}
 	
 	/**
-	 * Gets an int response from the user within a specific range
-	 * 
+	 * Gets an int response from the user within a specific range.
+	 * </p>
 	 * @param request
 	 * @param min
 	 * @param max
@@ -344,8 +353,8 @@ public class Controller {
 	}
 	
 	/**
-	 * Gets a long response from the user within a specific range
-	 * 
+	 * Gets a long response from the user within a specific range.
+	 * </p>
 	 * @param request
 	 * @param i
 	 * @return the long input
@@ -373,8 +382,8 @@ public class Controller {
 	}
 	
 	/**
-	 * Gets an unbounded int response from the user
-	 * 
+	 * Gets an unbounded int response from the user.
+	 * </p>
 	 * @param request
 	 * @param min
 	 * @return the integer entry
@@ -402,12 +411,13 @@ public class Controller {
 	}
 	
 	/**
-	 * Allows the user to check out a bike
+	 * Allows the user to check out a bike.
+	 * </p>
 	 * User enters ID of station they're checking a bike out from
-	 * Calls valleyBike object's check out method
-	 * 
+	 * Calls valleyBike.checkOut()
+	 * </p>
 	 * @param username
-	 * @return success string from valleyBike object checkOutBike method
+	 * @return report	String confirming success from valleyBike.checkOut
 	 */
 	private String checkOutBike(String username) {
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
@@ -415,12 +425,13 @@ public class Controller {
 		}
 	
 	/**
-	 * Allows the user to check in a bike
+	 * Allows the user to check in a bike.
+	 * </p>
 	 * User enters ID of station they're checking a bike into
-	 * Calls valleyBike object's check in method
-	 * 
+	 * Calls valleyBike.checkIn()
+	 * </p>
 	 * @param username
-	 * @return success string from valleyBike object checkInBike method
+	 * @return report	String confirming success from valleyBike.checkIn
 	 */
 	private String checkInBike(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
@@ -428,12 +439,13 @@ public class Controller {
 	}
 	
 	/**
-	 * Allows the user to report an issue
+	 * Allows the user to report an issue/maintenance request.
+	 * </p>
 	 * User enters ID of the current station and the issue message
 	 * Calls valleyBike object's reportIssue method
-	 * 
+	 * </p>
 	 * @param username
-	 * @return success string from valleyBike object reportIssue method
+	 * @return report	String confirming success from valleyBike.reportIssue
 	 */
 	private String reportIssue(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
@@ -444,10 +456,11 @@ public class Controller {
 	}
 	
 	/**
-	 * Calls valleyBike.addStation to add a station to the system
-	 * Prompts user for station info input
-	 * 
-	 * @return String "success"
+	 * Allows employee to add a station to the system.
+	 * </p>
+	 * Prompts user for station info input.
+	 * </p>
+	 * @return report	String confirming success from valleyBike.addStation
 	 */
 	private String addStation() {
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
@@ -462,10 +475,11 @@ public class Controller {
 	}
 	
 	/**
-	 * Calls valleyBike.addBikes to add bikes to a specific station
+	 * Allows employee to add bikes to a specific station.
+	 * </p>
 	 * Prompts user for bike info input
-	 * 
-	 * @return String "success"
+	 * </p>
+	 * @return report	String confirming success from valleyBike.addBikes
 	 */
 	private String addBikes() {
 		Integer numBikes = getIntResponse("How many bikes would you like to add?", 
@@ -489,11 +503,12 @@ public class Controller {
 	}
 	
 	/**
-	 * Allows employee to resolve issues
+	 * Allows employee to resolve issues.
+	 * </p>
 	 * Prompts user for the issue IDs and creates a list
 	 * Calls valleyBike resolveIssues method to remove the issues from the mainReqs hashmap
-	 * 
-	 * @return success string from valleyBike resolveIssues method
+	 * </p>
+	 * @return report	String confirmingsuccess from valleyBike.resolveIssue
 	 */
 	private String resolveIssues() {
 		ArrayList<Integer> issues = new ArrayList<Integer>();
@@ -506,6 +521,10 @@ public class Controller {
 		}
 		return valleyBike.resolveIssues(issues);
 	}
+	
+	/**
+	 * Controller main method.
+	 */
 	public static void main(String[] args) {
 		Controller controller = new Controller();
 		try {
