@@ -397,7 +397,6 @@ public class ValleyBikeSim {
 	 * @return String to confirm equalization
 	 */
 	public String equalizeStations() {
-		System.out.println("in valleybike");
 		// find the total number of bikes, pedelecs, and total capacity
 		int totalBikes = 0;
 		int totalCap = 0;
@@ -408,13 +407,11 @@ public class ValleyBikeSim {
 		}
 		// find the average percentage of bikes to capacity
 		int percentBikes = (int)(((float) totalBikes / totalCap) *100);
-		System.out.println(percentBikes);
 		ArrayList<Integer> spareBikes = new ArrayList<Integer>();
 		
 		//remove all the extra bikes from stations that are greater than 5% away from average percentage
 		for (Station s : this.stations.values()) {
 			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
-			System.out.println(s.getId() + " : " + stationPercentage);
 			while (stationPercentage > percentBikes + 5) {
 				Integer bikeToMove = s.getBikeIds().get(0);
 				s.removeBike(bikeToMove);
@@ -422,7 +419,6 @@ public class ValleyBikeSim {
 				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
 			}
 		}
-		System.out.println(spareBikes.size());
 		//while there are still bikes left to add, add them to stations that are under
 		//average percentage
 		for (Station s : this.stations.values()) {
@@ -432,7 +428,6 @@ public class ValleyBikeSim {
 				Integer bikeToAdd = spareBikes.remove(0);
 				s.addBike(bikeToAdd);					
 				bikes.get(bikeToAdd).setLastStationId(s.getId());
-				System.out.println("Moved a bike");
 				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
 				} else {
 					break;
@@ -566,37 +561,43 @@ public class ValleyBikeSim {
 	 * Print a system overview of all vehicles and stations
 	 * Company view
 	 * 
-	 * TODO: Finish commenting this method for clarity @ali
+	 * This employee only access method 
+	 * first iterates through each station, parsing station info
+	 * Then it goes deeper to show which bikes are at each station
+	 * Additionally, it will show the employee which bikes are checked out
+	 * and by which user
+	 * 
 	 * @return String systemStats
 	 */
 	public String viewSystemOverview() {
 		// Begin return string
 		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
-		systemStats.concat("ID	Bikes	AvDocs	MainReq	Cap	Kiosk	Name - Address");
+		systemStats += ("ID	Bikes	AvDocs	MainReq	Cap	Kiosk	Name - Address \n");
 		Iterator<Entry<Integer, Station>> stationsIterator = stations.entrySet().iterator();
 		// For each station in the system
 		while(stationsIterator.hasNext()){
 			Map.Entry<Integer, Station> stationElement = (Map.Entry<Integer, Station>)stationsIterator.next();
 			Station station = stationElement.getValue();
 			// Add station info to the return string
-			systemStats.concat("\n" + station.toViewString());
+			systemStats += ("\n" + station.toViewString());
 			// For each bike at the station
 			List<Integer> stationBikes = station.getBikeIds();
-			systemStats.concat("\n" + "Station Bikes: ");
+			systemStats += ("\n" + "Station " + station.getId() + " Bike IDs: ");
 			// Add bike id to the return string
 			for (Integer id : stationBikes) {
-				systemStats.concat(Integer.toString(id) + " ");
+				systemStats += (Integer.toString(id) + " ");
 			}
+			systemStats += "\n \n";
 		}
 		// Add checked out bike info to the return string
-		systemStats.concat("Bikes currently checked out: \n");
-		systemStats.concat("Bike \t User \n");
+		systemStats += ("Bikes currently checked out: \n");
+		systemStats += ("Bike \t User \n");
 		// For each bike in the list of bikes
 		Iterator<Entry<Integer, Bike>> bikeIterator = bikes.entrySet().iterator();
 		while (bikeIterator.hasNext()) {
 			Map.Entry<Integer, Bike> bikeElement = (Map.Entry<Integer, Bike>)bikeIterator.next();
 			if (bikeElement.getValue().checkedOut == true) {
-				systemStats.concat(Integer.toString(bikeElement.getValue().getId()) + "\t" + bikeElement.getValue().userId + "\n");
+				systemStats += (Integer.toString(bikeElement.getValue().getId()) + "\t" + bikeElement.getValue().userId + "\n");
 			}
 
 		}
