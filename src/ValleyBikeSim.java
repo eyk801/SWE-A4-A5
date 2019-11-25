@@ -447,12 +447,16 @@ public class ValleyBikeSim {
 	 * @return String verifying checkout and payment
 	 */
 	public String checkOutBike(String username, Integer stationId) {
+		User currentUser = users.get(username);
+		if (currentUser.onRide() == true) {
+			return "User already on ride. Cannot check out more than one bike at a time";
+		}
+	
 		// Set this.lastRideId to current ride id
 		this.lastRideId = this.lastRideId + 1;
 		// Get new ride id
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
-		User currentUser = users.get(username);
 		// Right now, we have 3 types of membership
 		//With tiers (0,1,2) that each pay (2,1,0)
 		//respectively
@@ -499,6 +503,9 @@ public class ValleyBikeSim {
 	public String checkInBike(String username, Integer stationId) {
 		// Get user object
 		User currentUser = users.get(username);
+		if (currentUser.onRide() == false) {
+			return "User does not currently have a bike to check in";
+		}
 		// Get ride object
 		Ride r = rides.get(currentUser.getCurrentRide());
 		// Get bike object
