@@ -20,19 +20,33 @@ public class ValleyBikeSim {
 	private Integer lastStationId = 0;
 	private Integer lastMainReqId = 0;
 	private PaymentSys paymentSystem = new PaymentSys();
-
+	
+	// ValleyBikeSim singleton instance
+	private static ValleyBikeSim instance = null;
+	
 	/**
 	 * ValleyBikeSim class constructor
 	 * Calls all methods to read csv data files
 	 * Populates class HashMaps and currRides List
 	 * 
 	 */
-	public ValleyBikeSim() {
+	private ValleyBikeSim() {
 		this.stations = readStationData();
 		this.users = readUserData();
 		this.bikes = readBikeData();
 		this.rides = readRideData();
 		this.mainReqs = readMainReqData();
+	}
+	
+	/**
+	 * Singleton implementation: use public getter to return single instance of the sim
+	 * @return ValleyBikeSim instance
+	 */
+	public static ValleyBikeSim getInstance() {
+	    if (instance == null) {
+            instance = new ValleyBikeSim();
+        }
+	    return instance;
 	}
 
 	/**

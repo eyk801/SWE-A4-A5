@@ -3,7 +3,8 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Controller {
-	ValleyBikeSim valleyBike = new ValleyBikeSim();
+	// Get ValleyBikeSim singleton 
+	ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
 	private Scanner sc = new Scanner(System.in);
 	private Map<String, String> userAccounts = new HashMap<>();
 	private Map<String, String> employeeAccounts = new HashMap<>();
