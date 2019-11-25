@@ -19,7 +19,7 @@ public class Ride {
 	 * 
 	 * TODO: Figure out time stamp things
 	 */
-	public Ride(int id, String userId, int startStationId, int bikeId) {
+	public Ride(int id, String userId, int bikeId, int startStationId) {
 		this.id = id;
 		this.userId = userId;
 		this.bikeId = bikeId;

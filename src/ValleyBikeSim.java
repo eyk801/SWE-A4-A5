@@ -487,7 +487,7 @@ public class ValleyBikeSim {
 		Station s = stations.get(stationId);
 		Integer bikeId = s.getBikeIds().get(0);
 		// Create new Ride and add to current rides list
-		Ride ride = new Ride(rideId, username, stationId, bikeId);
+		Ride ride = new Ride(rideId, username, bikeId, stationId);
 		currRides.add(rideId);
 		// Add ride to rides hashmap
 		rides.put(rideId, ride);
