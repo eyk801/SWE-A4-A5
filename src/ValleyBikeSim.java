@@ -180,7 +180,7 @@ public class ValleyBikeSim {
 				// Reset timestamps
 				ride.setStartTime(values[5]);
 				ride.setEndTime(values[6]);
-				// Set currentRide boolean
+				// Set currentRideId
 				ride.setCurrentRide(Boolean.parseBoolean(values[4]));
 				// If current ride == true, add ride id to currRides list
 				if (Boolean.parseBoolean(values[4])) {
@@ -476,7 +476,7 @@ public class ValleyBikeSim {
 		}
 		// Add ride to user history and set as current ride
 		currentUser.addUserRide(rideId);
-		currentUser.setCurrentRide(rideId);
+		currentUser.setCurrentRideId(rideId);
 		// Get a bike from the station
 		Station s = stations.get(stationId);
 		Integer bikeId = s.getBikeIds().get(0);
@@ -508,7 +508,7 @@ public class ValleyBikeSim {
 			return "User does not currently have a bike to check in";
 		}
 		// Get ride object
-		Ride r = rides.get(currentUser.getCurrentRide());
+		Ride r = rides.get(currentUser.getCurrentRideId());
 		// Get bike object
 		Bike b = bikes.get(r.getBikeId());
 		// Update bike info

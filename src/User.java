@@ -5,12 +5,11 @@ public class User {
 	private String username = "";
 	private String password = "";
 	private int membershipType = 0;
-	private int currentRideId = 0;
 	private long creditCardNum = 0;
 	private int CVV = 0;
 	private String expirationDate = "";
 	private List<Integer> rideHistory = new ArrayList<>();
-	private int currentRide = 0;
+	private int currentRideId = 0;
 	private int totalBill = 0;
 	
 	/**
@@ -46,12 +45,12 @@ public class User {
 		return this.username;	
 	}
 	
-	public int getCurrentRide() {
-		return this.currentRide;
+	public int getCurrentRideId() {
+		return this.currentRideId;
 	}
 	
-	public void setCurrentRide(int currRideId) {
-		this.currentRide = currRideId;
+	public void setCurrentRideId(int currRideId) {
+		this.currentRideId = currRideId;
 	}
 	
 	public void setId(String newId) {
@@ -75,17 +74,9 @@ public class User {
 		this.membershipType = newMembershipType;
 	}
 	
-	public void setRideId(int rideId) {
-		this.currentRideId = rideId;
-	}
-	
 	public void endRide() {
 		// Default for no ride is rideId == 0
 		this.currentRideId = 0;
-	}
-	
-	public int getRideId() {
-		return this.currentRideId;
 	}
 	
 	public boolean onRide() {
