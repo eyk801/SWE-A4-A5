@@ -238,7 +238,7 @@ public class ValleyBikeSim {
 	 * (rides, new stations, etc)
 	 * 
 	 * @throws IOException
-	 * TODO: test - implement exception throw
+	 * TODO: test more extensively
 	 */
 	public String saveData() throws IOException {
 		// Save station data
@@ -288,17 +288,15 @@ public class ValleyBikeSim {
 	/**
 	 * Function to print out list of stations ordered by id and formatted to console.
 	 * 
-	 * TODO: update for station info format 
-	 * TODO: ESTER FUCKING DO THIS
-	 * 
 	 */
-	public void viewStationList() {
-		System.out.println("ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address");
+	public String viewStationList() {
+		String stationList = "ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address\n";
 		Iterator<Integer> keyIterator = stations.keySet().iterator();
 		while(keyIterator.hasNext()){
 			Integer id = (Integer) keyIterator.next();
-			System.out.println(this.stations.get(id).toViewString());
+			stationList = stationList + this.stations.get(id).toViewString();
 		}
+		return stationList;
 	}
 
 	/**

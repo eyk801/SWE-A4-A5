@@ -62,7 +62,7 @@ public class Controller {
 			System.exit(0);
 			break;
 		case 1:
-			valleyBike.viewStationList();
+			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
 			// Take in all ride data
@@ -91,7 +91,7 @@ public class Controller {
 	public void executeEmployee() throws IOException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
-				+ "5. Add Station.\n" + "6. Equalize stations.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Move Bikes.\n");
+				+ "5. Add Station.\n" + "6. View System Overview.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Equalize Stations.\n");
 
 		Integer option = this.getIntResponse("Please enter your selection (0-9)", 0, 9);
 		
@@ -112,7 +112,7 @@ public class Controller {
 			System.exit(0);
 			break;
 		case 1:
-			valleyBike.viewStationList();
+			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
 			// Take in all ride data
