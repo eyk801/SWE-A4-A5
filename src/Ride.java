@@ -37,6 +37,7 @@ public class Ride {
 	public void end(int stationId) {
 		this.endStationId = stationId;
 		this.endTime = new Timestamp(System.currentTimeMillis());
+		System.out.println("Ride " + this.id + " ended at " + this.endTime);
 		this.currentRide = false;
 	}
 	
@@ -46,6 +47,7 @@ public class Ride {
 			Date date = formatter.parse(time);
 			Timestamp ts = new Timestamp(date.getTime()); 
 			this.startTime = ts;
+			System.out.println("Start time of ride " + this.id + " set to " + this.startTime);
 		} catch (java.text.ParseException e) {
             e.printStackTrace();
         }
@@ -56,7 +58,8 @@ public class Ride {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = formatter.parse(time);
 			Timestamp ts = new Timestamp(date.getTime()); 
-			this.startTime = ts;
+			this.endTime = ts;
+			System.out.println("End time of ride " + this.id + " set to " + this.endTime);
 		}  catch (java.text.ParseException e) {
             e.printStackTrace();
         	}

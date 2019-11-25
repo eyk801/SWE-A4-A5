@@ -455,6 +455,10 @@ public class ValleyBikeSim {
 		if (currentUser.onRide() == true) {
 			return "User already on ride. Cannot check out more than one bike at a time";
 		}
+		
+		if (stations.get(stationId).getNumBikes() == 0) {
+			return "No bikes at this station. Try another!";
+		}
 	
 		// Set this.lastRideId to current ride id
 		this.lastRideId = this.lastRideId + 1;
