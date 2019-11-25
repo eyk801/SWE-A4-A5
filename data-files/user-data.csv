@@ -1,8 +1,6 @@
 Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History
-eshghi,fakepassword,0,9871298798719871,891,10/20,0,9
 charlottegephart,password3,0,8765432187654321,123,01/21,0,4
 aliciagrubb,password5,0,1111222233334444,123,01/22,0,7,8
 emilykim,password2,0,1234567812345678,123,01/21,0,3
 alieshghi,password4,0,1234432112344321,123,01/21,0,5,6
-testing,pass,0,1234567890090000,98,12/21,11,0
-esterzhao,password1,0,1234123412341234,123,01/21,0,1,2,10
+esterzhao,password1,0,1234123412341234,123,01/21,0,1,2,9
