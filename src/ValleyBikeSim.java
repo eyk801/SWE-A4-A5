@@ -477,7 +477,7 @@ public class ValleyBikeSim {
 		b.setCheckedOut(true);
 		b.setUserId(username);
 		
-		return "Bike " + bikeId + " successfully checked out: " + "Ride ID " + rideId +". Your account has been charged " + cost;
+		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +". Your account has been charged $" + cost;
 	};
 	
 	/**

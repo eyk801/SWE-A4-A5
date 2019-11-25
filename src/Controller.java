@@ -66,7 +66,7 @@ public class Controller {
 			break;
 		case 2:
 			// Take in all ride data
-			checkOutBike(username);
+			System.out.println(checkOutBike(username));
 			break;
 		case 3: 
 			checkInBike(username);
@@ -310,7 +310,8 @@ public class Controller {
 	
 	private String checkOutBike(String username) {
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		return valleyBike.checkOutBike(username, stationId);	}
+		return valleyBike.checkOutBike(username, stationId);
+		}
 	
 	private String checkInBike(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
