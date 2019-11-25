@@ -128,13 +128,17 @@ public class Controller {
 			String string = valleyBike.viewSystemOverview();
 			break;
 		case 7:
+			valleyBike.viewStats();
+			break;
+		case 8:
 			//autogenerate ids, give an int of how many bikes to add, dock at a specific station
 			addBikes();
 			break;
-		case 8:
+		case 9:
 			valleyBike.equalizeStations();
+			break;
 		default:
-			System.out.println("Input must be an integer from 0-8.");
+			System.out.println("Input must be an integer from 0-9.");
 			executeEmployee();
 		}
 		// execute call again after each switch thingy
