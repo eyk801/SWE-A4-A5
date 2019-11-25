@@ -188,9 +188,9 @@ public class ValleyBikeSim {
 				ride.setStartTime(values[5]);
 				ride.setEndTime(values[6]);
 				// Set currentRideId
-				ride.setCurrentRide(Boolean.parseBoolean(values[4]));
+				ride.setCurrentRide(Boolean.parseBoolean(values[7]));
 				// If current ride == true, add ride id to currRides list
-				if (Boolean.parseBoolean(values[4])) {
+				if (Boolean.parseBoolean(values[7])) {
 					currRides.add(id);
 				}
 				// Add ride to rides hash
@@ -609,8 +609,8 @@ public class ValleyBikeSim {
 	public String viewCurrentRides() {
 		String currentRides = "Current Rides:\n";
 		// Loop through rides in currRides list
-		for (int ride : currRides) {
-			currentRides = currentRides + "Ride: " + ride + "\n";
+		for (int ride : this.currRides) {
+			currentRides = currentRides + "User: " + rides.get(ride).getUserId() + ". Ride: " + ride + "\n";
 		}
 		return currentRides;
 	}
