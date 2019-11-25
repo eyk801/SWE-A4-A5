@@ -103,7 +103,7 @@ public class ValleyBikeSim {
 									Long.parseLong(values[3]),Integer.parseInt(values[4]),
 									values[5]);
 				// Loop to end of line for all ride history
-				for (int i=8; i < values.length;i++) {
+				for (int i=7; i < values.length;i++) {
 					rideHistory.add(Integer.parseInt(values[i]));
 				}
 				// Add ride history to ride object
@@ -533,7 +533,7 @@ public class ValleyBikeSim {
 	public String viewHistory(String username) {
 		User currentUser = users.get(username);
 		String rideList = "";
-		
+		// Loop through all rides in User
 		for (int r : currentUser.getRides()) {
 			rideList = rideList + ("Ride " + r + "\n");
 		}
