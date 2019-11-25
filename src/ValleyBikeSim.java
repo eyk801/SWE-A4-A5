@@ -399,8 +399,8 @@ public class ValleyBikeSim {
 	
 	
 	/**
-	 * Check out bike method for user
-	 * TODO implement payment system
+	 * Check out bike method for user, takes in info from the controller
+	 * And creates new ride object
 	 * @param username
 	 * @param stationId 
 	 * @return String verifying checkout and payment
@@ -495,7 +495,7 @@ public class ValleyBikeSim {
 	
 	/**
 	 * View user history
-	 * TODO: Print ride stats for a more comprehensive user history
+	 * TODO: Print ride stats for a more comprehensive user history (A5)
 	 * @param username
 	 * @return String rideHistory
 	 */
@@ -588,7 +588,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * TODO: What should this do? Ask our stakeholder
+	 * TODO: Ask our stakeholder what kind of stats wanted here (A5)
 	 * @return String stats
 	 */
 	public String viewStats() {
@@ -617,7 +617,7 @@ public class ValleyBikeSim {
 	/**
 	 * Iterates through hashmap of rides
 	 * picks out current rides and concatenates them to string
-	 * TODO: do we want more info on the rides? where they started, who has them?
+	 * TODO: Ask our stakeholder if more info on current rides is wanted. (A5)
 	 * @return string of current rides to controller
 	 */
 	public String viewCurrentRides() {
@@ -637,7 +637,7 @@ public class ValleyBikeSim {
 	public String addBikes(int stationId, int numBikes) {
 		int avDocks = stations.get(stationId).getAvDocks();
 		// check if this station can take this many bikes
-		// return string to controller "you can't do that"
+		// return error string to controller
 		if(avDocks < numBikes) {
 			return "Station " + stationId + " only has available docks for " + avDocks + " new bikes\n"
 					+ "Please try again.";
@@ -662,8 +662,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * TODO: Do we want this method?
-	 * @return ??? null for now
+	 * TODO: Consider implementing for A5
 	 */
 	public String moveBikes(Integer stationFrom, Integer stationTo, Integer numBikes) {
 		return null;
@@ -694,8 +693,7 @@ public class ValleyBikeSim {
 	
 	/**
 	 * Method checks if payment params are valid
-	 * and creates a new user object and adds it to user hashmap if so 
-	 * TODO: do we want this as a bool? or do we want a string response if it doesnt work to explain why
+	 * and if valid, creates a new user object and adds it to user hashmap
 	 * @return boolean to controller for whether or not user was successfully added to system
 	 */
 	public boolean createUser(String username, String password, Integer membership, long cardNum, Integer CVV, String expDate) {

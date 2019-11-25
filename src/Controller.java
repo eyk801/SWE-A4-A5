@@ -36,8 +36,6 @@ public class Controller {
 	 * Menu selector for user options. 
 	 * Runs until user selects 0 to quit program.
 	 * 
-	 * TODO: Validate input for methods. Ex. lets you check out more than one bike at a time
-	 * 
 	 * @throws IOException
 	 */
 	public void executeUser(String username) throws IOException {
@@ -95,7 +93,6 @@ public class Controller {
 	 * Menu selector for employee options. 
 	 * Runs until employee selects 0 to quit program.
 	 * 
-	 * TODO: Validate input for methods. Ex. Lets you resolve an issue that does not exist
 	 * 
 	 * @throws IOException
 	 */
@@ -368,8 +365,9 @@ public class Controller {
 	}
 	
 	/**
-	 * TODO: check to make sure station id is not already taken and within correct range
-	 * Maybe set station id from within valleybike? in same way as new ride and new bike?
+	 * Calls valleyBike.addStation to add a station to the system
+	 * Prompts user for station info input
+	 * 
 	 * @return String "success"
 	 */
 	private String addStation() {
@@ -385,8 +383,10 @@ public class Controller {
 	}
 	
 	/**
-	 * TODO: validate station id
-	 * @return
+	 * Calls valleyBike.addBikes to add bikes to a specific station
+	 * Prompts user for bike info input
+	 * 
+	 * @return String "success"
 	 */
 	private String addBikes() {
 		Integer numBikes = getIntResponse("How many bikes would you like to add?", 
@@ -396,6 +396,9 @@ public class Controller {
 		return valleyBike.addBikes(stationId, numBikes);
 	}
 	
+	/**
+	 * TODO: Consider implementing for A5
+	 */
 	private String moveBikes() {
 		Integer stationFrom = getUnboundedIntResponse("Please enter station ID to move from", 0);
 		sc.nextLine();
@@ -422,7 +425,6 @@ public class Controller {
 		try {
 			controller.chooseView();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
