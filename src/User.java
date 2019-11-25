@@ -113,6 +113,11 @@ public class User {
     			rideIds = rideIds + "," + Integer.toString(ride);
     		}
     	}
+    	// Catch for when ride history is empty
+    	// Auto set to 0
+    	if (rideIds.equals("")) {
+    		rideIds = "0";
+    	}
     	return rideIds;
 	}
 	

@@ -104,7 +104,11 @@ public class ValleyBikeSim {
 									values[5]);
 				// Loop to end of line for all ride history
 				for (int i=7; i < values.length;i++) {
-					rideHistory.add(Integer.parseInt(values[i]));
+					// Check if valid ride id
+					if (Integer.parseInt(values[i]) != 0) {
+						rideHistory.add(Integer.parseInt(values[i]));
+					}
+					System.out.println(user.getId() + ": " + Integer.parseInt(values[i]));
 				}
 				// Add ride history to ride object
 				user.setRides(rideHistory);
@@ -474,8 +478,7 @@ public class ValleyBikeSim {
 			cost = 0;
 			currentUser.addToBill(cost);
 		}
-		// Add ride to user history and set as current ride
-		currentUser.addUserRide(rideId);
+		// Set as current ride for user
 		currentUser.setCurrentRideId(rideId);
 		// Get a bike from the station
 		Station s = stations.get(stationId);
@@ -520,6 +523,9 @@ public class ValleyBikeSim {
 		s.addBike(r.getBikeId());
 		// End the ride (update ride info)
 		r.end(stationId);
+		// Update user info (end ride), add ride to ride history
+		currentUser.addUserRide(r.getBikeId());
+		currentUser.endRide();
 
 		return "Successfully checked in. Ride completed.";
 	}

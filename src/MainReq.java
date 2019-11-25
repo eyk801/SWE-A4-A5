@@ -39,7 +39,7 @@ public class MainReq {
     }
 	
     public String toSaveString() {
-    	return (this.id + "," + this.username + "," + this.stationId + "," + this.message);
+    	return (this.id + "," + this.username + "," + this.stationId + "," + this.message + "\n");
     }
     
     public String toViewString(){
