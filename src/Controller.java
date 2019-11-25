@@ -305,4 +305,7 @@ public class Controller {
 		}
 		return valleyBike.resolveIssues(issues);
 	}
+	public static void main(String[] args) {
+		Controller controller = new Controller();
+	}
 }
