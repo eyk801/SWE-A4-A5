@@ -1,33 +1,43 @@
-/*
- * DESCRIPTION OF THE VALLEYBIKESIM
- */
-
 import java.io.*;
 import java.util.*;
-import java.text.SimpleDateFormat;
 import java.util.Map.Entry;
-import java.sql.Timestamp;
 
+/**
+ * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
+ * @version     1.0
+ */
 public class ValleyBikeSim {
+	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
+	/** Hashmap of all user objects userId:User)*/
 	private Map<String, User> users = new HashMap<>();
+	/** Hashmap of all bikes objects bikeId:Bike)*/
 	private Map<Integer, Bike> bikes = new HashMap<>();
+	/** Hashmap of all rides objects rideId:Ride)*/
 	private Map<Integer, Ride> rides = new HashMap<>();
+	/** Hashmap of all maintenance request objects mainReqId:MainReq)*/
 	private Map<Integer, MainReq> mainReqs = new HashMap<>();
+	/** List of current ride ids)*/
 	private List<Integer> currRides = new ArrayList<>();
+	/** Value of last ride id */
 	private Integer lastRideId = 0;
+	/** Value of last bike id */
 	private Integer lastBikeId = 0;
+	/** Value of last station id */
 	private Integer lastStationId = 0;
+	/** Value of last maintenance request id */
 	private Integer lastMainReqId = 0;
+	/** Instance of the payment system */
 	private PaymentSys paymentSystem = new PaymentSys();
-	
-	// ValleyBikeSim singleton instance
+	/** Instance of the ValleyBikeSim */
 	private static ValleyBikeSim instance = null;
 	
 	/**
-	 * ValleyBikeSim class constructor
-	 * Calls all methods to read csv data files
-	 * Populates class HashMaps and currRides List
+	 * ValleyBikeSim class constructor.
+	 * </p>
+	 * Calls all methods to read csv data files,
+	 * populates class HashMaps and currRides List,
+	 * and updates lastId variables.
 	 * 
 	 */
 	private ValleyBikeSim() {
@@ -39,7 +49,10 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Singleton implementation: use public getter to return single instance of the sim
+	 * Public getter method for the ValleyBikeSim instance 
+	 * </p>
+	 * Implementation of the Singleton design pattern
+	 * </p>
 	 * @return ValleyBikeSim instance
 	 */
 	public static ValleyBikeSim getInstance() {
@@ -50,11 +63,9 @@ public class ValleyBikeSim {
 	}
 
 	/**
-	 * Reads in station data from stored .csv file 
-	 * Parse values into new Station objects 
-	 * Add objects to a HashMap using stationId:Station key-value pair
-	 * 
-	 * @return stations HashMap for the whole ValleyBikeSim object to access
+	 * Reads in station data from stored csv file to populate HashMap
+	 * </p>
+	 * @return stations HashMap global variable
 	 */
 	public HashMap<Integer, Station> readStationData() {
 
@@ -96,11 +107,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in data from stored .csv file 
-	 * Parse values into new objects 
-	 * Add objects to a HashMap using key-value pair
-	 * 
-	 * @return users HashMap for the whole ValleyBikeSim object to access
+	 * Reads in user data from stored csv file to populate HashMap
+	 * </p>
+	 * @return users HashMap global variable
 	 */
 	public HashMap<String, User> readUserData() {
 
@@ -142,11 +151,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in data from stored .csv file 
-	 * Parse values into new bike objects 
-	 * Add objects to a HashMap using key-value pair
-	 * 
-	 * @return bikes HashMap for the whole ValleyBikeSim object to access
+	 * Reads in bike data from stored csv file to populate HashMap
+	 * </p>
+	 * @return bikes HashMap global variable
 	 */
 	public HashMap<Integer, Bike> readBikeData() {
 
@@ -178,12 +185,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in data from stored .csv file
-	 * Parse values into new ride objects
-	 * Add objects to Hashmap using key-value pair
-	 * Adds current rides to currRides list
-	 * 
-	 * @return rides Hashmap
+	 * Reads in ride data from stored csv file to populate HashMap
+	 * </p>
+	 * @return rides HashMap global variable
 	 */
 	public HashMap<Integer, Ride> readRideData() {
 
@@ -224,11 +228,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in data from stored .csv file 
-	 * Parse values into new mainReq objects 
-	 * Add objects to a HashMap using key-value pair
-	 * 
-	 * @return mainReqs HashMap for the whole ValleyBikeSim object to access
+	 * Reads in maintenance request data from stored csv file to populate HashMap
+	 * </p>
+	 * @return mainReqs HashMap global variable
 	 */
 	public HashMap<Integer, MainReq> readMainReqData() {
 
@@ -259,9 +261,8 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Overwrites current data files with the station updates in the program
-	 * (rides, new stations, etc)
-	 * 
+	 * Saves current system data into csv files.
+	 * </p>
 	 * @throws IOException
 	 */
 	public String saveData() throws IOException {
@@ -310,8 +311,9 @@ public class ValleyBikeSim {
 
 	
 	/**
-	 * Function to print out list of stations ordered by id and formatted to console.
-	 * 
+	 * Generates a string of station info.
+	 * </p>
+	 * @return String of stations info
 	 */
 	public String viewStationList() {
 		String stationList = "ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address\n";
@@ -324,9 +326,9 @@ public class ValleyBikeSim {
 	}
 
 	/**
-	 * Adds station to program's Hashmap stations
-	 * Station ID is automatically assigned
-	 * 
+	 * Add a station to the system.
+	 * </p>
+	 * @return String to show function success.
 	 */
 	public String addStation(int capacity,boolean kiosk,String address,String name) {
 		// Set this.lastStationId to current station id
@@ -342,17 +344,15 @@ public class ValleyBikeSim {
 	}
 
 	/**
-	 * Function to move bike/pedelecs between stations, so that each station is
-	 * equalized (based on the percentages of bike/pedelecs per dock capacity). 
-	 * 
-	 * Removes bikes from stations based on an average percentage
-	 * Then gradually reassigns by iterating through each station adding 1 if it is below the percentage
-	 * and continuing on while there are still extras to reassign
-	 * 
-	 * TODO: Consider changing the bike assignment so that it assigns one bike per station in a while loop for spareBikes.size()
-	 * In order to make spread of bikes more even
-	 * 
+	 * Balances bikes across the system's stations.
+	 * </p>
+	 * Moves bikes between stations so that each station is
+	 * equalized based on a system-wide ideal percentage of bikes to station capacity.
+	 * Removes bikes from stations then reassigns them by iterating through each station
+	 * and adding bikes if the station bike-capacity percentage is low.
+	 * </p>
 	 * @return String to confirm equalization
+	 * TODO: change implementation
 	 */
 	public String equalizeStations() {
 		// find the total number of bikes and total capacity
@@ -399,13 +399,16 @@ public class ValleyBikeSim {
 	
 	
 	/**
-	 * Check out bike method for user, takes in info from the controller
-	 * And creates new ride object
-	 * @param username
-	 * @param stationId 
-	 * @return String verifying checkout and payment
+	 * Assigns a bike to the user and creates a new ride.
+	 * </p>
+	 * Takes in input from the controller to checkout a bike from specified station,
+	 * then creates a ride object and updates bike, station, and user data accordingly.
+	 * </p>
+	 * @param username 		String user id 
+	 * @param stationId 	int of which station to remove bike from
+	 * @return String 		verifying checkout and payment
 	 */
-	public String checkOutBike(String username, Integer stationId) {
+	public String checkOutBike(String username, int stationId) {
 		User currentUser = users.get(username);
 		if (currentUser.onRide() == true) {
 			return "User already on ride. Cannot check out more than one bike at a time";
@@ -457,10 +460,14 @@ public class ValleyBikeSim {
 	};
 	
 	/**
-	 * Check in bike method for user
-	 * @param username
-	 * @param stationId 
-	 * @return String "success"
+	 * Places a bike back into designated station and ends user's ride.
+	 * </p>
+	 * Takes in input from the controller to checkin a bike to specified station,
+	 * Then updates bike, station, ride, and user information accordingly.
+	 * </p>
+	 * @param username 		String user id 
+	 * @param stationId 	int of which station to place bike in
+	 * @return String 		verifying checkin and completion of ride
 	 */
 	public String checkInBike(String username, Integer stationId) {
 		// Get user object
@@ -494,10 +501,11 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * View user history
+	 * View user ride history.
+	 * </p>
+	 * @param username		user to view history
+	 * @return rideHistory	String of ride ids
 	 * TODO: Print ride stats for a more comprehensive user history (A5)
-	 * @param username
-	 * @return String rideHistory
 	 */
 	public String viewHistory(String username) {
 		User currentUser = users.get(username);
@@ -510,9 +518,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * view account information for user
-	 * @param username
-	 * @return String userInfo
+	 * View user account information.
+	 * @param username		user to view account info
+	 * @return userInfo		String of user account info
 	 */
 	public String viewAccount(String username) {
 		User currentUser = users.get(username);
@@ -523,11 +531,12 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Create a new maintenance request 
-	 * @param username
-	 * @param stationId
-	 * @param issueMessage
-	 * @return String "success"
+	 * Create a new maintenance request.
+	 * </p>
+	 * @param username		user creating the mainReq
+	 * @param stationId		station at which the mainReq is located
+	 * @param issueMessage	message detailing request
+	 * @return report		String confirming issue has been created
 	 */
 	public String reportIssue(String username, Integer stationId, String issueMessage) {
 		// Increment lastMainReqId var
@@ -541,16 +550,13 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Print a system overview of all vehicles and stations
-	 * Company view
-	 * 
-	 * This employee only access method 
-	 * first iterates through each station, parsing station info
-	 * Then it goes deeper to show which bikes are at each station
-	 * Additionally, it will show the employee which bikes are checked out
-	 * and by which user
-	 * 
-	 * @return String systemStats
+	 * Print a system overview of all vehicles and stations for the company view.
+	 * </p>
+	 * This employee only access method first iterates through each station, 
+	 * parsing station info. Then it goes deeper to show which bikes are at each station.
+	 * Additionally, it will show the employee which bikes are currently checked out and by which user.
+	 * </p>
+	 * @return systemStats	String of full system overview
 	 */
 	public String viewSystemOverview() {
 		// Begin return string
@@ -588,8 +594,10 @@ public class ValleyBikeSim {
 	}
 	
 	/**
+	 * Returns system stats.
+	 * <p>
+	 * @return stats	String of desired system statistics
 	 * TODO: Ask our stakeholder what kind of stats wanted here (A5)
-	 * @return String stats
 	 */
 	public String viewStats() {
 		int numUsers = users.size();
@@ -602,9 +610,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Returns the list of current maintenance requests to the controller
-	 * 
-	 * @return String issues
+	 * Returns the list of current maintenance requests.
+	 * </p>
+	 * @return issues	String of all current maintenance requests
 	 */
 	public String viewIssues() {
 		String currIssues = "";
@@ -615,10 +623,13 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Iterates through hashmap of rides
-	 * picks out current rides and concatenates them to string
+	 * Returns the list of current rides.
+	 * </p>
+	 * This function iterates through the list of current rides,
+	 * and concatenates each ride and associated data into the return string.
+	 * </p>
+	 * @return currentRides	String of current ride data
 	 * TODO: Ask our stakeholder if more info on current rides is wanted. (A5)
-	 * @return string of current rides to controller
 	 */
 	public String viewCurrentRides() {
 		String currentRides = "Current Rides:\n";
@@ -630,9 +641,12 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Add a number of bikes to a station
-	 * 
-	 * @return String "success"
+	 * Add a specified number of bikes to a station.
+	 * </p>
+	 * Checks whether the number of bikes can be added to the station,
+	 * then creates new Bike objects and adds them to specified station.
+	 * </p>
+	 * @return report	String confirming success.
 	 */
 	public String addBikes(int stationId, int numBikes) {
 		int avDocks = stations.get(stationId).getAvDocks();
@@ -669,9 +683,13 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * This basically iterates through the issues requested to resolve
-	 * by the employee and removes them from currentIssues
-	 * 
+	 * Resolve maintenance request issues.
+	 * </p>
+	 * This employee-only function iterates through the issues requested to resolve,
+	 * and checks whether they exist. If they do, the mainReqs are removed from the global HashMap.
+	 * </p>
+	 * @param issues	ArrayList<Integer> list of mainReqs to resolve
+	 * @return report	String confirming success.
 	 */
 	public String resolveIssues(ArrayList<Integer> issues) {
 		String resolved = "Issues ";
@@ -692,9 +710,11 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Method checks if payment params are valid
-	 * and if valid, creates a new user object and adds it to user hashmap
-	 * @return boolean to controller for whether or not user was successfully added to system
+	 * Creates a new user.
+	 * </p>
+	 * This function validates inputted payment info, and if valid, 
+	 * creates a new User object and adds it to the global HashMap.
+	 * @return report	boolean declaring whether user was successfully made or not.
 	 */
 	public boolean createUser(String username, String password, Integer membership, long cardNum, Integer CVV, String expDate) {
 		if (paymentSystem.validate(cardNum, CVV, expDate)) {
