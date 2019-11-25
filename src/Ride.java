@@ -41,17 +41,25 @@ public class Ride {
 	}
 	
 	public void setStartTime(String time) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = formatter.parse(time);
-		Timestamp ts = new Timestamp(date.getTime()); 
-		this.startTime = ts;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = formatter.parse(time);
+			Timestamp ts = new Timestamp(date.getTime()); 
+			this.startTime = ts;
+		} catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void setEndTime(String time) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = formatter.parse(time);
-		Timestamp ts = new Timestamp(date.getTime()); 
-		this.startTime = ts;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = formatter.parse(time);
+			Timestamp ts = new Timestamp(date.getTime()); 
+			this.startTime = ts;
+		}  catch (java.text.ParseException e) {
+            e.printStackTrace();
+        	}
 	}
 	
 	public void setEndStation(int station) {
