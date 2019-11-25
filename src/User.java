@@ -136,6 +136,7 @@ public class User {
     					+ this.membershipType + "\t"
     					+ this.currentRideId + "\t" 
     					+ this.creditCardNum + "\t"
+    					+ this.totalBill + "\t"
     					+ rideIds + "\n");  
     }
 }
