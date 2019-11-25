@@ -14,7 +14,6 @@ public class Station {
 	/**
 	 * Station class constructor
 	 * 
-	 * TODO: 
 	 */
     public Station(int id, int avDocks, int capacity, boolean kiosk,
             String address, String name, List<Integer> bikeIds) {
@@ -66,12 +65,14 @@ public class Station {
     public void addBike(int bikeId) {
     	// Add input bike to Station list of bikes
     	this.bikeIds.add(bikeId);
+    	this.avDocks = this.avDocks - 1;
     }
     
     public void removeBike(int bikeId) {
     	// Remove bike based on bike id
     	int index = this.bikeIds.indexOf(bikeId);
     	this.bikeIds.remove(index);
+    	this.avDocks = this.avDocks + 1;
     }
 
     public String toSaveString() {
