@@ -125,8 +125,9 @@ public class User {
     	String rideIds = this.ridesToString();
         return (this.username + "," + this.password + "," + this.membershipType + "," + 
         		this.creditCardNum + "," + this.CVV + "," +
-        		this.expirationDate + 
-        		this.currentRideId + "," + rideIds + "\n");
+        		this.expirationDate + "," +
+        		this.currentRideId + "," + 
+        		rideIds + "\n");
     }
     
     public String toViewString(){
