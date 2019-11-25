@@ -43,6 +43,6 @@ public class MainReq {
     }
     
     public String toViewString(){
-    	return ("Issue " + this.id + "\t at Station " + this.stationId + ":\t" + this.message + "\n");  
+    	return ("Issue " + this.id + " at Station " + this.stationId + ":\t" + this.message + "\n");  
     }
 }

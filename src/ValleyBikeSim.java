@@ -17,8 +17,9 @@ public class ValleyBikeSim {
 	private List<Integer> currRides = new ArrayList<>();
 	private Integer lastRideId = 0;
 	private Integer lastBikeId = 0;
-	private PaymentSys paymentSystem = new PaymentSys();
+	private Integer lastStationId = 0;
 	private Integer lastMainReqId = 0;
+	private PaymentSys paymentSystem = new PaymentSys();
 
 	/**
 	 * ValleyBikeSim class constructor
@@ -66,6 +67,10 @@ public class ValleyBikeSim {
 				Station station = new Station(id, avDocks, cap, kiosk, address, name, bikeIds);
 				// Add station to stations
 				stations.put(id, station);
+				// Update this.lastStationId var
+				if (id > this.lastStationId) {
+					this.lastStationId = id;
+				}
 			}
 			br.close();
 			return stations;
@@ -238,7 +243,7 @@ public class ValleyBikeSim {
 	 * (rides, new stations, etc)
 	 * 
 	 * @throws IOException
-	 * TODO: test more extensively
+	 * TODO: test to see if it corrupts data (datafiles can be redownloaded from the git don't worry)
 	 */
 	public String saveData() throws IOException {
 		// Save station data
@@ -306,7 +311,7 @@ public class ValleyBikeSim {
 	 * 
 	 * TODO: Could simulate bike movement by pushing events to stack to further validate
 	 * and check stations for Available Docks, pedelecs, etc
-	 * TODO: Implement as a viewStats() method in A5
+	 * TODO: Implement as a viewStats() method in A5?
 	 * 
 	 */
 //	public void resolveRideData() {
@@ -367,8 +372,14 @@ public class ValleyBikeSim {
 	 * Station ID is automatically assigned
 	 * 
 	 */
-	public String addStation(Integer id,Integer capacity,boolean kiosk,String address,String name) {
+	public String addStation(int capacity,boolean kiosk,String address,String name) {
+		// Set this.lastStationId to current station id
+		this.lastStationId = this.lastStationId + 1;
+		// Get new ride id
+		int id = this.lastStationId;
+		// Initialize empty list of bikes ids
 		List<Integer> bikeIds = new ArrayList<>();
+		// Create new station
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);
 		return "Station successfully added to the system.";
@@ -382,20 +393,23 @@ public class ValleyBikeSim {
 	 * Then gradually reassigns by iterating through each station adding 1 if it is below the percentage
 	 * and continuing on while there are still extras to reassign
 	 * 
+	 * TODO: FIX THIS METHOD. Currently freezes the whole program.
+	 * 
 	 * @return String to confirm equalization
 	 */
 	public String equalizeStations() {
-
+		System.out.println("in valleybike");
 		// find the total number of bikes, pedelecs, and total capacity
 		int totalBikes = 0;
 		int totalCap = 0;
-
+		// TODO: consider just using bikes.size() for the totalBikes value?
 		for (Station s : this.stations.values()) {
 			totalBikes += s.getNumBikes();
 			totalCap += s.getCapacity();
 		}
 		// find the average percentage of bikes to capacity
 		double percentBikes = (double) totalBikes / (double) totalCap;
+		System.out.println(percentBikes);
 		ArrayList<Integer> spareBikes = new ArrayList<Integer>();
 		
 		//remove all the extra bikes from stations that are greater than 15% away from average percentage
@@ -404,6 +418,7 @@ public class ValleyBikeSim {
 				spareBikes = removeExtraBikes(s, percentBikes, spareBikes);
 			} 
 		}
+		System.out.println(spareBikes.size());
 		//while there are still bikes left to add, add them to stations that are under
 		//average percentage by more than 15%
 		while(spareBikes.size() > 0) {
@@ -412,10 +427,11 @@ public class ValleyBikeSim {
 					Integer bikeToAdd = spareBikes.remove(0);
 					s.addBike(bikeToAdd);
 					bikes.get(bikeToAdd).setLastStationId(s.getId());
+					System.out.println("Moved a bike");
 				}
 			}
 		}
-			
+		System.out.println("End of valleybike func");
 		return "The number of bikes and pedelecs at all stations have been equalized.";
 	}
 	
@@ -599,16 +615,10 @@ public class ValleyBikeSim {
 	 * @return String stats
 	 */
 	public String viewStats() {
-		Integer numUsers = 0;
-		Integer numRides = 0;
-		String stats = "";
-		Iterator<Entry<String, User>> userIterator = users.entrySet().iterator();
-		while(userIterator.hasNext()) {
-			numUsers += 1;
-			Map.Entry<String, User> userElement = (Map.Entry<String, User>)userIterator.next();
-			numRides += userElement.getValue().getRides().size();
-		}
-		stats = "Total number of users for the system is "+numUsers + " with a "
+		int numUsers = users.size();
+		int numRides = rides.size();
+		
+		String stats = "Total number of users for the system is "+numUsers + " with a "
 				+ "total number of " + numRides + " rides";
 				
 		return stats;
@@ -703,15 +713,5 @@ public class ValleyBikeSim {
 		} else {
 			return false;
 		}
-	}
-	
-	/**
-	 * Main function. Creates new ValleyBikeSim Object, reads station data for that object
-	 * And then calls the execute function which runs simulator until program is quit
-	 * 
-	 * TODO: Remove ValleyBikeSim Object and find more streamlined way to run program
-	 */
-	public static void main(String[] args) {
-//		ValleyBikeSim sim = new ValleyBikeSim();
 	}
 }

@@ -35,6 +35,8 @@ public class Controller {
 	 * Menu selector for user options. 
 	 * Runs until user selects 0 to quit program.
 	 * 
+	 * TODO: Validate input for methods. Ex. lets you check out more than one bike at a time
+	 * 
 	 * @throws IOException
 	 */
 	public void executeUser(String username) throws IOException {
@@ -88,6 +90,14 @@ public class Controller {
 		executeUser(username);
 	}
 	
+	/**
+	 * Menu selector for employee options. 
+	 * Runs until employee selects 0 to quit program.
+	 * 
+	 * TODO: Validate input for methods. Ex. Lets you resolve an issue that does not exist
+	 * 
+	 * @throws IOException
+	 */
 	public void executeEmployee() throws IOException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
@@ -134,11 +144,10 @@ public class Controller {
 			System.out.println(valleyBike.viewStats());
 			break;
 		case 8:
-			//autogenerate ids, give an int of how many bikes to add, dock at a specific station
 			System.out.println(addBikes());
 			break;
 		case 9:
-			valleyBike.equalizeStations();
+			System.out.println(valleyBike.equalizeStations());
 			break;
 		default:
 			System.out.println("Input must be an integer from 0-9.");
@@ -362,8 +371,6 @@ public class Controller {
 	 * @return String "success"
 	 */
 	private String addStation() {
-		Integer id = getUnboundedIntResponse("Please enter station ID", 0);
-		sc.nextLine();
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
 		System.out.println("Please enter whether station has a kiosk or not: (true/false)");
 		boolean kiosk = sc.nextBoolean();
@@ -372,7 +379,7 @@ public class Controller {
 		sc.nextLine();
 		System.out.println("Please enter station name: ");
 		String name = sc.nextLine();
-		return valleyBike.addStation(id, capacity, kiosk, address, name);
+		return valleyBike.addStation(capacity, kiosk, address, name);
 	}
 	
 	/**
