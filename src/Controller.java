@@ -100,11 +100,14 @@ public class Controller {
 		switch (option) {
 		/* 0. Quit program */
 		case 0:
-			sc.close();
 			// Save all system data to csvs
-			String saved = valleyBike.saveData();
-			System.out.println(saved);
-			// Exit message
+			// Check if you want to save
+			System.out.println("Do you want to save the data? y/n");
+			String response = sc.next();
+			if (response.equalsIgnoreCase("y")) {
+				System.out.println(valleyBike.saveData());
+			}
+			sc.close();
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
 			break;
@@ -125,14 +128,14 @@ public class Controller {
 			System.out.println(addStation());
 			break;
 		case 6:
-			String string = valleyBike.viewSystemOverview();
+			System.out.println(valleyBike.viewSystemOverview());
 			break;
 		case 7:
-			valleyBike.viewStats();
+			System.out.println(valleyBike.viewStats());
 			break;
 		case 8:
 			//autogenerate ids, give an int of how many bikes to add, dock at a specific station
-			addBikes();
+			System.out.println(addBikes());
 			break;
 		case 9:
 			valleyBike.equalizeStations();
@@ -339,11 +342,11 @@ public class Controller {
 		Integer id = getUnboundedIntResponse("Please enter station ID", 0);
 		sc.nextLine();
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
-		sc.nextLine();
-		Integer kiosk = getUnboundedIntResponse("Please enter number of kiosks", 0);
-		sc.nextLine();
+		System.out.println("Please enter whether station has a kiosk or not: (true/false)");
+		boolean kiosk = sc.nextBoolean();
 		System.out.println("Please enter station address: ");
 		String address = sc.nextLine();
+		sc.nextLine();
 		System.out.println("Please enter station name: ");
 		String name = sc.nextLine();
 		return valleyBike.addStation(id, capacity, kiosk, address, name);

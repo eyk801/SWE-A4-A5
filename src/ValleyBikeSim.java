@@ -54,7 +54,7 @@ public class ValleyBikeSim {
 				String name = values[1];
 				int avDocks = Integer.parseInt(values[2]);
 				int cap = Integer.parseInt(values[3]);
-				int kiosk = Integer.parseInt(values[4]);
+				boolean kiosk = Boolean.parseBoolean(values[4]);
 				String address = values[5];
 				List<Integer> bikeIds = new ArrayList<>();
 				// Loop to end of csv line for all bikeIds
@@ -369,7 +369,7 @@ public class ValleyBikeSim {
 	 * Station ID is automatically assigned
 	 * 
 	 */
-	public String addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
+	public String addStation(Integer id,Integer capacity,boolean kiosk,String address,String name) {
 		List<Integer> bikeIds = new ArrayList<>();
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);

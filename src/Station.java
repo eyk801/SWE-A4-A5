@@ -5,7 +5,7 @@ public class Station {
     private int id = 0;
     private int avDocks = 0;
     private int capacity = 0;
-    private int kiosk = 0;
+    private boolean kiosk = false;
     private String address = new String();
     private String name = new String();
     private List<Integer> bikeIds = new ArrayList<>();
@@ -16,7 +16,7 @@ public class Station {
 	 * 
 	 * TODO: 
 	 */
-    public Station(int id, int avDocks, int capacity, int kiosk,
+    public Station(int id, int avDocks, int capacity, boolean kiosk,
             String address, String name, List<Integer> bikeIds) {
         this.id = id;
         this.avDocks = avDocks;
@@ -43,7 +43,7 @@ public class Station {
         return this.capacity;
     }
 
-    public int getKiosk(){
+    public boolean getKiosk(){
     	return this.kiosk;
     }
 
@@ -84,14 +84,10 @@ public class Station {
     }
     
     public String toViewString(){
-    	boolean kioskBool = true;
-    	 if (this.kiosk == 0){
-    		 kioskBool = false;
-    	 }
     	 return (Integer.toString(this.id) + "\t" + Integer.toString(this.bikeIds.size())
     	                + "\t" + Integer.toString(this.avDocks) + "\t"
     	                + Integer.toString(this.capacity) + "\t\t" 
-    	                + Boolean.toString(kioskBool) 
+    	                + Boolean.toString(kiosk) 
     	                + "\t" + this.name + " - "
     	                + this.address + "\n");  
     }
