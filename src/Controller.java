@@ -69,16 +69,16 @@ public class Controller {
 			System.out.println(checkOutBike(username));
 			break;
 		case 3: 
-			checkInBike(username);
+			System.out.println(checkInBike(username));
 			break;
 		case 4:
-			valleyBike.viewHistory(username);
+			System.out.println(valleyBike.viewHistory(username));
 			break;
 		case 5:
-			valleyBike.viewAccount(username);
+			System.out.println(valleyBike.viewAccount(username));
 			break;
 		case 6:
-			reportIssue(username);
+			System.out.println(reportIssue(username));
 			break;
 		default:
 			System.out.println("Input must be an integer from 0-6.");
