@@ -257,9 +257,9 @@ public class Controller {
 			return false;
 		} else {
 			Integer membership = getIntResponse("Please enter your preferred membership? (0,1,2)", 0, 2);
-			Integer cardNum = getUnboundedIntResponse("Please enter you credit card number",0);
+			Long cardNum = getUnboundedLongResponse("Please enter you credit card number",(long)0);
 			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
-			System.out.println("Please enter experation date(MM/YY): ");
+			System.out.println("Please enter expiration date(MM/YY): ");
 			String expDate = sc.next(); 
 			userAccounts.put(username, password);
 			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
@@ -291,6 +291,28 @@ public class Controller {
 			}
 		}
 		return entry;
+	}
+	
+	private Long getUnboundedLongResponse(String request, Long i) {
+		Long input = (long)0;
+		System.out.println(request + ": ");
+		while (sc.hasNext()){
+			if(!sc.hasNextLong()){
+				System.out.println("Entry must be an integer");
+				System.out.println(request + ": ");
+				sc.next();
+			}else{
+				input = sc.nextLong();
+				if(i <= input){
+					break;
+				} else{
+					System.out.println("Entry must be an integer equal to or above "+i);
+					System.out.println(request + ": ");
+					sc.nextLine();
+				}	
+			}
+		}
+		return input;
 	}
 	
 	private Integer getUnboundedIntResponse(String request, Integer min) {
