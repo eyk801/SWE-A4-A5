@@ -89,8 +89,8 @@ public class Station {
     		 kioskBool = false;
     	 }
     	 return (Integer.toString(this.id) + "\t" + Integer.toString(this.bikeIds.size())
-    	                + "\t\t" + Integer.toString(this.avDocks) + "\t"
-    	                + Integer.toString(this.capacity) + "\t" 
+    	                + "\t" + Integer.toString(this.avDocks) + "\t"
+    	                + Integer.toString(this.capacity) + "\t\t" 
     	                + Boolean.toString(kioskBool) 
     	                + "\t" + this.name + " - "
     	                + this.address + "\n");  

@@ -293,7 +293,7 @@ public class ValleyBikeSim {
 	 * 
 	 */
 	public void viewStationList() {
-		System.out.println("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
+		System.out.println("ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address");
 		Iterator<Integer> keyIterator = stations.keySet().iterator();
 		while(keyIterator.hasNext()){
 			Integer id = (Integer) keyIterator.next();
