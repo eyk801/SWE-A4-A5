@@ -1,5 +1,5 @@
 /*
- * hello
+ * DESCRIPTION OF THE VALLEYBIKESIM
  */
 
 import java.io.*;
@@ -15,16 +15,15 @@ public class ValleyBikeSim {
 	private Map<Integer, Ride> rides = new HashMap<>();
 	private Map<Integer, MainReq> mainReqs = new HashMap<>();
 	private List<Integer> currRides = new ArrayList<>();
-	private Integer rideID = 0;
+	private Integer lastRideId = 0;
+	private Integer lastBikeId = 0;
 	private PaymentSys paymentSystem = new PaymentSys();
-
 
 	/**
 	 * ValleyBikeSim class constructor
+	 * Calls all methods to read csv data files
+	 * Populates class HashMaps and currRides List
 	 * 
-	 * TODO: Remove and re-organize program so that this is no longer necessary
-	 * or so that the object does more - Alicia says object could be potentially useful
-	 * can also avoid the issue with static method stuff
 	 */
 	public ValleyBikeSim() {
 		this.stations = readStationData();
@@ -137,6 +136,11 @@ public class ValleyBikeSim {
 									values[2],Boolean.parseBoolean(values[3]));
 				// Add bike object to bikes hash
 				bikes.put(id,bike);
+				
+				// Update this.lastBikeId var
+				if (id > this.lastBikeId) {
+					this.lastBikeId = id;
+				}
 			}
 			br.close();
 			return bikes;
@@ -179,6 +183,11 @@ public class ValleyBikeSim {
 				}
 				// Add ride to rides hash
 				rides.put(id,ride);
+				// Update this.lastRideId var
+				if (id > this.lastRideId) {
+					this.lastRideId = id;
+				}
+				
 			}
 			br.close();
 			return rides;
@@ -275,7 +284,8 @@ public class ValleyBikeSim {
 	/**
 	 * Function to print out list of stations ordered by id and formatted to console.
 	 * 
-	 * TODO: update for station info format
+	 * TODO: update for station info format 
+	 * TODO: ESTER FUCKING DO THIS
 	 * 
 	 */
 	public void viewStationList() {
@@ -292,11 +302,10 @@ public class ValleyBikeSim {
 	 * Function that reads in a ride data file that contains all the rides for one
 	 * day of service and outputs stats for the day
 	 * 
-	 * TODO: Ok for now but could simulate bike movement by pushing events to stack to further validate
+	 * TODO: Could simulate bike movement by pushing events to stack to further validate
 	 * and check stations for Available Docks, pedelecs, etc
-	 * TODO: update??? move all system input to the controller
+	 * TODO: Implement as a viewStats() method in A5
 	 * 
-	 * Employee can access, but not user
 	 */
 //	public void resolveRideData() {
 //
@@ -352,14 +361,12 @@ public class ValleyBikeSim {
 //	}
 
 	/**
-	 * Adds station to program's treemap of stations
+	 * Adds station to program's Hashmap stations
 	 * Station ID is automatically assigned
 	 * 
-	 * 
-	 * Company method
 	 */
 	public void addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
-
+		List<Integer> bikeIds = new ArrayList<>();
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);
 		System.out.println("Station successfully added to the system.");
@@ -369,13 +376,11 @@ public class ValleyBikeSim {
 	 * Function to move bike/pedelecs between stations, so that each station is
 	 * equalized (based on the percentages of bike/pedelecs per dock capacity). 
 	 * 
-	 * Does not prioritize larger capacity stations. 
-	 * Essentially empties all stations and then gradually reassigns
-	 * by iterating through each station adding 1 if it is below percentage
+	 * Removes bikes from stations based on an average percentage
+	 * Then gradually reassigns by iterating through each station adding 1 if it is below the percentage
 	 * and continuing on while there are still extras to reassign
 	 * 
-	 * TODO: update this for just bikes
-	 * 
+	 * @return String to confirm equalization
 	 */
 	public String equalizeStations() {
 
@@ -412,6 +417,14 @@ public class ValleyBikeSim {
 		return "The number of bikes and pedelecs at all stations have been equalized.";
 	}
 	
+	/**
+	 * Helper method for equalizeStations()
+	 * Removes bikes from the inputted station and adds to a spareBikes list
+	 * @param Station s
+	 * @param double percentBikes
+	 * @param ArrayList<Integer> spareBikes
+	 * @returns ArrayList<Integer> spareBikes
+	 */
 	public ArrayList<Integer> removeExtraBikes(Station s, double percentBikes, ArrayList<Integer> spareBikes){
 		while ((double)s.getNumBikes()/(double)s.getCapacity() > percentBikes + .15) {
 			Integer bikeToMove = s.getBikeIds().get(0);
@@ -423,78 +436,77 @@ public class ValleyBikeSim {
 	
 	/**
 	 * Check out bike method for user
-	 * TODO check membership status and charge account accordingly
+	 * TODO implement payment system
 	 * @param username
 	 * @param stationId 
-	 * @return
+	 * @return String verifying checkout and payment
 	 */
 	public String checkOutBike(String username, Integer stationId) {
-		// assign ride ID
-		rideID += 1;
-
-		// check membership status and charge accordingly, add ride to user ride list
+		// Set this.lastRideId to current ride id
+		this.lastRideId = this.lastRideId + 1;
+		// Get new ride id
+		int rideId = this.lastRideId;
+		// Check membership status and charge accordingly
 		User currentUser = users.get(username);
+		// Right now, we only one type of membership (0)
+		int cost;
 		if (currentUser.getType() == 0) {
-			System.out.println("Pay-per-ride. Your card will be charged $2");
-		}				
-		currentUser.addUserRide(rideID);
-		
-		Integer bikeID = 0;
-		Station s = stations.get(stationId);
-		ArrayList bikesList = s.getBikeIds();
-		for (Integer bID : bikesList) {
-			Bike currBike = bikes.get(bID);
-			if (currBike.getUserId().equals("")) {
-				bikeID = bID;
-			}
+			// TODO: @ali implement payment system here
+			// Add cost to user bill?
+			// Validate
+			// Let's say a ride costs 2 dollars.
+			cost = 2;
 		}
-
-		// create new Ride and add to current rides list
-		Ride ride = new Ride(rideID, username, stationId, bikeID);
-		currRides.add(rideID);
-
-		Bike b = bikes.get(bikeID);
+		// Add ride to user history and set as current ride
+		currentUser.addUserRide(rideId);
+		currentUser.setCurrentRide(rideId);
+		// Get a bike from the station
+		Station s = stations.get(stationId);
+		Integer bikeId = s.getBikeIds().get(0);
+		// Create new Ride and add to current rides list
+		Ride ride = new Ride(rideId, username, stationId, bikeId);
+		currRides.add(rideId);
+		// Add ride to rides hashmap
+		rides.put(rideId, ride);
+		// Update the bike info
+		Bike b = bikes.get(bikeId);
 		b.setCheckedOut(true);
-		b.setLastStationId(stationId);
 		b.setUserId(username);
-				
-		// add ride to rides hashmap
-		rides.put(rideID, ride);
-
-		return "Bike " + bikeID + " successfully checked out by " + username + ", Ride ID " + rideID;
+		
+		return "Bike " + bikeId + " successfully checked out: " + "Ride ID " + rideId +". Your account has been charged " + cost;
 	};
 	
 	/**
 	 * Check in bike method for user
-	 * TODO: Implement method
 	 * @param username
 	 * @param stationId 
 	 * @return String "success"
 	 */
 	public String checkInBike(String username, Integer stationId) {
-		
+		// Get user object
 		User currentUser = users.get(username);
-		
-		Integer currRideID = currentUser.getCurrentRide();
-
-		Ride r = rides.get(currRideID);
-		Integer bikeID = r.getBikeId();
-		
-		Bike b = bikes.get(bikeID);
+		// Get ride object
+		Ride r = rides.get(currentUser.getCurrentRide());
+		// Get bike object
+		Bike b = bikes.get(r.getBikeId());
+		// Update bike info
 		b.setLastStationId(stationId);
-		b.setUserId("");
 		b.setCheckedOut(false);
-				
+		b.setUserId("");
+		// Add bike to new station
+		Station s = stations.get(stationId);
+		s.addBike(r.getBikeId());
+		// End the ride (update ride info)
 		r.end(stationId);
 
-		return "Successfully checked in.";
+		return "Successfully checked in. Ride completed.";
 	}
 	
 	/**
 	 * View user history
-	 * TODO: Implement method
+	 * TODO: Print ride stats for a more comprehensive user history
 	 * @param username
-	 * @return
+	 * @return String rideHistory
 	 */
 	public String viewHistory(String username) {
 		User currentUser = users.get(username);
@@ -508,13 +520,15 @@ public class ValleyBikeSim {
 	
 	/**
 	 * view account information for user
-	 * TODO: Implement method
 	 * @param username
-	 * @return
+	 * @return String userInfo
 	 */
 	public String viewAccount(String username) {
 		User currentUser = users.get(username);
-		return "Account Information: \n" + currentUser.toViewString();
+		
+		return ("Account Information: \n "
+				+ "Username	Password	Membership Type	Current Ride	Credit Card	Total Bill	Rides\n" 
+				+ currentUser.toViewString());
 	}
 	
 	//TODO: Implement method
@@ -523,27 +537,35 @@ public class ValleyBikeSim {
 	}
 	
 	/*
-	 * TODO: Return system stats string
+	 * Print a system overview of all vehicles and stations
+	 * Company view
 	 * 
-	 * 
+	 * TODO: Comment this method for clarity @ali
+	 * @return String systemStats
 	 */
 	public String viewSystemOverview() {
+		// Begin return string
 		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
-		systemStats.concat("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
+		systemStats.concat("ID	Bikes	AvDocs	MainReq	Cap	Kiosk	Name - Address");
 		Iterator<Entry<Integer, Station>> stationsIterator = stations.entrySet().iterator();
+		// For each station in the system
 		while(stationsIterator.hasNext()){
 			Map.Entry<Integer, Station> stationElement = (Map.Entry<Integer, Station>)stationsIterator.next();
 			Station station = stationElement.getValue();
+			// Add station info to the return string
 			systemStats.concat("\n" + station.toViewString());
+			// For each bike at the station
 			List<Integer> stationBikes = station.getBikeIds();
 			systemStats.concat("\n" + "Station Bikes: ");
+			// Add bike id to the return string
 			for (Integer id : stationBikes) {
 				systemStats.concat(Integer.toString(id) + " ");
 			}
-			}
+		}
+		// Add checked out bike info to the return string
 		systemStats.concat("Bikes currently checked out: \n");
 		systemStats.concat("Bike \t User \n");
-
+		// For each bike in the list of bikes
 		Iterator<Entry<Integer, Bike>> bikeIterator = bikes.entrySet().iterator();
 		while (bikeIterator.hasNext()) {
 			Map.Entry<Integer, Bike> bikeElement = (Map.Entry<Integer, Bike>)bikeIterator.next();
@@ -555,7 +577,11 @@ public class ValleyBikeSim {
 		return systemStats;
 	}
 	
-	//TODO: Implement method
+	/*
+	 * 
+	 * TODO: What should this do? Ask our stakeholder
+	 * @return String stats
+	 */
 	public String viewStats() {
 		Integer numUsers = 0;
 		Integer numRides = 0;
@@ -580,11 +606,12 @@ public class ValleyBikeSim {
 	/**
 	 * Iterates through hashmap of rides
 	 * picks out current rides and concatenates them to string
-	 * 
+	 * TODO: do we want more info on the rides? where they started, who has them?
 	 * @return string of current rides to controller
 	 */
 	public String viewCurrentRides() {
 		String currentRides = "Current Rides:";
+		// For all rides in the Hashmap
 		Iterator<Entry<Integer, Ride>> ridesIterator = rides.entrySet().iterator();
 		while(ridesIterator.hasNext()){
 			Map.Entry<Integer, Ride> mapElement = (Map.Entry<Integer, Ride>)ridesIterator.next();
@@ -595,21 +622,33 @@ public class ValleyBikeSim {
 		return currentRides;
 	}
 	
-	// TODO Implement method
-	public String addBikes(Integer numBikes) {
-		int bikeId = 0;
-
-		for (numBikes : this.bikes.values()){
-			numBikes = numBikes.get(); 
+	/*
+	 * Add a number of bikes to a station
+	 * 
+	 * TODO: Add in validate for number of bikes being added to station
+	 * @return String "success"
+	 */
+	public String addBikes(int stationId, int numBikes) {
+		
+		// check if this station can take this many bikes
+		// return string to controller "you can't do that"
+		
+		Station s = stations.get(stationId);
+		
+		for (int i = 0; i < numBikes; i++) {
+			// Increment last bike id
+			this.lastBikeId = this.lastBikeId + 1; 
+			// Set new bike id
+			int id = this.lastBikeId;
+			// Create new bike
+			Bike bike = new Bike(id, stationId, "", false);
+			// Add bike to the bikes Hashmap
+			bikes.put(id, bike);
+			// add bike id to station info
+			s.addBike(id);
 		}
-		// create new Bike and add to HashMap
-		boolean checkedOut;
-		Bike bike = new Bike(id, lastStationId, userId, checkedOut);
-
-		Bike b = bikes.get(bikeId);
-		b.setCheckedOut(false);
-		bikes.put(bikeId, bike);
-		return numBikes.toString() + " bikes added";
+		
+		return "Bikes added.";
 	}
 	
 	// TODO Implement method
