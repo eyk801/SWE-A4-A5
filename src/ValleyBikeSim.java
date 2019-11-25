@@ -266,7 +266,7 @@ public class ValleyBikeSim {
 			userWriter.close();
 		// Save ride data
 		FileWriter rideWriter = new FileWriter("data-files/ride-data.csv");
-		rideWriter.write("ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time\n");
+		rideWriter.write("ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time,Current Ride\n");
 			for (Ride r : this.rides.values()) {
 				rideWriter.write(r.toSaveString());
 			}
