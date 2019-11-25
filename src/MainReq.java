@@ -11,7 +11,7 @@ public class MainReq {
 	 * TODO: Figure out how to toString for a message that may have comments in it
 	 */
 	
-	public MainReq(String message, int stationId, into mainReqID) {
+	public MainReq(String message, int stationId, int mainReqID) {
 		this.message = message;
         this.stationId = stationId;
         this.mainReqID = mainReqID;

@@ -18,6 +18,7 @@ public class ValleyBikeSim {
 	private Integer lastRideId = 0;
 	private Integer lastBikeId = 0;
 	private PaymentSys paymentSystem = new PaymentSys();
+	private Integer mainReqID = 0;
 
 	/**
 	 * ValleyBikeSim class constructor
@@ -533,7 +534,7 @@ public class ValleyBikeSim {
 	
 	public String reportIssue(String username, Integer stationId, String issueMessage) {
 		mainReqID += 1;
-		MainReq mR = new mainReq(issueMessage, stationId, mainReqID);
+		MainReq mR = new MainReq(issueMessage, stationId, mainReqID);
 		mainReqs.put(mainReqID, mR);
 
 		return "Issue reported.";
@@ -603,7 +604,7 @@ public class ValleyBikeSim {
 	
 	public String viewIssues() {
 		String currIssues = "";
-		for (String issue : mainReqs.values()) {
+		for (MainReq issue : mainReqs.values()) {
 			currIssues = currIssues + issue.toViewString() + "\n";
 		}
 		return "Current Issues: \n" + currIssues;
@@ -666,7 +667,7 @@ public class ValleyBikeSim {
 		for (Integer i : issues) {
 			mainReqs.remove(i);
 		}
-		return "Issues " issues.toString() + " resolved";
+		return "Issues resolved";
 	}
 	
 	/**
