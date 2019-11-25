@@ -70,7 +70,8 @@ public class Station {
     
     public void removeBike(int bikeId) {
     	// Remove bike based on bike id
-    	this.bikeIds.remove(bikeId);
+    	int index = this.bikeIds.indexOf(bikeId);
+    	this.bikeIds.remove(index);
     }
 
     public String toSaveString() {

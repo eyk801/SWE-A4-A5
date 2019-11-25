@@ -393,7 +393,6 @@ public class ValleyBikeSim {
 	 * Then gradually reassigns by iterating through each station adding 1 if it is below the percentage
 	 * and continuing on while there are still extras to reassign
 	 * 
-	 * TODO: FIX THIS METHOD. Currently freezes the whole program.
 	 * 
 	 * @return String to confirm equalization
 	 */
@@ -408,49 +407,43 @@ public class ValleyBikeSim {
 			totalCap += s.getCapacity();
 		}
 		// find the average percentage of bikes to capacity
-		double percentBikes = (double) totalBikes / (double) totalCap;
+		int percentBikes = (int)(((float) totalBikes / totalCap) *100);
 		System.out.println(percentBikes);
 		ArrayList<Integer> spareBikes = new ArrayList<Integer>();
 		
-		//remove all the extra bikes from stations that are greater than 15% away from average percentage
+		//remove all the extra bikes from stations that are greater than 5% away from average percentage
 		for (Station s : this.stations.values()) {
-			if((double)s.getNumBikes()/(double)s.getCapacity() > percentBikes + .15){
-				spareBikes = removeExtraBikes(s, percentBikes, spareBikes);
-			} 
+			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+			System.out.println(s.getId() + " : " + stationPercentage);
+			while (stationPercentage > percentBikes + 5) {
+				Integer bikeToMove = s.getBikeIds().get(0);
+				s.removeBike(bikeToMove);
+				spareBikes.add(bikeToMove);
+				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+			}
 		}
 		System.out.println(spareBikes.size());
 		//while there are still bikes left to add, add them to stations that are under
-		//average percentage by more than 15%
-		while(spareBikes.size() > 0) {
-			for (Station s : this.stations.values()) {
-				if((double)s.getNumBikes()/(double)s.getCapacity() < percentBikes - .15) {
-					Integer bikeToAdd = spareBikes.remove(0);
-					s.addBike(bikeToAdd);
-					bikes.get(bikeToAdd).setLastStationId(s.getId());
-					System.out.println("Moved a bike");
+		//average percentage
+		for (Station s : this.stations.values()) {
+			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+			while(stationPercentage < percentBikes) {
+				if(spareBikes.size() > 0) {
+				Integer bikeToAdd = spareBikes.remove(0);
+				s.addBike(bikeToAdd);					
+				bikes.get(bikeToAdd).setLastStationId(s.getId());
+				System.out.println("Moved a bike");
+				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+				} else {
+					break;
 				}
 			}
+		
 		}
 		System.out.println("End of valleybike func");
 		return "The number of bikes and pedelecs at all stations have been equalized.";
 	}
 	
-	/**
-	 * Helper method for equalizeStations()
-	 * Removes bikes from the inputted station and adds to a spareBikes list
-	 * @param Station s
-	 * @param double percentBikes
-	 * @param ArrayList<Integer> spareBikes
-	 * @returns ArrayList<Integer> spareBikes
-	 */
-	public ArrayList<Integer> removeExtraBikes(Station s, double percentBikes, ArrayList<Integer> spareBikes){
-		while ((double)s.getNumBikes()/(double)s.getCapacity() > percentBikes + .15) {
-			Integer bikeToMove = s.getBikeIds().get(0);
-			s.removeBike(bikeToMove);
-			spareBikes.add(bikeToMove);
-		}
-		return spareBikes;
-	}
 	
 	/**
 	 * Check out bike method for user
