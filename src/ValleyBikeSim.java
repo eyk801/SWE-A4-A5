@@ -513,6 +513,12 @@ public class ValleyBikeSim {
 		if (currentUser.onRide() == false) {
 			return "User does not currently have a bike to check in";
 		}
+		
+		if(stations.get(stationId).getAvDocks() == 0) {
+			return "No available docks for this station.\n "
+					+ "Please call to set up a virtual station"
+					+"or go to another station";
+		}
 		// Get ride object
 		Ride r = rides.get(currentUser.getCurrentRideId());
 		// Get bike object
