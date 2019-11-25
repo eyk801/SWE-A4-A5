@@ -276,10 +276,15 @@ public class Controller {
 		valleyBike.addStation(id, capacity, kiosk, address, name);
 	}
 	
+	/**
+	 * TODO: validate station id
+	 * @return
+	 */
 	private String addBikes() {
 		Integer numBikes = getIntResponse("How many bikes would you like to add?", 
 				0, 100);
-		return valleyBike.addBikes(numBikes);
+		Integer stationId = getIntResponse("What station would you like to put the bikes at?", 0, 100);
+		return valleyBike.addBikes(stationId, numBikes);
 	}
 	
 	private String moveBikes() {
