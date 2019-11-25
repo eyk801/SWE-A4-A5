@@ -655,13 +655,16 @@ public class ValleyBikeSim {
 	/**
 	 * Add a number of bikes to a station
 	 * 
-	 * TODO: Add in validate for number of bikes being added to station
 	 * @return String "success"
 	 */
 	public String addBikes(int stationId, int numBikes) {
-		
+		int avDocks = stations.get(stationId).getAvDocks();
 		// check if this station can take this many bikes
 		// return string to controller "you can't do that"
+		if(avDocks < numBikes) {
+			return "Station " + stationId + " only has available docks for " + avDocks + " new bikes\n"
+					+ "Please try again.";
+		}
 		
 		Station s = stations.get(stationId);
 		
