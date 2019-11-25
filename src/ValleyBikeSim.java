@@ -95,7 +95,7 @@ public class ValleyBikeSim {
 				String username = values[0];
 				List<Integer> rideHistory = new ArrayList<>();
 				User user = new User(username,values[1],Integer.parseInt(values[2]),
-									Integer.parseInt(values[3]),Integer.parseInt(values[4]),
+									Double.parseDouble(values[3]),Integer.parseInt(values[4]),
 									values[5]);
 				// Loop to end of line for all ride history
 				for (int i=8; i < values.length;i++) {
@@ -699,7 +699,7 @@ public class ValleyBikeSim {
 	 * TODO: do we want this as a bool? or do we want a string response if it doesnt work to explain why
 	 * @return boolean to controller for whether or not user was successfully added to system
 	 */
-	public boolean createUser(String username, String password, Integer membership, Integer cardNum, Integer CVV, String expDate) {
+	public boolean createUser(String username, String password, Integer membership, double cardNum, Integer CVV, String expDate) {
 		if (paymentSystem.validate(cardNum, CVV, expDate)) {
 			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
 			users.put(username, newUser);

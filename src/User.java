@@ -6,7 +6,7 @@ public class User {
 	private String password = "";
 	private int membershipType = 0;
 	private int currentRideId = 0;
-	private int creditCardNum = 0;
+	private double creditCardNum = 0;
 	private int CVV = 0;
 	private String expirationDate = "";
 	private List<Integer> rideHistory = new ArrayList<>();
@@ -19,7 +19,7 @@ public class User {
 	 * TODO: Include any methods involving payment system, check toString methods
 	 */
 	public User(String username, String password, int membershipType, 
-			int creditCardNum, int CVV, String expirationDate) {
+			double creditCardNum, int CVV, String expirationDate) {
 		this.username = username;
 		this.password = password;
 		this.membershipType = membershipType;

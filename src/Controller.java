@@ -77,7 +77,7 @@ public class Controller {
 		executeUser(username);
 	}
 	
-	public void executeEmployee() {
+	public void executeEmployee() throws IOException {
 		// ALL SWITCH STATEMENTS FOR COMPANY METHODS
 		
 		// viewStationList()
@@ -103,7 +103,8 @@ public class Controller {
 		case 0:
 			sc.close();
 			// Save all system data to csvs
-			System.out.println(valleyBike.saveData());
+			String saved = valleyBike.saveData();
+			System.out.println(saved);
 			// Exit message
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);

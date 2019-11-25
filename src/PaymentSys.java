@@ -11,7 +11,7 @@ public class PaymentSys {
 		
 	}
 	
-	public boolean validate(int creditNum, int CVV, String expirationDate) {
+	public boolean validate(double creditNum, int CVV, String expirationDate) {
 		Random rand = new Random();
 		int i = rand.nextInt(10);
 		if (i != 0) {
