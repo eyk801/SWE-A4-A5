@@ -1,9 +1,9 @@
+  
 public class MainReq {
-	
-	private int id = 0;
-	private String username = "";
-	private int stationId = 0;
+
 	private String message = "";
+    private int stationId = 0;
+    private int mainReqID = 0;
 	
 	/**
 	 * Maintenance Requests class constructor
@@ -11,11 +11,10 @@ public class MainReq {
 	 * TODO: Figure out how to toString for a message that may have comments in it
 	 */
 	
-	public MainReq(int id, String username, int stationId, String message) {
-		this.id = id;
-		this.username = username;
-		this.stationId = stationId;
+	public MainReq(String message, int stationId, into mainReqID) {
 		this.message = message;
+        this.stationId = stationId;
+        this.mainReqID = mainReqID;
 	}
 	
 	public void changeMessage(String newMessage) {
@@ -28,13 +27,22 @@ public class MainReq {
 	
 	public int getStationId() {
 		return this.stationId;
-	}
+    }
+    
+    public int getMRID() {
+        return this.mainReqID;
+    }
+
+    public void setMRID(int MRID) {
+        this.mainReqID = MRID;
+    }
 	
     public String toSaveString() {
-        return (this.id + "," + this.username + "," + this.stationId + "," + this.message + "\n");
+    	// FIX THIS LATER
+        return "";
     }
     
     public String toViewString(){
-    	return (this.message + "\t" + this.stationId + "\n");  
+    	return ("Issue " + this.mainReqID + "\t at Station " + this.stationId + "\t" + this.message + "\n");  
     }
 }

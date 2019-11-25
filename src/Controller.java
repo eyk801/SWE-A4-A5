@@ -259,9 +259,10 @@ public class Controller {
 	}
 	
 	private String reportIssue(String username){
+		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		System.out.println("Please enter issue message: ");
 		String issueMessage = sc.nextLine();
-		return valleyBike.reportIssue(username, issueMessage);
+		return valleyBike.reportIssue(username, stationId, issueMessage);
 	}
 	
 	private void addStation() {

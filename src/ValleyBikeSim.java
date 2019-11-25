@@ -531,9 +531,12 @@ public class ValleyBikeSim {
 				+ currentUser.toViewString());
 	}
 	
-	//TODO: Implement method
-	public String reportIssue(String username, String issueMessage) {
-		return "Issue reported";
+	public String reportIssue(String username, Integer stationId, String issueMessage) {
+		mainReqID += 1;
+		MainReq mR = new mainReq(issueMessage, stationId, mainReqID);
+		mainReqs.put(mainReqID, mR);
+
+		return "Issue reported.";
 	}
 	
 	/*
@@ -598,9 +601,12 @@ public class ValleyBikeSim {
 		return stats;
 	}
 	
-	//TODO: Implement method
 	public String viewIssues() {
-		return "current issues";
+		String currIssues = "";
+		for (String issue : mainReqs.values()) {
+			currIssues = currIssues + issue.toViewString() + "\n";
+		}
+		return "Current Issues: \n" + currIssues;
 	}
 	
 	/**
@@ -656,9 +662,11 @@ public class ValleyBikeSim {
 		return null;
 	}
 	
-	// TODO Implement method
 	public String resolveIssues(ArrayList<Integer> issues) {
-		return issues.toString() + " resolved";
+		for (Integer i : issues) {
+			mainReqs.remove(i);
+		}
+		return "Issues " issues.toString() + " resolved";
 	}
 	
 	/**
