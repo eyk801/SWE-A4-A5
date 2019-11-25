@@ -397,7 +397,9 @@ public class ValleyBikeSim {
 	 * @return String to confirm equalization
 	 */
 	public String equalizeStations() {
-		// find the total number of bikes, pedelecs, and total capacity
+		// find the total number of bikes and total capacity
+		//The reason we use total bikes at stations instead of just bikes.size()
+		//Is because we can't move bikes that are currently checked out by users
 		int totalBikes = 0;
 		int totalCap = 0;
 		for (Station s : this.stations.values()) {
@@ -434,8 +436,7 @@ public class ValleyBikeSim {
 			}
 		
 		}
-		System.out.println("End of valleybike func");
-		return "The number of bikes and pedelecs at all stations have been equalized.";
+		return "The number of bikes at all stations have been equalized.";
 	}
 	
 	
