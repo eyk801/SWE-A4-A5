@@ -102,6 +102,10 @@ public class ValleyBikeSim {
 				User user = new User(username,values[1],Integer.parseInt(values[2]),
 									Long.parseLong(values[3]),Integer.parseInt(values[4]),
 									values[5]);
+				// Check if user is currently on a ride and set currentRideId
+				if (Integer.parseInt(values[6]) != 0) {
+					user.setCurrentRideId(Integer.parseInt(values[6]));
+				}
 				// Loop to end of line for all ride history
 				for (int i=7; i < values.length;i++) {
 					// Check if valid ride id

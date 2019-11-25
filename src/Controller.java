@@ -272,7 +272,8 @@ public class Controller {
 			String expDate = sc.next(); 
 			userAccounts.put(username, password);
 			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
-				userAccounts.put(username, password);	
+				// Add username and password to controller csvs
+				this.userAccounts.put(username, password);
 				System.out.println("Account successfully created!");
 				return true;
 			} else {
