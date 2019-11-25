@@ -369,11 +369,11 @@ public class ValleyBikeSim {
 	 * Station ID is automatically assigned
 	 * 
 	 */
-	public void addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
+	public String addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
 		List<Integer> bikeIds = new ArrayList<>();
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);
-		System.out.println("Station successfully added to the system.");
+		return "Station successfully added to the system.";
 	}
 
 	/**

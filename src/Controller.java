@@ -113,16 +113,16 @@ public class Controller {
 			break;
 		case 2:
 			// Take in all ride data
-			valleyBike.viewCurrentRides();
+			System.out.println(valleyBike.viewCurrentRides());
 			break;
 		case 3: 
-			valleyBike.viewIssues();
+			System.out.println(valleyBike.viewIssues());
 			break;
 		case 4:
-			resolveIssues();
+			System.out.println(resolveIssues());
 			break;
 		case 5:
-			addStation();
+			System.out.println(addStation());
 			break;
 		case 6:
 			String string = valleyBike.viewSystemOverview();
@@ -333,8 +333,9 @@ public class Controller {
 	/**
 	 * TODO: check to make sure station id is not already taken and within correct range
 	 * Maybe set station id from within valleybike? in same way as new ride and new bike?
+	 * @return String "success"
 	 */
-	private void addStation() {
+	private String addStation() {
 		Integer id = getUnboundedIntResponse("Please enter station ID", 0);
 		sc.nextLine();
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
@@ -345,7 +346,7 @@ public class Controller {
 		String address = sc.nextLine();
 		System.out.println("Please enter station name: ");
 		String name = sc.nextLine();
-		valleyBike.addStation(id, capacity, kiosk, address, name);
+		return valleyBike.addStation(id, capacity, kiosk, address, name);
 	}
 	
 	/**
