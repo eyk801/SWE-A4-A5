@@ -77,7 +77,11 @@ public class Station {
     	// Put bikeIds in csv format
     	String bikes = "";
     	for (int bike : bikeIds) {
-    		bikes = bikes + bike + ",";
+    		if (bikes.equals("")) {
+    			bikes = bikes + bike;
+    		} else {
+    			bikes = bikes  + "," + bike;
+    		}
     	}
         return (this.id + "," + this.name + "," + this.avDocks + "," + this.capacity + "," +
 				this.kiosk + "," + this.address + "," + bikes + "\n");
