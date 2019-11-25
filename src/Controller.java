@@ -6,8 +6,14 @@ public class Controller {
 	ValleyBikeSim valleyBike = new ValleyBikeSim();
 	private Scanner sc = new Scanner(System.in);
 	private Map<String, String> userAccounts = new HashMap<>();
-	//private Map<String, String> employeeAccounts = new HashMap<>();
-	//TODO: Read in CSV file of current accounts
+	private Map<String, String> employeeAccounts = new HashMap<>();
+	
+	public Controller() {
+		// Read in csv data
+		this.userAccounts = readUserData();
+		this.employeeAccounts = readEmployeeData();
+	}
+	
 	
 	public void chooseView() throws IOException {
 		System.out.println("Welcome to ValleyBike! "
@@ -43,7 +49,6 @@ public class Controller {
 		switch (option) {
 		/* 0. Quit program */
 		case 0:
-			sc.close();
 			// Save all system data to csvs
 			// Check if you want to save
 			System.out.println("Do you want to save the data? y/n");
@@ -51,6 +56,7 @@ public class Controller {
 			if (response.equalsIgnoreCase("y")) {
 				System.out.println(valleyBike.saveData());
 			}
+			sc.close();
 			// Exit statement
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
@@ -83,18 +89,6 @@ public class Controller {
 	}
 	
 	public void executeEmployee() throws IOException {
-		// ALL SWITCH STATEMENTS FOR COMPANY METHODS
-		
-		// viewStationList()
-		// viewCurrentRides()
-		// equalizeStations()
-		// moveBike() ??????
-		// viewIssues()
-		// resolveIssue()
-		// addBike() - 
-		// addStation()
-		// checkStats() - resolveRideData() sorta
-		
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
 				+ "5. Add Station.\n" + "6. Equalize stations.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Move Bikes.\n");
@@ -149,6 +143,65 @@ public class Controller {
 		
 	}
 	
+	/**
+	 * Reads in data from stored .csv file 
+	 * Parse values into new objects 
+	 * Add objects to a HashMap using key-value pair
+	 * 
+	 * @return users-passwords hashmap
+	 */
+	public HashMap<String, String> readUserData() {
+
+		HashMap<String, String> userAccounts = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/controller-users.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				String username = values[0];
+				String password = values[1];
+				userAccounts.put(username,password);
+			}
+			br.close();
+			return userAccounts;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read controller-user data file.");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * Reads in data from stored .csv file 
+	 * Parse values into new objects 
+	 * Add objects to a HashMap using key-value pair
+	 * 
+	 * @return employee-passwords hashmap
+	 */
+	public HashMap<String, String> readEmployeeData() {
+
+		HashMap<String, String> employeeAccounts = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/controller-employees.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				String username = values[0];
+				String password = values[1];
+				employeeAccounts.put(username,password);
+			}
+			br.close();
+			return employeeAccounts;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read controller-employees data file.");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	private String accountLogin() {
 		String username = "";
 		System.out.println("Would you like to login or create a new account? "
@@ -185,7 +238,7 @@ public class Controller {
 	}
 	
 	private boolean login(String username, String password) {
-		if (userAccounts.containsKey(username) && userAccounts.get(username)== password) {
+		if (userAccounts.containsKey(username) && userAccounts.get(username).equals(password)) {
 			return true;
 		} else {
 			return false;
