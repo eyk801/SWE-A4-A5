@@ -326,10 +326,17 @@ public class Controller {
 		return valleyBike.reportIssue(username, stationId, issueMessage);
 	}
 	
+	/**
+	 * TODO: check to make sure station id is not already taken and within correct range
+	 * Maybe set station id from within valleybike? in same way as new ride and new bike?
+	 */
 	private void addStation() {
 		Integer id = getUnboundedIntResponse("Please enter station ID", 0);
+		sc.nextLine();
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
+		sc.nextLine();
 		Integer kiosk = getUnboundedIntResponse("Please enter number of kiosks", 0);
+		sc.nextLine();
 		System.out.println("Please enter station address: ");
 		String address = sc.nextLine();
 		System.out.println("Please enter station name: ");
@@ -344,14 +351,18 @@ public class Controller {
 	private String addBikes() {
 		Integer numBikes = getIntResponse("How many bikes would you like to add?", 
 				0, 100);
+		sc.nextLine();
 		Integer stationId = getIntResponse("What station would you like to put the bikes at?", 0, 100);
 		return valleyBike.addBikes(stationId, numBikes);
 	}
 	
 	private String moveBikes() {
 		Integer stationFrom = getUnboundedIntResponse("Please enter station ID to move from", 0);
+		sc.nextLine();
 		Integer stationTo = getUnboundedIntResponse("Please enter station ID to move to", 0);
+		sc.nextLine();
 		Integer numBikes = getUnboundedIntResponse("Please enter number of bikes to move", 0);
+		sc.nextLine();
 		return valleyBike.moveBikes(stationFrom, stationTo, numBikes);
 	}
 	
