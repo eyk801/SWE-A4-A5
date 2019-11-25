@@ -194,8 +194,7 @@ public class ValleyBikeSim {
 				// Update this.lastRideId var
 				if (id > this.lastRideId) {
 					this.lastRideId = id;
-				}
-				
+				}				
 			}
 			br.close();
 			return rides;
@@ -459,7 +458,7 @@ public class ValleyBikeSim {
 		if (stations.get(stationId).getNumBikes() == 0) {
 			return "No bikes at this station. Try another!";
 		}
-	
+		
 		// Set this.lastRideId to current ride id
 		this.lastRideId = this.lastRideId + 1;
 		// Get new ride id
@@ -533,7 +532,6 @@ public class ValleyBikeSim {
 		// End the ride (update ride info)
 		r.end(stationId);
 		// Update user info (end ride), add ride to ride history
-		currentUser.addUserRide(r.getBikeId());
 		currentUser.endRide();
 
 		return "Successfully checked in. Ride completed.";

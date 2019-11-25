@@ -37,7 +37,7 @@ public class User {
 		return true;
 	}
 	
-	public void addUserRide(Integer rideID) {
+	public void addUserRide(int rideID) {
 		rideHistory.add(rideID);
 	}
 	
@@ -75,6 +75,8 @@ public class User {
 	}
 	
 	public void endRide() {
+		// Add ride to user history
+		addUserRide(this.currentRideId);
 		// Default for no ride is rideId == 0
 		this.currentRideId = 0;
 	}
