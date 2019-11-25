@@ -586,7 +586,7 @@ public class ValleyBikeSim {
 	public String viewSystemOverview() {
 		// Begin return string
 		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
-		systemStats += ("ID	Bikes	AvDocs	MainReq	Cap	Kiosk	Name - Address \n");
+		systemStats += ("ID	Bikes	AvDocs	Cap	MainReq	Kiosk	Name - Address \n");
 		Iterator<Entry<Integer, Station>> stationsIterator = stations.entrySet().iterator();
 		// For each station in the system
 		while(stationsIterator.hasNext()){
