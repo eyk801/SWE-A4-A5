@@ -18,7 +18,7 @@ public class ValleyBikeSim {
 	private Integer lastRideId = 0;
 	private Integer lastBikeId = 0;
 	private PaymentSys paymentSystem = new PaymentSys();
-	private Integer mainReqID = 0;
+	private Integer lastMainReqId = 0;
 
 	/**
 	 * ValleyBikeSim class constructor
@@ -137,7 +137,6 @@ public class ValleyBikeSim {
 									values[2],Boolean.parseBoolean(values[3]));
 				// Add bike object to bikes hash
 				bikes.put(id,bike);
-				
 				// Update this.lastBikeId var
 				if (id > this.lastBikeId) {
 					this.lastBikeId = id;
@@ -220,6 +219,10 @@ public class ValleyBikeSim {
 				MainReq req = new MainReq(id, values[1], Integer.parseInt(values[2]), values[3]);
 				// Add req to hash
 				mainReqs.put(id,req);
+				// Update this.lastMainReqId var
+				if (id > this.lastMainReqId) {
+					this.lastMainReqId = id;
+				}
 			}
 			br.close();
 			return mainReqs;
@@ -532,19 +535,29 @@ public class ValleyBikeSim {
 				+ currentUser.toViewString());
 	}
 	
+	/**
+	 * Create a new maintenance request 
+	 * @param username
+	 * @param stationId
+	 * @param issueMessage
+	 * @return String "success"
+	 */
 	public String reportIssue(String username, Integer stationId, String issueMessage) {
-		mainReqID += 1;
-		MainReq mR = new MainReq(issueMessage, stationId, mainReqID);
-		mainReqs.put(mainReqID, mR);
-
+		// Increment lastMainReqId var
+		this.lastMainReqId = this.lastMainReqId + 1;
+		// Get new id
+		int id = this.lastMainReqId;
+		// Create new MainReq object
+		MainReq req = new MainReq(id, username, stationId, issueMessage);
+		mainReqs.put(id, req);
 		return "Issue reported.";
 	}
 	
-	/*
+	/**
 	 * Print a system overview of all vehicles and stations
 	 * Company view
 	 * 
-	 * TODO: Comment this method for clarity @ali
+	 * TODO: Finish commenting this method for clarity @ali
 	 * @return String systemStats
 	 */
 	public String viewSystemOverview() {
@@ -581,8 +594,7 @@ public class ValleyBikeSim {
 		return systemStats;
 	}
 	
-	/*
-	 * 
+	/**
 	 * TODO: What should this do? Ask our stakeholder
 	 * @return String stats
 	 */
@@ -602,6 +614,11 @@ public class ValleyBikeSim {
 		return stats;
 	}
 	
+	/**
+	 * Returns the list of current maintenance requests to the controller
+	 * 
+	 * @return String issues
+	 */
 	public String viewIssues() {
 		String currIssues = "";
 		for (MainReq issue : mainReqs.values()) {
@@ -629,7 +646,7 @@ public class ValleyBikeSim {
 		return currentRides;
 	}
 	
-	/*
+	/**
 	 * Add a number of bikes to a station
 	 * 
 	 * TODO: Add in validate for number of bikes being added to station
@@ -658,13 +675,19 @@ public class ValleyBikeSim {
 		return "Bikes added.";
 	}
 	
-	// TODO Implement method
+	/**
+	 * TODO: Do we want this method?
+	 * @return ??? null for now
+	 */
 	public String moveBikes(Integer stationFrom, Integer stationTo, Integer numBikes) {
 		return null;
 	}
 	
+	/**
+	 * TODO: @ali check if this works how you want it
+	 */
 	public String resolveIssues(ArrayList<Integer> issues) {
-		for (Integer i : issues) {
+		for (int i : issues) {
 			mainReqs.remove(i);
 		}
 		return "Issues resolved";
@@ -673,11 +696,11 @@ public class ValleyBikeSim {
 	/**
 	 * Method checks if payment params are valid
 	 * and creates a new user object and adds it to user hashmap if so 
-	 * TODO: call payment system method on user
+	 * TODO: do we want this as a bool? or do we want a string response if it doesnt work to explain why
 	 * @return boolean to controller for whether or not user was successfully added to system
 	 */
 	public boolean createUser(String username, String password, Integer membership, Integer cardNum, Integer CVV, String expDate) {
-		if(paymentSystem.validate(cardNum, CVV, expDate) == true) {
+		if (paymentSystem.validate(cardNum, CVV, expDate)) {
 			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
 			users.put(username, newUser);
 			return true;
@@ -694,13 +717,5 @@ public class ValleyBikeSim {
 	 */
 	public static void main(String[] args) {
 //		ValleyBikeSim sim = new ValleyBikeSim();
-//		System.out.println("Welcome to the ValleyBike Simulator.\n");
-//		// calls option menu
-//		try {
-//			sim.execute();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 }
