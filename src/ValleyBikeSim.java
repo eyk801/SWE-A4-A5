@@ -474,6 +474,8 @@ public class ValleyBikeSim {
 		Bike b = bikes.get(bikeId);
 		b.setCheckedOut(true);
 		b.setUserId(username);
+		// Update the station info
+		s.removeBike(bikeId);
 		
 		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +". Your account has been charged $" + cost;
 	};
@@ -632,14 +634,10 @@ public class ValleyBikeSim {
 	 * @return string of current rides to controller
 	 */
 	public String viewCurrentRides() {
-		String currentRides = "Current Rides:";
-		// For all rides in the Hashmap
-		Iterator<Entry<Integer, Ride>> ridesIterator = rides.entrySet().iterator();
-		while(ridesIterator.hasNext()){
-			Map.Entry<Integer, Ride> mapElement = (Map.Entry<Integer, Ride>)ridesIterator.next();
-			if (mapElement.getValue().isCurrentRide());{
-				currentRides = "/n" + Integer.toString(mapElement.getValue().getId());
-			}
+		String currentRides = "Current Rides:\n";
+		// Loop through rides in currRides list
+		for (int ride : currRides) {
+			currentRides = currentRides + "Ride: " + ride + "\n";
 		}
 		return currentRides;
 	}
