@@ -9,13 +9,23 @@ public class Controller {
 	private Map<String, String> userAccounts = new HashMap<>();
 	private Map<String, String> employeeAccounts = new HashMap<>();
 	
+	/**
+	 * Controller class constructor
+	 * Calls methods to read csv data files
+	 * Populates class HashMaps
+	 * 
+	 */
 	public Controller() {
 		// Read in csv data
 		this.userAccounts = readUserData();
 		this.employeeAccounts = readEmployeeData();
 	}
 	
-	
+	/**
+	 * Choose employee or user view 
+	 * 
+	 * @throws IOException
+	 */
 	public void chooseView() throws IOException {
 		System.out.println("Welcome to ValleyBike! "
 				+ "Please enter 'user' for user and 'employee' for employee: ");
@@ -93,7 +103,6 @@ public class Controller {
 	 * Menu selector for employee options. 
 	 * Runs until employee selects 0 to quit program.
 	 * 
-	 * 
 	 * @throws IOException
 	 */
 	public void executeEmployee() throws IOException {
@@ -158,7 +167,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Reads in data from stored .csv file 
+	 * Reads in data from stored csv file 
 	 * Parse values into new objects 
 	 * Add objects to a HashMap using key-value pair
 	 * 
@@ -188,7 +197,7 @@ public class Controller {
 	
 	
 	/**
-	 * Reads in data from stored .csv file 
+	 * Reads in data from stored csv file 
 	 * Parse values into new objects 
 	 * Add objects to a HashMap using key-value pair
 	 * 
@@ -216,6 +225,13 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * User chooses to either log in or create a new account 
+	 * Log in prompts user to enter username and password and verifies
+	 * New account prompts user to enter new account information and saves new user
+	 * 
+	 * @return username
+	 */
 	private String accountLogin() {
 		String username = "";
 		System.out.println("Would you like to login or create a new account? "
@@ -251,6 +267,14 @@ public class Controller {
 		return username;
 	}
 	
+	/**
+	 * Verifies login information
+	 * Checks if the entered username and password match an entry in the userAccounts hashmap
+	 * 
+	 * @param username
+	 * @param password
+	 * @return true if username and password match entry in userAccounts hashmap
+	 */
 	private boolean login(String username, String password) {
 		if (userAccounts.containsKey(username) && userAccounts.get(username).equals(password)) {
 			return true;
@@ -259,6 +283,15 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Creates new user account
+	 * User provides payment information for validation
+	 * If valid, the valleyBike object creates the user and the new user info is added to the userAccounts hashmap
+	 * 
+	 * @param username
+	 * @param password
+	 * @return true if account can be successfully created and validated
+	 */
 	private boolean createAccount(String username, String password){
 		if (userAccounts.containsKey(username) == true) {
 			return false;
@@ -280,6 +313,14 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Gets an int response from the user within a specific range
+	 * 
+	 * @param request
+	 * @param min
+	 * @param max
+	 * @return the integer entry
+	 */
 	private Integer getIntResponse(String request, Integer min, Integer max){
 		Integer entry = 0;
 		System.out.println(request + ": ");
@@ -302,6 +343,13 @@ public class Controller {
 		return entry;
 	}
 	
+	/**
+	 * Gets a long response from the user within a specific range
+	 * 
+	 * @param request
+	 * @param i
+	 * @return the long input
+	 */
 	private Long getUnboundedLongResponse(String request, Long i) {
 		Long input = (long)0;
 		System.out.println(request + ": ");
@@ -324,6 +372,13 @@ public class Controller {
 		return input;
 	}
 	
+	/**
+	 * Gets an unbounded int response from the user
+	 * 
+	 * @param request
+	 * @param min
+	 * @return the integer entry
+	 */
 	private Integer getUnboundedIntResponse(String request, Integer min) {
 		Integer entry = 0;
 		System.out.println(request + ": ");
@@ -346,16 +401,40 @@ public class Controller {
 		return entry;
 	}
 	
+	/**
+	 * Allows the user to check out a bike
+	 * User enters ID of station they're checking a bike out from
+	 * Calls valleyBike object's check out method
+	 * 
+	 * @param username
+	 * @return success string from valleyBike object checkOutBike method
+	 */
 	private String checkOutBike(String username) {
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		return valleyBike.checkOutBike(username, stationId);
 		}
 	
+	/**
+	 * Allows the user to check in a bike
+	 * User enters ID of station they're checking a bike into
+	 * Calls valleyBike object's check in method
+	 * 
+	 * @param username
+	 * @return success string from valleyBike object checkInBike method
+	 */
 	private String checkInBike(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		return valleyBike.checkInBike(username, stationId);
 	}
 	
+	/**
+	 * Allows the user to report an issue
+	 * User enters ID of the current station and the issue message
+	 * Calls valleyBike object's reportIssue method
+	 * 
+	 * @param username
+	 * @return success string from valleyBike object reportIssue method
+	 */
 	private String reportIssue(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		sc.nextLine(); //throw away the \n not consumed by nextInt()
@@ -409,6 +488,13 @@ public class Controller {
 		return valleyBike.moveBikes(stationFrom, stationTo, numBikes);
 	}
 	
+	/**
+	 * Allows employee to resolve issues
+	 * Prompts user for the issue IDs and creates a list
+	 * Calls valleyBike resolveIssues method to remove the issues from the mainReqs hashmap
+	 * 
+	 * @return success string from valleyBike resolveIssues method
+	 */
 	private String resolveIssues() {
 		ArrayList<Integer> issues = new ArrayList<Integer>();
 		String response = "y";
