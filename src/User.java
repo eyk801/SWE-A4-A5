@@ -136,7 +136,7 @@ public class User {
     
     public String toViewString(){
     	String rideIds = this.ridesToString();
-    	return (this.username + "\t\t" 
+    	return (" " + this.username + "\t" 
     					+ this.password + "\t"
     					+ this.membershipType + "\t\t"
     					+ this.currentRideId + "\t\t" 

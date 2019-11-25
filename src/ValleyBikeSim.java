@@ -400,7 +400,6 @@ public class ValleyBikeSim {
 		// find the total number of bikes, pedelecs, and total capacity
 		int totalBikes = 0;
 		int totalCap = 0;
-		// TODO: consider just using bikes.size() for the totalBikes value?
 		for (Station s : this.stations.values()) {
 			totalBikes += s.getNumBikes();
 			totalCap += s.getCapacity();
@@ -454,14 +453,21 @@ public class ValleyBikeSim {
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
 		User currentUser = users.get(username);
-		// Right now, we only one type of membership (0)
+		// Right now, we have 3 types of membership
+		//With tiers (0,1,2) that each pay (2,1,0)
+		//respectively
 		int cost = 0;
 		if (currentUser.getType() == 0) {
-			// TODO: @ali implement payment system here
-			// Add cost to user bill?
-			// Validate
-			// Let's say a ride costs 2 dollars.
 			cost = 2;
+			currentUser.addToBill(cost);
+		}
+		if (currentUser.getType() == 1) {
+			cost = 1;
+			currentUser.addToBill(cost);
+		}
+		if (currentUser.getType() == 2) {
+			cost = 0;
+			currentUser.addToBill(cost);
 		}
 		// Add ride to user history and set as current ride
 		currentUser.addUserRide(rideId);
@@ -535,7 +541,7 @@ public class ValleyBikeSim {
 		User currentUser = users.get(username);
 		
 		return ("Account Information: \n "
-				+ "Username	Password	Membership	Current Ride	Credit Card	Total Bill	Rides\n" 
+				+ "Username	Password	Membership	Current Ride	Credit Card\t Total Bill	Rides\n" 
 				+ currentUser.toViewString());
 	}
 	
@@ -702,6 +708,8 @@ public class ValleyBikeSim {
 	public boolean createUser(String username, String password, Integer membership, long cardNum, Integer CVV, String expDate) {
 		if (paymentSystem.validate(cardNum, CVV, expDate)) {
 			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
+			int membershipCharge = newUser.getType();
+			newUser.addToBill(membershipCharge);
 			users.put(username, newUser);
 			return true;
 		} else {
