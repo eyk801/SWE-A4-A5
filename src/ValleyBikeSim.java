@@ -693,13 +693,26 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * TODO: @ali check if this works how you want it
+	 * This basically iterates through the issues requested to resolve
+	 * by the employee and removes them from currentIssues
+	 * 
 	 */
 	public String resolveIssues(ArrayList<Integer> issues) {
+		String resolved = "Issues ";
+		String invalid = "";
 		for (int i : issues) {
-			mainReqs.remove(i);
+			if (mainReqs.remove(i) == null) {
+				invalid += i + " ";
+			}else{
+				resolved += i + " ";
+			};
 		}
-		return "Issues resolved";
+		if (resolved.equalsIgnoreCase("Issues ")) {
+			resolved = "";
+		}if (invalid.equalsIgnoreCase("") == false) {
+			resolved += "have been resolved\nIssues " + invalid + " were not found in the system";
+		}
+		return resolved;
 	}
 	
 	/**

@@ -407,11 +407,11 @@ public class Controller {
 	private String resolveIssues() {
 		ArrayList<Integer> issues = new ArrayList<Integer>();
 		String response = "y";
-		while (response == "y") {
+		while (response.equalsIgnoreCase("y")) {
 			Integer issue = getUnboundedIntResponse("Please enter issue number", 0);
 			issues.add(issue);
 			System.out.println("Would you like to add another issue to resolve? (y/n): ");
-			response = sc.next().toLowerCase();
+			response = sc.next();
 		}
 		return valleyBike.resolveIssues(issues);
 	}
