@@ -375,9 +375,9 @@ public class Controller {
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
 		System.out.println("Please enter whether station has a kiosk or not: (true/false)");
 		boolean kiosk = sc.nextBoolean();
+		sc.nextLine();
 		System.out.println("Please enter station address: ");
 		String address = sc.nextLine();
-		sc.nextLine();
 		System.out.println("Please enter station name: ");
 		String name = sc.nextLine();
 		return valleyBike.addStation(capacity, kiosk, address, name);
