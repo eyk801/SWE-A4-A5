@@ -245,7 +245,6 @@ public class ValleyBikeSim {
 	 * (rides, new stations, etc)
 	 * 
 	 * @throws IOException
-	 * TODO: test to see if it corrupts data (datafiles can be redownloaded from the git don't worry)
 	 */
 	public String saveData() throws IOException {
 		// Save station data
@@ -315,7 +314,7 @@ public class ValleyBikeSim {
 	 * and check stations for Available Docks, pedelecs, etc
 	 * TODO: Implement as a viewStats() method in A5?
 	 * 
-	 */
+	 *
 //	public void resolveRideData() {
 //
 //		boolean cont = true;
@@ -395,6 +394,8 @@ public class ValleyBikeSim {
 	 * Then gradually reassigns by iterating through each station adding 1 if it is below the percentage
 	 * and continuing on while there are still extras to reassign
 	 * 
+	 * TODO: Consider changing the bike assignment so that it assigns one bike per station in a while loop for spareBikes.size()
+	 * In order to make spread of bikes more even
 	 * 
 	 * @return String to confirm equalization
 	 */
@@ -599,7 +600,7 @@ public class ValleyBikeSim {
 	public String viewSystemOverview() {
 		// Begin return string
 		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
-		systemStats += ("ID	Bikes	AvDocs	Cap	MainReq	Kiosk	Name - Address \n");
+		systemStats += ("ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address \n");
 		Iterator<Entry<Integer, Station>> stationsIterator = stations.entrySet().iterator();
 		// For each station in the system
 		while(stationsIterator.hasNext()){
