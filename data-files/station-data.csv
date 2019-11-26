@@ -1,15 +1,15 @@
-ID,Name,Bikes,Pedelecs,Available Docks,Maintainence Request,Capacity,Kiosk,Address
-20,Village Hill/State Hospital,0,6,8,0,14,0,Village Hill/State Hospital
-21,Florence Bank Station,0,2,4,0,7,0,19 Meadow Street Florence Ma @ Lilly Library
-22,YMCA/Childs Park,0,8,9,0,17,0,YMCA/Childs Park
-23,Forbes Library,0,6,7,0,13,0,20 West Street Northampton Ma
-24,Florence Center,0,3,7,0,10,0,31 Main Street Florence Ma
-25,Cooley Dickinson Health Care,0,7,6,1,14,0,51 Locust Street Northampton MA
-26,John M Greene Hall/Smith College,0,5,11,0,16,0,1 Chapin Way Northampton MA @ John M. Greene Hall
-27,Pulaski Park/Downtown,0,3,8,0,11,1,274 Main Street Northampton Ma at Pulaski Park
-28,Northampton Train Station,0,5,8,0,13,1,Northampton Train Station
-29,State St/Mass Central Rail Trail,0,4,6,0,10,0,State Street/Mass Central Rail Trail
-30,Jackson Street,0,8,8,0,16,0,7A-7D Jackson Street Northampton Ma
-31,Main Street/Court House,0,3,6,1,10,0,99 Main Street Northampton Ma
-32,Main Street/Bridge Street,0,8,7,0,15,0,1 Bridge Street Northampton Ma
-33,Northampton High School,0,8,7,0,15,0,380 Elm Street Northampton Ma
+ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids
+1,Village Hill/State Hospital,11,14,false,Village Hill/State Hospital,17,3,1
+2,Florence Bank Station,2,7,false,19 Meadow Street Florence Ma @ Lilly Library,21,18,20,2,16
+3,YMCA/Childs Park,12,17,false,YMCA/Childs Park,22,23,24,25,26
+4,Forbes Library,9,13,false,20 West Street Northampton Ma,27,28,29,30
+5,Florence Center,7,10,false,31 Main Street Florence Ma,6,31,32
+6,Cooley Dickinson Health Care,9,14,false,51 Locust Street Northampton MA,35,36,37,19,34
+7,John M Greene Hall/Smith College,11,16,false,1 Chapin Way Northampton MA @ John M. Greene Hall,48,49,50,51,52
+8,Pulaski Park/Downtown,7,11,true,274 Main Street Northampton Ma at Pulaski Park,53,54,4,9
+9,Northampton Train Station,9,13,true,Northampton Train Station,10,5,7,33
+10,State St/Mass Central Rail Trail,7,10,false,State Street/Mass Central Rail Trail,11,8,38
+11,Jackson Street,11,16,false,7A-7D Jackson Street Northampton Ma,12,39,40,41,42
+12,Main Street/Court House,7,10,false,99 Main Street Northampton Ma,13,43,44
+13,Main Street/Bridge Street,11,15,false,1 Bridge Street Northampton Ma,14,45,46,47
+14,Northampton High School,14,15,false,380 Elm Street Northampton Ma,15

@@ -1,436 +1,730 @@
-/*
- * hello
- */
-
 import java.io.*;
 import java.util.*;
-import java.text.SimpleDateFormat;
+import java.util.Map.Entry;
 
+/**
+ * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
+ * @version     1.0
+ */
 public class ValleyBikeSim {
-	private Map<Integer, Station> stationData = new HashMap<>();
-	private Map<Integer, User> users = new HashMap<>();
+	/** Hashmap of all station objects stationid:Station)*/
+	private Map<Integer, Station> stations = new HashMap<>();
+	/** Hashmap of all user objects userId:User)*/
+	private Map<String, User> users = new HashMap<>();
+	/** Hashmap of all bikes objects bikeId:Bike)*/
 	private Map<Integer, Bike> bikes = new HashMap<>();
+	/** Hashmap of all rides objects rideId:Ride)*/
 	private Map<Integer, Ride> rides = new HashMap<>();
-
-
+	/** Hashmap of all maintenance request objects mainReqId:MainReq)*/
+	private Map<Integer, MainReq> mainReqs = new HashMap<>();
+	/** List of current ride ids)*/
+	private List<Integer> currRides = new ArrayList<>();
+	/** Value of last ride id */
+	private Integer lastRideId = 0;
+	/** Value of last bike id */
+	private Integer lastBikeId = 0;
+	/** Value of last station id */
+	private Integer lastStationId = 0;
+	/** Value of last maintenance request id */
+	private Integer lastMainReqId = 0;
+	/** Instance of the payment system */
+	private PaymentSys paymentSystem = new PaymentSys();
+	/** Instance of the ValleyBikeSim */
+	private static ValleyBikeSim instance = null;
+	
 	/**
-	 * ValleyBikeSim class constructor
+	 * ValleyBikeSim class constructor.
+	 * </p>
+	 * Calls all methods to read csv data files,
+	 * populates class HashMaps and currRides List,
+	 * and updates lastId variables.
 	 * 
-	 * TODO: Remove and re-organize program so that this is no longer necessary
-	 * or so that the object does more - Alicia says object could be potentially useful
-	 * can also avoid the issue with static method stuff
 	 */
-	public ValleyBikeSim() {
-		this.stationData = readStationData();
-
-		// CREATE CSVS
-		
-		//this.users = readUserData();
-		//this.bikes = readBikeData();
-		// this.rides = readRideData();
+	private ValleyBikeSim() {
+		this.stations = readStationData();
+		this.users = readUserData();
+		this.bikes = readBikeData();
+		this.rides = readRideData();
+		this.mainReqs = readMainReqData();
+	}
+	
+	/**
+	 * Public getter method for the ValleyBikeSim instance 
+	 * </p>
+	 * Implementation of the Singleton design pattern
+	 * </p>
+	 * @return ValleyBikeSim instance
+	 */
+	public static ValleyBikeSim getInstance() {
+	    if (instance == null) {
+            instance = new ValleyBikeSim();
+        }
+	    return instance;
 	}
 
 	/**
-	 * Read in station data from file 
-	 * Parse values into new station objects 
-	 * and add objects to a Hashmap using id-station key-value pair
-	 *
-	 * @return stationData hashmap for the whole vallybikesim object to access
+	 * Reads in station data from stored csv file to populate HashMap
+	 * </p>
+	 * @return stations HashMap global variable
 	 */
 	public HashMap<Integer, Station> readStationData() {
 
-		TreeMap<Integer, Station> stationData = new TreeMap<>();
+		HashMap<Integer, Station> stations = new HashMap<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
+				// Parse all values
 				int id = Integer.parseInt(values[0]);
-				Station station = new Station(id, Integer.parseInt(values[2]), 
-						Integer.parseInt(values[3]), Integer.parseInt(values[4]), Integer.parseInt(values[5]), 
-						Integer.parseInt(values[6]), Integer.parseInt(values[7]), values[8], values[1]);
-				stationData.put(id, station);
+				String name = values[1];
+				int avDocks = Integer.parseInt(values[2]);
+				int cap = Integer.parseInt(values[3]);
+				boolean kiosk = Boolean.parseBoolean(values[4]);
+				String address = values[5];
+				List<Integer> bikeIds = new ArrayList<>();
+				// Loop to end of csv line for all bikeIds
+				for (int i=6; i < values.length;i++) {
+					// Add bike ids to ArrayList
+					bikeIds.add(Integer.parseInt(values[i]));
+				}
+				// Create station object using parsed data
+				Station station = new Station(id, avDocks, cap, kiosk, address, name, bikeIds);
+				// Add station to stations
+				stations.put(id, station);
+				// Update this.lastStationId var
+				if (id > this.lastStationId) {
+					this.lastStationId = id;
+				}
 			}
 			br.close();
-			return stationData;
-
+			return stations;
 		} catch (Exception e) {
 			System.err.format("Exception occurred trying to read station data file.");
 			e.printStackTrace();
 			return null;
 		}
 	}
+	
+	/**
+	 * Reads in user data from stored csv file to populate HashMap
+	 * </p>
+	 * @return users HashMap global variable
+	 */
+	public HashMap<String, User> readUserData() {
+
+		HashMap<String, User> users = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/user-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				String username = values[0];
+				List<Integer> rideHistory = new ArrayList<>();
+				User user = new User(username,values[1],Integer.parseInt(values[2]),
+									Long.parseLong(values[3]),Integer.parseInt(values[4]),
+									values[5]);
+				// Check if user is currently on a ride and set currentRideId
+				if (Integer.parseInt(values[6]) != 0) {
+					user.setCurrentRideId(Integer.parseInt(values[6]));
+				}
+				// Loop to end of line for all ride history
+				for (int i=7; i < values.length;i++) {
+					// Check if valid ride id
+					if (Integer.parseInt(values[i]) != 0) {
+						rideHistory.add(Integer.parseInt(values[i]));
+					}
+				}
+				// Add ride history to ride object
+				user.setRides(rideHistory);
+				// Add user to users hashmap
+				users.put(username,user);
+			}
+			br.close();
+			return users;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read user data file.");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Reads in bike data from stored csv file to populate HashMap
+	 * </p>
+	 * @return bikes HashMap global variable
+	 */
+	public HashMap<Integer, Bike> readBikeData() {
+
+		HashMap<Integer, Bike> bikes = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/bike-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				int id = Integer.parseInt(values[0]);
+				// Create bike object
+				Bike bike = new Bike(id, Integer.parseInt(values[1]),
+									values[2],Boolean.parseBoolean(values[3]));
+				// Add bike object to bikes hash
+				bikes.put(id,bike);
+				// Update this.lastBikeId var
+				if (id > this.lastBikeId) {
+					this.lastBikeId = id;
+				}
+			}
+			br.close();
+			return bikes;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read bike data file.");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Reads in ride data from stored csv file to populate HashMap
+	 * </p>
+	 * @return rides HashMap global variable
+	 */
+	public HashMap<Integer, Ride> readRideData() {
+
+		HashMap<Integer, Ride> rides = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/ride-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				int id = Integer.parseInt(values[0]);
+				Ride ride = new Ride(id, values[1], Integer.parseInt(values[2]),Integer.parseInt(values[3]));
+				// Set end station id
+				ride.setEndStation(Integer.parseInt(values[4]));
+				// Reset timestamps
+				ride.setStartTime(values[5]);
+				ride.setEndTime(values[6]);
+				// Set currentRideId
+				ride.setCurrentRide(Boolean.parseBoolean(values[7]));
+				// If current ride == true, add ride id to currRides list
+				if (Boolean.parseBoolean(values[7])) {
+					currRides.add(id);
+				}
+				// Add ride to rides hash
+				rides.put(id,ride);
+				// Update this.lastRideId var
+				if (id > this.lastRideId) {
+					this.lastRideId = id;
+				}				
+			}
+			br.close();
+			return rides;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read ride data file.");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Reads in maintenance request data from stored csv file to populate HashMap
+	 * </p>
+	 * @return mainReqs HashMap global variable
+	 */
+	public HashMap<Integer, MainReq> readMainReqData() {
+
+		HashMap<Integer, MainReq> mainReqs = new HashMap<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data-files/mainreq-data.csv"));
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				// Parse all values
+				int id = Integer.parseInt(values[0]);
+				// Create new mainreq object
+				MainReq req = new MainReq(id, values[1], Integer.parseInt(values[2]), values[3]);
+				// Add req to hash
+				mainReqs.put(id,req);
+				// Update this.lastMainReqId var
+				if (id > this.lastMainReqId) {
+					this.lastMainReqId = id;
+				}
+			}
+			br.close();
+			return mainReqs;
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read maintenance requests data file.");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Saves current system data into csv files.
+	 * </p>
+	 * @throws IOException
+	 */
+	public String saveData() throws IOException {
+		// Save station data
+		FileWriter stationWriter = new FileWriter("data-files/station-data.csv");
+		stationWriter.write("ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids\n");
+			for (Station s : this.stations.values()) {
+				stationWriter.write(s.toSaveString());
+			}
+			stationWriter.flush();
+			stationWriter.close();
+		// Save user data
+		FileWriter userWriter = new FileWriter("data-files/user-data.csv");
+		userWriter.write("Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History\n");
+			for (User u : this.users.values()) {
+				userWriter.write(u.toSaveString());
+			}
+			userWriter.flush();
+			userWriter.close();
+		// Save ride data
+		FileWriter rideWriter = new FileWriter("data-files/ride-data.csv");
+		rideWriter.write("ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time,Current Ride\n");
+			for (Ride r : this.rides.values()) {
+				rideWriter.write(r.toSaveString());
+			}
+			rideWriter.flush();
+			rideWriter.close();
+		// Save bike data
+		FileWriter bikeWriter = new FileWriter("data-files/bike-data.csv");
+		bikeWriter.write("ID,Last Station Id,User Id,Checked Out\n");
+			for (Bike b  : this.bikes.values()) {
+				bikeWriter.write(b.toSaveString());
+			}
+			bikeWriter.flush();
+			bikeWriter.close();
+		// Save maintenance requests data
+		FileWriter reqWriter = new FileWriter("data-files/mainreq-data.csv");
+		reqWriter.write("ID,User Id,Station Id,Message\n");
+			for (MainReq req : this.mainReqs.values()) {
+				reqWriter.write(req.toSaveString());
+			}
+			reqWriter.flush();
+			reqWriter.close();
+		return "System data successfully saved.";
+	}
 
 	
 	/**
-	 * Function to print out list of stations ordered by id and formatted to console.
-	 * 
+	 * Generates a string of station info.
+	 * </p>
+	 * @return String of stations info
 	 */
-	public void viewStationList() {
-		System.out.println("ID	Bikes	Pedelecs	AvDocs	MainReq	Cap	Kiosk	Name - Address");
-		Iterator<Integer> keyIterator = stationData.keySet().iterator();
+	public String viewStationList() {
+		String stationList = "ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address\n";
+		Iterator<Integer> keyIterator = stations.keySet().iterator();
 		while(keyIterator.hasNext()){
 			Integer id = (Integer) keyIterator.next();
-			System.out.println(this.stationData.get(id).toViewString());
+			stationList = stationList + this.stations.get(id).toViewString();
 		}
+		return stationList;
 	}
 
 	/**
-	 * 
-	 * Function that reads in a ride data file that contains all the rides for one
-	 * day of service and outputs stats for the day
-	 * 
-	 * TODO: Ok for now but could simulate bike movement by pushing events to stack to further validate
-	 * and check stations for Available Docks, pedelecs, etc
-	 * 
-	 * Employee can access, but not user
+	 * Add a station to the system.
+	 * </p>
+	 * @return String to show function success.
 	 */
-
-	public void resolveRideData() {
-
-		boolean cont = true;
-		int totalTime = 0;
-		int totalRides = 0;
-
-		while (cont) {
-			// prompt for address
-			String path = "";
-			do {
-				System.out.println(
-						"What is the path of the ride data file (Example: data-files/sample-ride-data-0820.csv)? ");
-				while (!sc.hasNext()) {
-					System.out.println("Please try again, input must be a valid file path. ");
-					sc.nextLine();
-				}
-				path = sc.nextLine();
-			} while (path.length() < 4);
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(path));
-				String line = br.readLine();
-				while ((line = br.readLine()) != null) {
-					String[] values = line.split(",");
-					String startTime = values[3];
-					String endTime = values[4];
-					Integer from = Integer.parseInt(values[1]);
-					Integer to = Integer.parseInt(values[2]);
-					if (Integer.parseInt(startTime.split(" ")[1].split(":")[0]) >= 24
-							|| Integer.parseInt(endTime.split(" ")[1].split(":")[0]) >= 24
-							|| stationData.containsKey(to) == false
-							|| stationData.containsKey(from) == false){ continue; }
-					Date tempStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
-					Date tempEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
-
-					if (tempEnd.before(tempStart)){ continue; }
-					
-					totalTime += ((int) (((tempEnd.getTime() - tempStart.getTime())) / (60 * 1000)));
-					totalRides ++;
-						
-					
-				}
-				cont = false;
-				br.close();
-			} catch (Exception e) {
-				System.err.format("Exception occurred trying to read station data file.");
-				e.printStackTrace();
-			}
-		}
-		int avg = totalTime / totalRides;
-		System.out.println("This ride list contains: " + Integer.toString(totalRides)
-				+ " rides with average ride time of " + Integer.toString(avg) + " minutes.");
+	public String addStation(int capacity,boolean kiosk,String address,String name) {
+		// Set this.lastStationId to current station id
+		this.lastStationId = this.lastStationId + 1;
+		// Get new ride id
+		int id = this.lastStationId;
+		// Initialize empty list of bikes ids
+		List<Integer> bikeIds = new ArrayList<>();
+		// Create new station
+		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
+		this.stations.put(id, s);
+		return "Station successfully added to the system.";
 	}
 
 	/**
-	 * Function to record a user's ride. It will update the station's data after all
-	 * information has been verified.
-	 * 
-	 * ASSUMPTION: There is no possibility to rent a bike. Only pedelecs are
-	 * available.
-	 * 
-	 * TODO: Save rides to ride list? Further ride validation? Waiting on Alicia and team consensus
-	 * CHANGE - two methods, checkInBike() and checkOutBike()
-	 * 
+	 * Balances bikes across the system's stations.
+	 * </p>
+	 * Moves bikes between stations so that each station is
+	 * equalized based on a system-wide ideal percentage of bikes to station capacity.
+	 * Removes bikes from stations then reassigns them by iterating through each station
+	 * and adding bikes if the station bike-capacity percentage is low.
+	 * </p>
+	 * @return String to confirm equalization
+	 * TODO: change implementation
 	 */
-	public void recordRide() {
-		
-		// list of existing stations
-		ArrayList<Integer> idList = new ArrayList<Integer>(this.stationData.keySet());
-		int userStartStation;
-		int userEndStation;
-
-		do {
-			System.out.println(
-					"Please enter Starting Station ID: ");
-			while (!sc.hasNextInt()) {
-				System.out.println(
-						"The station ID must be an integer");
-				sc.next();
-			}
-			userStartStation = sc.nextInt();
-		} while (!(idList.contains(userStartStation))
-				|| (idList.contains(userStartStation) && ((stationData.get(userStartStation).getPedelecs() < 1))));
-
-		// prompt user for the station where the ride ended
-		
-		do {
-			System.out.println("Please enter Docking Station ID: ");
-			while (!sc.hasNextInt()) {
-				System.out.println("The station ID must be an integer");
-				sc.next();
-			}
-			userEndStation = sc.nextInt();
-		} while (!idList.contains(userEndStation)
-				|| (stationData.get(userEndStation).getAvDocks() - 1 < 0));
-
-			Station endStation = stationData.get(userEndStation);
-			Station startStation = stationData.get(userStartStation);
-			int endPed = stationData.get(userEndStation).getPedelecs();
-			int startPed = stationData.get(userStartStation).getPedelecs();
-
-			// updating the station data
-			endStation.setAvDocks(stationData.get(userEndStation).getAvDocks() - 1);
-			startStation.setAvDocks(stationData.get(userStartStation).getAvDocks() + 1);
-
-			endStation.setPedelecs(endPed + 1);
-			startStation.setPedelecs(startPed - 1);
-			
-			System.out.println("Ride sucessfully added");
-	}
-	
-
-	/**
-	 * Adds station to program's treemap of stations
-	 * Station ID is automatically assigned
-	 * 
-	 * 
-	 * Company method
-	 */
-	public void addStation(Integer id,Integer capacity,Integer kiosk,String address,String name) {
-
-//		int id = this.getIntResponse("Please enter the id of the station you would like to edit/add", 0, 1000);
-//		if (stationData.get(id) != null){
-//			System.out.println("You are attempting to edit station "+stationData.get(id).getName() + 
-//					" continue? y/n: ");
-//			if (sc.next().toLowerCase().equals("n")){
-//				return;
-//			}
-//		}
-//		System.out.println("Please enter the name of this station: ");
-//		sc.nextLine();
-//		String name = sc.nextLine();
-//
-//		System.out.println("Please enter the address of this station: ");
-//		String address = sc.nextLine();
-//
-//		int capacity = this.getIntResponse("Please enter the integer capacity of this station", pedelecs+bikes, 1000);
-//		int kiosk = this.getIntResponse("Please enter the number of kiosks at this station", 0, 5);
-
-		Station s = new Station(id, 0, 0, capacity, 0, capacity, kiosk, address, name);
-		this.stationData.put(id, s);
-		System.out.println("Station successfully added to the system.");
-	}
-
-	/**
-	 * Overwrites current station data file with the station updates in the program
-	 * (rides, new stations, etc)
-	 * 
-	 * @throws IOException
-	 * TODO: Handle exceptions/errors
-	 */
-
-	public void saveStationList() throws IOException {
-		FileWriter writer = new FileWriter("data-files/station-data.csv");
-		writer.write("ID,Name,Bikes,Pedelecs,Available Docks,Maintainence Request,Capacity,Kiosk,Address");
-		
-			for (Station s : this.stationData.values()) {
-				writer.write("\n");
-				writer.write(s.toSaveString());
-			}
-			writer.flush();
-			writer.close();
-		System.out.println("Station list successfully saved.");
-	}
-
-	/**
-	 * Function to move bike/pedelecs between stations, so that each station is
-	 * equalized (based on the percentages of bike/pedelecs per dock capacity). 
-	 * 
-	 * Does not prioritize larger capacity stations. 
-	 * Essentially empties all stations and then gradually reassigns
-	 * by iterating through each station adding 1 if it is below percentage
-	 * and continuing on while there are still extras to reassign
-	 * 
-	 */
-	public void equalizeStations() {
-
-		// find the total number of bikes, pedelecs, and total capacity
+	public String equalizeStations() {
+		// find the total number of bikes and total capacity
+		//The reason we use total bikes at stations instead of just bikes.size()
+		//Is because we can't move bikes that are currently checked out by users
 		int totalBikes = 0;
-		int totalPedelecs = 0;
 		int totalCap = 0;
-
-		for (Station s : this.stationData.values()) {
-			totalBikes += s.getBikes();
-			totalPedelecs += s.getPedelecs();
+		for (Station s : this.stations.values()) {
+			totalBikes += s.getNumBikes();
 			totalCap += s.getCapacity();
-			s.setBikes(0);
-			s.setPedelecs(0);
-			s.setAvDocks(s.getCapacity());
 		}
-		// find the average percentage of bikes/pedelecs to capacity
-		double percentBikes = (double) totalBikes / (double) totalCap;
-		double percentPeds = (double) totalPedelecs / (double) totalCap;
+		// find the average percentage of bikes to capacity
+		int percentBikes = (int)(((float) totalBikes / totalCap) *100);
+		ArrayList<Integer> spareBikes = new ArrayList<Integer>();
 		
-		while(totalBikes + totalPedelecs > 0){
-			for (Station s : this.stationData.values()){
-				double sPercentBikes = (double)s.getBikes()/s.getCapacity();
-				double sPercentPeds = (double)s.getPedelecs()/s.getCapacity();
-				
-				if(totalBikes >0){
-					if(sPercentBikes < percentBikes){
-						s.setBikes(s.getBikes() + 1);
-						s.setAvDocks(s.getAvDocks() - 1);
-						totalBikes = totalBikes - 1;
-					}
-				}
-				if(totalPedelecs>0){
-					if(sPercentPeds < percentPeds){
-						s.setPedelecs(s.getPedelecs() + 1);
-						s.setAvDocks(s.getAvDocks() - 1);
-						totalPedelecs = totalPedelecs - 1;
-					}
-				}
+		//remove all the extra bikes from stations that are greater than 5% away from average percentage
+		for (Station s : this.stations.values()) {
+			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+			while (stationPercentage > percentBikes + 5) {
+				Integer bikeToMove = s.getBikeIds().get(0);
+				s.removeBike(bikeToMove);
+				spareBikes.add(bikeToMove);
+				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
 			}
 		}
-		System.out.println("The number of bikes and pedelecs at all stations have been equalized.");
+		//while there are still bikes left to add, add them to stations that are under
+		//average percentage
+		for (Station s : this.stations.values()) {
+			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+			while(stationPercentage < percentBikes) {
+				if(spareBikes.size() > 0) {
+				Integer bikeToAdd = spareBikes.remove(0);
+				s.addBike(bikeToAdd);					
+				bikes.get(bikeToAdd).setLastStationId(s.getId());
+				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+				} else {
+					break;
+				}
+			}
+		
+		}
+		return "The number of bikes at all stations have been equalized.";
 	}
 	
+	
 	/**
-	 * Checkout bike method for user
-	 * TODO: Implement method
-	 * @param username
-	 * @param stationId 
-	 * @return
+	 * Assigns a bike to the user and creates a new ride.
+	 * </p>
+	 * Takes in input from the controller to checkout a bike from specified station,
+	 * then creates a ride object and updates bike, station, and user data accordingly.
+	 * </p>
+	 * @param username 		String user id 
+	 * @param stationId 	int of which station to remove bike from
+	 * @return String 		verifying checkout and payment
 	 */
-	public String checkOutBike(String username, Integer stationId) {
-		return "Bike checked out by " + username;
+	public String checkOutBike(String username, int stationId) {
+		User currentUser = users.get(username);
+		if (currentUser.onRide() == true) {
+			return "User already on ride. Cannot check out more than one bike at a time";
+		}
+		
+		if (stations.get(stationId).getNumBikes() == 0) {
+			return "No bikes at this station. Try another!";
+		}
+		
+		// Set this.lastRideId to current ride id
+		this.lastRideId = this.lastRideId + 1;
+		// Get new ride id
+		int rideId = this.lastRideId;
+		// Check membership status and charge accordingly
+		// Right now, we have 3 types of membership
+		//With tiers (0,1,2) that each pay (2,1,0)
+		//respectively
+		int cost = 0;
+		if (currentUser.getType() == 0) {
+			cost = 2;
+			currentUser.addToBill(cost);
+		}
+		if (currentUser.getType() == 1) {
+			cost = 1;
+			currentUser.addToBill(cost);
+		}
+		if (currentUser.getType() == 2) {
+			cost = 0;
+			currentUser.addToBill(cost);
+		}
+		// Set as current ride for user
+		currentUser.setCurrentRideId(rideId);
+		// Get a bike from the station
+		Station s = stations.get(stationId);
+		Integer bikeId = s.getBikeIds().get(0);
+		// Create new Ride and add to current rides list
+		Ride ride = new Ride(rideId, username, bikeId, stationId);
+		currRides.add(rideId);
+		// Add ride to rides hashmap
+		rides.put(rideId, ride);
+		// Update the bike info
+		Bike b = bikes.get(bikeId);
+		b.setCheckedOut(true);
+		b.setUserId(username);
+		// Update the station info
+		s.removeBike(bikeId);
+		
+		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +". Your account has been charged $" + cost;
 	};
 	
 	/**
-	 * Check in bike method for user
-	 * TODO: Implement method
-	 * @param username
-	 * @param stationId 
-	 * @return
+	 * Places a bike back into designated station and ends user's ride.
+	 * </p>
+	 * Takes in input from the controller to checkin a bike to specified station,
+	 * Then updates bike, station, ride, and user information accordingly.
+	 * </p>
+	 * @param username 		String user id 
+	 * @param stationId 	int of which station to place bike in
+	 * @return String 		verifying checkin and completion of ride
 	 */
 	public String checkInBike(String username, Integer stationId) {
-		return "Bike checked in by " + username;
+		// Get user object
+		User currentUser = users.get(username);
+		if (currentUser.onRide() == false) {
+			return "User does not currently have a bike to check in";
+		}
+		
+		if(stations.get(stationId).getAvDocks() == 0) {
+			return "No available docks for this station.\n "
+					+ "Please call to set up a virtual station"
+					+"or go to another station";
+		}
+		// Get ride object
+		Ride r = rides.get(currentUser.getCurrentRideId());
+		// Get bike object
+		Bike b = bikes.get(r.getBikeId());
+		// Update bike info
+		b.setLastStationId(stationId);
+		b.setCheckedOut(false);
+		b.setUserId("");
+		// Add bike to new station
+		Station s = stations.get(stationId);
+		s.addBike(r.getBikeId());
+		// End the ride (update ride info)
+		r.end(stationId);
+		// Update user info (end ride), add ride to ride history
+		currentUser.endRide();
+
+		return "Successfully checked in. Ride completed.";
 	}
 	
 	/**
-	 * View user history
-	 * TODO: Implement method
-	 * @param username
-	 * @return
+	 * View user ride history.
+	 * </p>
+	 * @param username		user to view history
+	 * @return rideHistory	String of ride ids
+	 * TODO: Print ride stats for a more comprehensive user history (A5)
 	 */
 	public String viewHistory(String username) {
-		return username + " history";
+		User currentUser = users.get(username);
+		String rideList = "";
+		// Loop through all rides in User
+		for (int r : currentUser.getRides()) {
+			rideList = rideList + ("Ride " + r + "\n");
+		}
+		return "Ride History: \n" + rideList;
 	}
 	
 	/**
-	 * view account information for user
-	 * TODO: Implement method
-	 * @param username
-	 * @return
+	 * View user account information.
+	 * @param username		user to view account info
+	 * @return userInfo		String of user account info
 	 */
 	public String viewAccount(String username) {
-		return username + " account information";
+		User currentUser = users.get(username);
+		
+		return ("Account Information: \n "
+				+ "Username	Password	Membership	Current Ride	Credit Card\t Total Bill	Rides\n" 
+				+ currentUser.toViewString());
 	}
 	
-	//TODO: Implement method
-	public String reportIssue(String username, String issueMessage) {
-		return "Issue reported";
+	/**
+	 * Create a new maintenance request.
+	 * </p>
+	 * @param username		user creating the mainReq
+	 * @param stationId		station at which the mainReq is located
+	 * @param issueMessage	message detailing request
+	 * @return report		String confirming issue has been created
+	 */
+	public String reportIssue(String username, Integer stationId, String issueMessage) {
+		// Increment lastMainReqId var
+		this.lastMainReqId = this.lastMainReqId + 1;
+		// Get new id
+		int id = this.lastMainReqId;
+		// Create new MainReq object
+		MainReq req = new MainReq(id, username, stationId, issueMessage);
+		mainReqs.put(id, req);
+		return "Issue reported.";
 	}
 	
-	//TODO: Implement method
-	public String checkStats() {
-		return "system stats";
+	/**
+	 * Print a system overview of all vehicles and stations for the company view.
+	 * </p>
+	 * This employee only access method first iterates through each station, 
+	 * parsing station info. Then it goes deeper to show which bikes are at each station.
+	 * Additionally, it will show the employee which bikes are currently checked out and by which user.
+	 * </p>
+	 * @return systemStats	String of full system overview
+	 */
+	public String viewSystemOverview() {
+		// Begin return string
+		String systemStats = "System Stats: " + "\n" + "\n" + "Stations:" + "\n";
+		systemStats += ("ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address \n");
+		Iterator<Entry<Integer, Station>> stationsIterator = stations.entrySet().iterator();
+		// For each station in the system
+		while(stationsIterator.hasNext()){
+			Map.Entry<Integer, Station> stationElement = (Map.Entry<Integer, Station>)stationsIterator.next();
+			Station station = stationElement.getValue();
+			// Add station info to the return string
+			systemStats += ("\n" + station.toViewString());
+			// For each bike at the station
+			List<Integer> stationBikes = station.getBikeIds();
+			systemStats += ("\n" + "Station " + station.getId() + " Bike IDs: ");
+			// Add bike id to the return string
+			for (Integer id : stationBikes) {
+				systemStats += (Integer.toString(id) + " ");
+			}
+			systemStats += "\n \n";
+		}
+		// Add checked out bike info to the return string
+		systemStats += ("Bikes currently checked out: \n");
+		systemStats += ("Bike \t User \n");
+		// For each bike in the list of bikes
+		Iterator<Entry<Integer, Bike>> bikeIterator = bikes.entrySet().iterator();
+		while (bikeIterator.hasNext()) {
+			Map.Entry<Integer, Bike> bikeElement = (Map.Entry<Integer, Bike>)bikeIterator.next();
+			if (bikeElement.getValue().checkedOut == true) {
+				systemStats += (Integer.toString(bikeElement.getValue().getId()) + "\t" + bikeElement.getValue().userId + "\n");
+			}
+
+		}
+		return systemStats;
 	}
 	
-	//TODO: Implement method
+	/**
+	 * Returns system stats.
+	 * <p>
+	 * @return stats	String of desired system statistics
+	 * TODO: Ask our stakeholder what kind of stats wanted here (A5)
+	 */
+	public String viewStats() {
+		int numUsers = users.size();
+		int numRides = rides.size();
+		
+		String stats = "Total number of users for the system is "+numUsers + " with a "
+				+ "total number of " + numRides + " rides";
+				
+		return stats;
+	}
+	
+	/**
+	 * Returns the list of current maintenance requests.
+	 * </p>
+	 * @return issues	String of all current maintenance requests
+	 */
 	public String viewIssues() {
-		return "current issues";
+		String currIssues = "";
+		for (MainReq issue : mainReqs.values()) {
+			currIssues = currIssues + issue.toViewString() + "\n";
+		}
+		return "Current Issues: \n" + currIssues;
 	}
 	
-	//TODO: Implement method
+	/**
+	 * Returns the list of current rides.
+	 * </p>
+	 * This function iterates through the list of current rides,
+	 * and concatenates each ride and associated data into the return string.
+	 * </p>
+	 * @return currentRides	String of current ride data
+	 * TODO: Ask our stakeholder if more info on current rides is wanted. (A5)
+	 */
 	public String viewCurrentRides() {
-		return "current rides";
+		String currentRides = "Current Rides:\n";
+		// Loop through rides in currRides list
+		for (int ride : this.currRides) {
+			currentRides = currentRides + "User: " + rides.get(ride).getUserId() + ". Ride: " + ride + "\n";
+		}
+		return currentRides;
 	}
 	
-	// TODO Implement method
-	public String addBikes(Integer numBikes) {
-		return numBikes.toString() + " bikes added";
+	/**
+	 * Add a specified number of bikes to a station.
+	 * </p>
+	 * Checks whether the number of bikes can be added to the station,
+	 * then creates new Bike objects and adds them to specified station.
+	 * </p>
+	 * @return report	String confirming success.
+	 */
+	public String addBikes(int stationId, int numBikes) {
+		int avDocks = stations.get(stationId).getAvDocks();
+		// check if this station can take this many bikes
+		// return error string to controller
+		if(avDocks < numBikes) {
+			return "Station " + stationId + " only has available docks for " + avDocks + " new bikes\n"
+					+ "Please try again.";
+		}
+		
+		Station s = stations.get(stationId);
+		
+		for (int i = 0; i < numBikes; i++) {
+			// Increment last bike id
+			this.lastBikeId = this.lastBikeId + 1; 
+			// Set new bike id
+			int id = this.lastBikeId;
+			// Create new bike
+			Bike bike = new Bike(id, stationId, "", false);
+			// Add bike to the bikes Hashmap
+			bikes.put(id, bike);
+			// add bike id to station info
+			s.addBike(id);
+		}
+		
+		return "Bikes added.";
 	}
 	
-	// TODO Implement method
+	/**
+	 * TODO: Consider implementing for A5
+	 */
 	public String moveBikes(Integer stationFrom, Integer stationTo, Integer numBikes) {
 		return null;
 	}
 	
-	// TODO Implement method
+	/**
+	 * Resolve maintenance request issues.
+	 * </p>
+	 * This employee-only function iterates through the issues requested to resolve,
+	 * and checks whether they exist. If they do, the mainReqs are removed from the global HashMap.
+	 * </p>
+	 * @param issues	ArrayList<Integer> list of mainReqs to resolve
+	 * @return report	String confirming success.
+	 */
 	public String resolveIssues(ArrayList<Integer> issues) {
-		return issues.toString() + " resolved";
-	}
-	
-	// TODO implement method
-	public boolean createUser(String username, String password, Integer membership) {
-		return true; // if user sucessfully created
-	}
-	
-
-	
-	/**
-	 * Main function. Creates new ValleyBikeSim Object, reads station data for that object
-	 * And then calls the execute function which runs simulator until program is quit
-	 * 
-	 * TODO: Remove ValleyBikeSim Object and find more streamlined way to run program
-	 */
-	public static void main(String[] args) {
-		ValleyBikeSim sim = new ValleyBikeSim();
-		System.out.println("Welcome to the ValleyBike Simulator.\n");
-		// calls option menu
-		try {
-			sim.execute();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Function to get integer input from user with ability to dictate minimum entries
-	 * 
-	 * @param request - quality that is being asked for
-	 * @param min - minimum integer value to be accepted
-	 * @return validated user input
-	 */
-	private Integer getIntResponse(String request, Integer min, Integer max){
-		Integer entry = 0;
-		System.out.println(request + ": ");
-		while (sc.hasNext()){
-			if(!sc.hasNextInt()){
-				System.out.println("Entry must be an integer");
-				System.out.println(request + ": ");
-				sc.next();
+		String resolved = "Issues ";
+		String invalid = "";
+		for (int i : issues) {
+			if (mainReqs.remove(i) == null) {
+				invalid += i + " ";
 			}else{
-				entry = sc.nextInt();
-				if(min <= entry && entry <= max){
-					break;
-				} else{
-					System.out.println("Entry must be an integer in range "+min + "-" + max);
-					System.out.println(request + ": ");
-					sc.nextLine();
-				}	
-			}
+				resolved += i + " ";
+			};
 		}
-		return entry;
+		if (resolved.equalsIgnoreCase("Issues ")) {
+			resolved = "";
+		}if (invalid.equalsIgnoreCase("") == false) {
+			resolved += "have been resolved\nIssues " + invalid + " were not found in the system";
+		}
+		return resolved;
+	}
+	
+	/**
+	 * Creates a new user.
+	 * </p>
+	 * This function validates inputted payment info, and if valid, 
+	 * creates a new User object and adds it to the global HashMap.
+	 * @return report	boolean declaring whether user was successfully made or not.
+	 */
+	public boolean createUser(String username, String password, Integer membership, long cardNum, Integer CVV, String expDate) {
+		if (paymentSystem.validate(cardNum, CVV, expDate)) {
+			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
+			int membershipCharge = newUser.getType();
+			newUser.addToBill(membershipCharge);
+			users.put(username, newUser);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

@@ -1,38 +1,97 @@
-
+/**
+ * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
+ * @version     1.0
+ */
 public class MainReq {
-
-	private String message = "";
-	private int stationId = 0;
+	/** Maintenance request id */
+	private int id = 0;
+	/** Id of station where mainReq is based */
+    private int stationId = 0;
+    /** Username of user who input the issue */
+    private String username = new String();
+    /** Maintenance request issue message */
+	private String message = new String();
 	
 	/**
-	 * Maintenance Requests class constructor
-	 * 
-	 * TODO: Figure out how to toString for a message that may have comments in it
+	 * Maintenance request constructor.
+	 * </p>
+	 * @param id
+	 * @param username
+	 * @param stationId
+	 * @param message
 	 */
-	
-	public MainReq(String message, int stationId) {
-		this.message = message;
+	public MainReq(int id, String username, int stationId, String message) {
+		this.id = id;
+		this.username = username;
 		this.stationId = stationId;
+		this.message = message;
 	}
 	
-	public void changeMessage(String newMessage) {
-		this.message = newMessage;
+    /**
+     * Getter for maintenance request id
+     * </p>
+     * @return id
+     */
+    public int getId() {
+        return this.id;
+    }
+    
+    /**
+     * Setter for mainReq id
+     * </p>
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    /**
+     * Getter for station Id
+     * @return stationId
+     */
+	public int getStationId() {
+		return this.stationId;
+    }
+	
+	/**
+	 * Getter for user id
+	 * @return userId
+	 */
+	public String getUserId() {
+		return this.username;
 	}
 	
+	/**
+	 * Getter for mainReq message
+	 * @return message
+	 */
 	public String getMessage() {
 		return this.message;
 	}
 	
-	public int getStationId() {
-		return this.stationId;
+	/**
+	 * Update issue message
+	 * @param newMessage	the new issue message for the request
+	 */
+	public void changeMessage(String newMessage) {
+		this.message = newMessage;
 	}
 	
+    /**
+     * toString method for data to write to csv data files
+     * </p>
+     * @return toString	the string to store in the mainreq-data.csv
+     */
     public String toSaveString() {
-    	// FIX THIS LATER
-        return "";
+    	return (this.id + "," + this.username + "," + this.stationId + "," + this.message + "\n");
     }
     
+    /**
+     * toString method for mainReq data to output onto console
+     * </p>
+     * @return toString	the string to print to the console
+     */
     public String toViewString(){
-    	return (this.message + "\t" + this.stationId + "\n");  
+    	return ("Issue " + this.id + " at Station " + this.stationId + ":\t" + this.message + "\n");  
     }
 }
