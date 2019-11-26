@@ -63,7 +63,7 @@ public class ValleyBikeSim {
 	}
 
 	/**
-	 * Reads in station data from stored csv file to populate HashMap
+	 * Reads and parses station data from stored csv file to populate HashMap
 	 * </p>
 	 * @return stations HashMap global variable
 	 */
@@ -75,7 +75,6 @@ public class ValleyBikeSim {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				int id = Integer.parseInt(values[0]);
 				String name = values[1];
 				int avDocks = Integer.parseInt(values[2]);
@@ -90,7 +89,6 @@ public class ValleyBikeSim {
 				}
 				// Create station object using parsed data
 				Station station = new Station(id, avDocks, cap, kiosk, address, name, bikeIds);
-				// Add station to stations
 				stations.put(id, station);
 				// Update this.lastStationId var
 				if (id > this.lastStationId) {
@@ -107,7 +105,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in user data from stored csv file to populate HashMap
+	 * Reads and parses user data from stored csv file to populate HashMap
 	 * </p>
 	 * @return users HashMap global variable
 	 */
@@ -119,13 +117,12 @@ public class ValleyBikeSim {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				String username = values[0];
 				List<Integer> rideHistory = new ArrayList<>();
 				User user = new User(username,values[1],Integer.parseInt(values[2]),
 									Long.parseLong(values[3]),Integer.parseInt(values[4]),
 									values[5]);
-				// Check if user is currently on a ride and set currentRideId
+				// Check if user is currently on a ride to set currentRideId
 				if (Integer.parseInt(values[6]) != 0) {
 					user.setCurrentRideId(Integer.parseInt(values[6]));
 				}
@@ -136,9 +133,7 @@ public class ValleyBikeSim {
 						rideHistory.add(Integer.parseInt(values[i]));
 					}
 				}
-				// Add ride history to ride object
 				user.setRides(rideHistory);
-				// Add user to users hashmap
 				users.put(username,user);
 			}
 			br.close();
@@ -151,7 +146,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in bike data from stored csv file to populate HashMap
+	 * Reads and parses bike data from stored csv file to populate HashMap
 	 * </p>
 	 * @return bikes HashMap global variable
 	 */
@@ -163,12 +158,9 @@ public class ValleyBikeSim {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				int id = Integer.parseInt(values[0]);
-				// Create bike object
 				Bike bike = new Bike(id, Integer.parseInt(values[1]),
 									values[2],Boolean.parseBoolean(values[3]));
-				// Add bike object to bikes hash
 				bikes.put(id,bike);
 				// Update this.lastBikeId var
 				if (id > this.lastBikeId) {
@@ -185,7 +177,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in ride data from stored csv file to populate HashMap
+	 * Reads and parses ride data from stored csv file to populate HashMap
 	 * </p>
 	 * @return rides HashMap global variable
 	 */
@@ -197,7 +189,6 @@ public class ValleyBikeSim {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				int id = Integer.parseInt(values[0]);
 				Ride ride = new Ride(id, values[1], Integer.parseInt(values[2]),Integer.parseInt(values[3]));
 				// Set end station id
@@ -211,7 +202,6 @@ public class ValleyBikeSim {
 				if (Boolean.parseBoolean(values[7])) {
 					currRides.add(id);
 				}
-				// Add ride to rides hash
 				rides.put(id,ride);
 				// Update this.lastRideId var
 				if (id > this.lastRideId) {
@@ -228,7 +218,7 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Reads in maintenance request data from stored csv file to populate HashMap
+	 * Reads and parses maintenance request data from stored csv file to populate HashMap
 	 * </p>
 	 * @return mainReqs HashMap global variable
 	 */
@@ -240,11 +230,8 @@ public class ValleyBikeSim {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				int id = Integer.parseInt(values[0]);
-				// Create new mainreq object
 				MainReq req = new MainReq(id, values[1], Integer.parseInt(values[2]), values[3]);
-				// Add req to hash
 				mainReqs.put(id,req);
 				// Update this.lastMainReqId var
 				if (id > this.lastMainReqId) {
@@ -355,7 +342,7 @@ public class ValleyBikeSim {
 	 * TODO: change implementation
 	 */
 	public String equalizeStations() {
-		// find the total number of bikes and total capacity
+		//Find the total number of bikes and total capacity
 		//The reason we use total bikes at stations instead of just bikes.size()
 		//Is because we can't move bikes that are currently checked out by users
 		int totalBikes = 0;
@@ -424,8 +411,7 @@ public class ValleyBikeSim {
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
 		// Right now, we have 3 types of membership
-		//With tiers (0,1,2) that each pay (2,1,0)
-		//respectively
+		//With tiers (0,1,2) that each pay (2,1,0) respectively
 		int cost = 0;
 		if (currentUser.getType() == 0) {
 			cost = 2;
@@ -447,7 +433,6 @@ public class ValleyBikeSim {
 		// Create new Ride and add to current rides list
 		Ride ride = new Ride(rideId, username, bikeId, stationId);
 		currRides.add(rideId);
-		// Add ride to rides hashmap
 		rides.put(rideId, ride);
 		// Update the bike info
 		Bike b = bikes.get(bikeId);
@@ -470,7 +455,6 @@ public class ValleyBikeSim {
 	 * @return String 		verifying checkin and completion of ride
 	 */
 	public String checkInBike(String username, Integer stationId) {
-		// Get user object
 		User currentUser = users.get(username);
 		if (currentUser.onRide() == false) {
 			return "User does not currently have a bike to check in";
@@ -481,9 +465,7 @@ public class ValleyBikeSim {
 					+ "Please call to set up a virtual station"
 					+"or go to another station";
 		}
-		// Get ride object
 		Ride r = rides.get(currentUser.getCurrentRideId());
-		// Get bike object
 		Bike b = bikes.get(r.getBikeId());
 		// Update bike info
 		b.setLastStationId(stationId);
@@ -666,9 +648,7 @@ public class ValleyBikeSim {
 			int id = this.lastBikeId;
 			// Create new bike
 			Bike bike = new Bike(id, stationId, "", false);
-			// Add bike to the bikes Hashmap
 			bikes.put(id, bike);
-			// add bike id to station info
 			s.addBike(id);
 		}
 		

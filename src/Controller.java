@@ -184,7 +184,6 @@ public class Controller {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				String username = values[0];
 				String password = values[1];
 				userAccounts.put(username,password);
@@ -216,7 +215,6 @@ public class Controller {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
-				// Parse all values
 				String username = values[0];
 				String password = values[1];
 				employeeAccounts.put(username,password);
