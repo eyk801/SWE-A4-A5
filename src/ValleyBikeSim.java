@@ -707,4 +707,17 @@ public class ValleyBikeSim {
 			return false;
 		}
 	}
+	/**
+	 * Checks whether a station exists or not.
+	 * </p>
+	 * @param stationId
+	 * @return exists		boolean stating whether a station exists or not
+	 */
+	public boolean stationExists(int stationId) {
+		boolean exists = false;
+		if (stations.containsKey(stationId)) {
+			exists = true;
+		}
+		return exists;
+	}
 }

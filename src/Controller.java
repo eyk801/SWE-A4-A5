@@ -419,8 +419,12 @@ public class Controller {
 	 */
 	private String checkOutBike(String username) {
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		return valleyBike.checkOutBike(username, stationId);
+		if (valleyBike.stationExists(stationId)) {
+			return valleyBike.checkOutBike(username, stationId);
+		} else {
+			return "The station you entered does not exist. Please enter an existing station id.";
 		}
+	}
 	
 	/**
 	 * Allows the user to check in a bike.
@@ -433,7 +437,11 @@ public class Controller {
 	 */
 	private String checkInBike(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		return valleyBike.checkInBike(username, stationId);
+		if (valleyBike.stationExists(stationId)) {
+			return valleyBike.checkInBike(username, stationId);
+		} else {
+			return "The station you entered does not exist. Please enter an existing station id.";
+		}
 	}
 	
 	/**
