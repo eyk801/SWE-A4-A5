@@ -402,7 +402,7 @@ public class ValleyBikeSim {
 		}
 		
 		if (stations.get(stationId).getNumBikes() == 0) {
-			return "No bikes at this station. Try another!";
+			return "No available bikes at this station. Please visit another station.";
 		}
 		
 		// Set this.lastRideId to current ride id
@@ -462,8 +462,7 @@ public class ValleyBikeSim {
 		
 		if(stations.get(stationId).getAvDocks() == 0) {
 			return "No available docks for this station.\n "
-					+ "Please call to set up a virtual station"
-					+"or go to another station";
+					+ "Please visit another station.";
 		}
 		Ride r = rides.get(currentUser.getCurrentRideId());
 		Bike b = bikes.get(r.getBikeId());
