@@ -303,7 +303,11 @@ public class Controller {
 		if (userAccounts.containsKey(username) == true) {
 			return false;
 		} else {
-			Integer membership = getIntResponse("Please enter your preferred membership? (0,1,2)", 0, 2);
+			System.out.println("Please enter you preferred membership type.\n"
+					+ "0 = Pay-per-ride, $2 per ride.\n"
+					+ "1 = Pay-per-month, $12 per month \n"
+					+ "2 = Pay-per-year, $100 per year.");
+			Integer membership = getIntResponse("Please enter your preferred membership type (0,1,2)", 0, 2);
 			Long cardNum = getUnboundedLongResponse("Please enter you credit card number",(long)0);
 			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
 			System.out.println("Please enter expiration date(MM/YY): ");

@@ -229,10 +229,19 @@ public class User {
      * @return toString	the string to print to the console
      */
     public String toViewString(){
+    	// Clarify membership type
+    	String membership = new String();
+    	if (this.membershipType == 0) {
+    		membership = "Pay-per-ride";
+    	} else if (this.membershipType == 1) {
+    		membership = "Pay-per-month";
+    	} else {
+    		membership = "Pay-per-year";
+    	}
     	String rideIds = this.ridesToString();
     	return (" " + this.username + "\t" 
     					+ this.password + "\t"
-    					+ this.membershipType + "\t\t"
+    					+ membership + "\t"
     					+ this.currentRideId + "\t\t" 
     					+ this.creditCardNum + "\t"
     					+ this.totalBill + "\t"
