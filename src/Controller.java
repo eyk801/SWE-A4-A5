@@ -493,7 +493,12 @@ public class Controller {
 		if (valleyBike.stationExists(stationId)) {
 			Integer numBikes = getIntResponse("How many bikes would you like to add?", 
 					0, 100);
-			return valleyBike.addBikes(stationId, numBikes);
+			// If no bikes are added, no need to go into valleyBike.addBikes
+			if (numBikes <= 0) {
+				return "No bikes added.";
+			} else {
+				return valleyBike.addBikes(stationId, numBikes);
+			}
 		} else {
 			return "The station you entered does not exist. Please enter an existing station id.";
 		}
