@@ -249,8 +249,13 @@ public class Controller {
 			String password = sc.next();
 			if (login(username, password) == true) {
 				return username;
-			} else{
-				System.out.println("Invalid credentials");
+			} else {
+				// If username exists, but password was incorrect
+				if (userAccounts.containsKey(username)) {
+					System.out.println("Incorrect password. Please re-enter your credentials.");
+				} else { // if username does not exist
+					System.out.println("Invalid credentials. Please create an account, or re-enter your information.");
+				}
 				accountLogin();
 			};
 		} else if (choice.equalsIgnoreCase("n")) {
