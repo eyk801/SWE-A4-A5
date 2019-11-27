@@ -313,9 +313,11 @@ public class Controller {
 					+ "1 = Pay-per-month, $12 per month \n"
 					+ "2 = Pay-per-year, $100 per year.");
 			Integer membership = getIntResponse("Please enter your preferred membership type (0,1,2)", 0, 2);
+			//TODO: validate cardNum: 16 digits, etc.
 			Long cardNum = getUnboundedLongResponse("Please enter you credit card number",(long)0);
 			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
 			System.out.println("Please enter expiration date(MM/YY): ");
+			//TODO: validate this date
 			String expDate = sc.next(); 
 			userAccounts.put(username, password);
 			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
@@ -465,10 +467,16 @@ public class Controller {
 	private String reportIssue(String username){
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		sc.nextLine(); //throw away the \n not consumed by nextInt()
-		System.out.println("Please enter issue message: ");
-		String issueMessage = sc.nextLine();
-		return valleyBike.reportIssue(username, stationId, issueMessage);
+		// Check if valid station id
+		if (valleyBike.stationExists(stationId)) {
+			System.out.println("Please enter issue message: ");
+			String issueMessage = sc.nextLine();
+			return valleyBike.reportIssue(username, stationId, issueMessage);
+		} else {
+			return "The station you entered does not exist. Please enter an existing station id.";
+		}
 	}
+		
 	
 	/**
 	 * Allows employee to add a station to the system.
@@ -478,8 +486,10 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.addStation
 	 */
 	private String addStation() {
+		//TODO: set max capacity
 		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
 		System.out.println("Please enter whether station has a kiosk or not: (true/false)");
+		// TODO: add a catch for a non-boolean answer. create getBooleanResponse()
 		boolean kiosk = sc.nextBoolean();
 		sc.nextLine();
 		System.out.println("Please enter station address: ");
