@@ -488,11 +488,15 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.addBikes
 	 */
 	private String addBikes() {
-		Integer numBikes = getIntResponse("How many bikes would you like to add?", 
-				0, 100);
-		sc.nextLine();
 		Integer stationId = getIntResponse("What station would you like to put the bikes at?", 0, 100);
-		return valleyBike.addBikes(stationId, numBikes);
+		sc.nextLine();
+		if (valleyBike.stationExists(stationId)) {
+			Integer numBikes = getIntResponse("How many bikes would you like to add?", 
+					0, 100);
+			return valleyBike.addBikes(stationId, numBikes);
+		} else {
+			return "The station you entered does not exist. Please enter an existing station id.";
+		}
 	}
 	
 	/**
