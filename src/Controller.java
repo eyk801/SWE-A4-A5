@@ -331,6 +331,22 @@ public class Controller {
 		}
 	}
 	
+	private boolean getBoolResponse(String request) {
+		boolean entry = true;
+		System.out.println(request + ": ");
+		while(sc.hasNext()) {
+			if(!sc.hasNextBoolean()) {
+				System.out.println("Entry must be a boolean");
+				System.out.println(request + ": ");
+				sc.next();
+			}else{
+				entry = sc.nextBoolean();
+				break;
+			}
+		}
+		return entry;
+	}
+	
 	/**
 	 * Gets an int response from the user within a specific range.
 	 * </p>
@@ -486,11 +502,8 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.addStation
 	 */
 	private String addStation() {
-		//TODO: set max capacity
-		Integer capacity = getUnboundedIntResponse("Please enter station capacity", 0);
-		System.out.println("Please enter whether station has a kiosk or not: (true/false)");
-		// TODO: add a catch for a non-boolean answer. create getBooleanResponse()
-		boolean kiosk = sc.nextBoolean();
+		Integer capacity = getIntResponse("Please enter station capacity", 0,100);
+		boolean kiosk = getBoolResponse("Please enter whether station has a kiosk or not (true/false)");
 		sc.nextLine();
 		System.out.println("Please enter station address: ");
 		String address = sc.nextLine();
