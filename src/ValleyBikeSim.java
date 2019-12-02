@@ -671,7 +671,7 @@ public class ValleyBikeSim {
 	 * @return report	String confirming success.
 	 */
 	public String resolveIssues(ArrayList<Integer> issues) {
-		String resolved = "Issues ";
+		String resolved = "";
 		String invalid = "";
 		for (int i : issues) {
 			if (mainReqs.remove(i) == null) {
@@ -680,12 +680,13 @@ public class ValleyBikeSim {
 				resolved += i + " ";
 			};
 		}
-		if (resolved.equalsIgnoreCase("Issues ")) {
-			resolved = "";
-		}if (invalid.equalsIgnoreCase("") == false) {
-			resolved += "have been resolved\nIssues " + invalid + " were not found in the system";
+		if (!resolved.equalsIgnoreCase("")) {
+			resolved = "Issue(s) " + resolved + "resolved.";
 		}
-		return resolved;
+		if (!invalid.equalsIgnoreCase("")) {
+			invalid = "Issue(s) " + invalid + "invalid. Could not resolve.";
+		}
+		return resolved + "\n" + invalid;
 	}
 	
 	/**
