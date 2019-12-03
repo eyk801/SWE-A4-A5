@@ -502,7 +502,7 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.addStation
 	 */
 	private String addStation() {
-		Integer capacity = getIntResponse("Please enter station capacity", 0,100);
+		Integer capacity = getIntResponse("Please enter station capacity", 0,40);
 		boolean kiosk = getBoolResponse("Please enter whether station has a kiosk or not (true/false)");
 		sc.nextLine();
 		System.out.println("Please enter station address: ");
