@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -30,8 +31,9 @@ public class Controller {
 	 * Choose employee or user view.
 	 * </p>
 	 * @throws IOException
+	 * @throws ParseException 
 	 */
-	public void chooseView() throws IOException {
+	public void chooseView() throws IOException, ParseException {
 		System.out.println("Welcome to ValleyBike! "
 				+ "Please enter 'user' for user and 'employee' for employee: ");
 		String response = sc.next();
@@ -109,8 +111,9 @@ public class Controller {
 	 * Runs until employee selects 0 to quit program.
 	 * </p>
 	 * @throws IOException
+	 * @throws ParseException 
 	 */
-	public void executeEmployee() throws IOException {
+	public void executeEmployee() throws IOException, ParseException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
 				+ "5. Add Station.\n" + "6. View System Overview.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Equalize Stations.\n");
@@ -571,12 +574,15 @@ public class Controller {
 	
 	/**
 	 * Controller main method.
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		Controller controller = new Controller();
 		try {
 			controller.chooseView();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}

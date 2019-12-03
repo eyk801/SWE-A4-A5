@@ -1,4 +1,7 @@
 import java.io.*;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -575,13 +578,39 @@ public class ValleyBikeSim {
 	 * <p>
 	 * @return stats	String of desired system statistics
 	 * TODO: Ask our stakeholder what kind of stats wanted here (A5)
+	 * @throws ParseException 
 	 */
-	public String viewStats() {
+	public String viewStats() throws ParseException {
 		int numUsers = users.size();
 		int numRides = rides.size();
+		int numWeeklyRides = 0;
+		ArrayList<String> rideUsers = new ArrayList<String>();
 		
-		String stats = "Total number of users for the system is "+numUsers + " with a "
-				+ "total number of " + numRides + " rides";
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Timestamp currentDate = new Timestamp(System.currentTimeMillis());
+		Date date = new Date();
+		//sets date to a week ago
+		date.setTime(currentDate.getTime()-604800000);
+		
+		Iterator<Entry<Integer, Ride>> ridesIterator = rides.entrySet().iterator();
+
+		while(ridesIterator.hasNext()) {
+			Map.Entry<Integer, Ride> rideElement = (Map.Entry<Integer, Ride>)ridesIterator.next();
+			String rideDateString = rideElement.getValue().getStartTime();
+			Date rideDate = formatter.parse(rideDateString);
+			if(!rideDate.before(date)) {
+				numWeeklyRides = numWeeklyRides + 1;
+				String userId = rideElement.getValue().getUserId();
+				if (!rideUsers.contains(userId)) {
+					rideUsers.add(userId);
+				}
+			};
+		}
+		
+		
+		String stats = "In the past week there were a total of "+ numWeeklyRides + " ride(s) with "
+				+ rideUsers.size() + " user(s)" + "\nThere are a total of " + numRides + " rides and "
+						+ numUsers + " users in the system.";
 				
 		return stats;
 	}
