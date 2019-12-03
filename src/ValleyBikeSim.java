@@ -574,10 +574,9 @@ public class ValleyBikeSim {
 	}
 	
 	/**
-	 * Returns system stats.
+	 * Returns system stats of weekly and all time total rides/users.
 	 * <p>
 	 * @return stats	String of desired system statistics
-	 * TODO: Ask our stakeholder what kind of stats wanted here (A5)
 	 * @throws ParseException 
 	 */
 	public String viewStats() throws ParseException {
