@@ -358,7 +358,7 @@ public class ValleyBikeSim {
 		//remove all the extra bikes from stations that are greater than 5% away from average percentage
 		for (Station s : this.stations.values()) {
 			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
-			while (stationPercentage > percentBikes + 5) {
+			while (stationPercentage > percentBikes) {
 				Integer bikeToMove = s.getBikeIds().get(0);
 				s.removeBike(bikeToMove);
 				spareBikes.add(bikeToMove);
@@ -367,19 +367,15 @@ public class ValleyBikeSim {
 		}
 		//while there are still bikes left to add, add them to stations that are under
 		//average percentage
-		for (Station s : this.stations.values()) {
-			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
-			while(stationPercentage < percentBikes) {
-				if(spareBikes.size() > 0) {
-				Integer bikeToAdd = spareBikes.remove(0);
-				s.addBike(bikeToAdd);					
-				bikes.get(bikeToAdd).setLastStationId(s.getId());
-				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
-				} else {
-					break;
-				}
+		while(spareBikes.size() > 0) {
+			for(Station s : this.stations.values()) {
+				int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
+				if(spareBikes.size() > 0 && stationPercentage < percentBikes) {
+					Integer bikeToAdd = spareBikes.remove(0);
+					s.addBike(bikeToAdd);					
+					bikes.get(bikeToAdd).setLastStationId(s.getId());
+					}
 			}
-		
 		}
 		return "The number of bikes at all stations have been equalized.";
 	}
