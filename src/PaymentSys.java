@@ -30,4 +30,15 @@ public class PaymentSys {
 			return false;
 		}
 	}
+	
+	/**
+	 * Checks if the expiration date has passed.
+	 * </p>
+	 * @param expirationDate
+	 * @return false if expiration date has passed
+	 */
+	public boolean checkExprDate(String expirationDate) {
+		// TODO: Update this after Emily decides on controller validation
+		return true;
+	}
 }
