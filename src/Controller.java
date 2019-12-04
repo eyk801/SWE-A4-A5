@@ -66,13 +66,7 @@ public class Controller {
 		switch (option) {
 		/* 0. Quit program */
 		case 0:
-			// Save all system data to csvs
-			// Check if you want to save
-			System.out.println("Do you want to save the data? y/n");
-			String response = sc.next();
-			if (response.equalsIgnoreCase("y")) {
-				System.out.println(valleyBike.saveData());
-			}
+			// Close scanner
 			sc.close();
 			// Exit statement
 			System.out.println("Thank you for using ValleyBike, have a great day!");
@@ -123,13 +117,7 @@ public class Controller {
 		switch (option) {
 		/* 0. Quit program */
 		case 0:
-			// Save all system data to csvs
-			// Check if you want to save
-			System.out.println("Do you want to save the data? y/n");
-			String response = sc.next();
-			if (response.equalsIgnoreCase("y")) {
-				System.out.println(valleyBike.saveData());
-			}
+			// Close scanner
 			sc.close();
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
