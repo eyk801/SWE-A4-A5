@@ -744,4 +744,145 @@ public class ValleyBikeSim {
 		}
 		return exists;
 	}
+
+	/**
+	 * @return the stations
+	 */
+	public Map<Integer, Station> getStations() {
+		return stations;
+	}
+
+	/**
+	 * @param stations the stations to set
+	 */
+	public void setStations(Map<Integer, Station> stations) {
+		this.stations = stations;
+	}
+
+	/**
+	 * @return the users
+	 */
+	public Map<String, User> getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param users the users to set
+	 */
+	public void setUsers(Map<String, User> users) {
+		this.users = users;
+	}
+
+	/**
+	 * @return the bikes
+	 */
+	public Map<Integer, Bike> getBikes() {
+		return bikes;
+	}
+
+	/**
+	 * @param bikes the bikes to set
+	 */
+	public void setBikes(Map<Integer, Bike> bikes) {
+		this.bikes = bikes;
+	}
+
+	/**
+	 * @return the rides
+	 */
+	public Map<Integer, Ride> getRides() {
+		return rides;
+	}
+
+	/**
+	 * @param rides the rides to set
+	 */
+	public void setRides(Map<Integer, Ride> rides) {
+		this.rides = rides;
+	}
+
+	/**
+	 * @return the mainReqs
+	 */
+	public Map<Integer, MainReq> getMainReqs() {
+		return mainReqs;
+	}
+
+	/**
+	 * @param mainReqs the mainReqs to set
+	 */
+	public void setMainReqs(Map<Integer, MainReq> mainReqs) {
+		this.mainReqs = mainReqs;
+	}
+
+	/**
+	 * @return the currRides
+	 */
+	public List<Integer> getCurrRides() {
+		return currRides;
+	}
+
+	/**
+	 * @param currRides the currRides to set
+	 */
+	public void setCurrRides(List<Integer> currRides) {
+		this.currRides = currRides;
+	}
+
+	/**
+	 * @return the lastRideId
+	 */
+	public Integer getLastRideId() {
+		return lastRideId;
+	}
+
+	/**
+	 * @param lastRideId the lastRideId to set
+	 */
+	public void setLastRideId(Integer lastRideId) {
+		this.lastRideId = lastRideId;
+	}
+
+	/**
+	 * @return the lastBikeId
+	 */
+	public Integer getLastBikeId() {
+		return lastBikeId;
+	}
+
+	/**
+	 * @param lastBikeId the lastBikeId to set
+	 */
+	public void setLastBikeId(Integer lastBikeId) {
+		this.lastBikeId = lastBikeId;
+	}
+
+	/**
+	 * @return the lastStationId
+	 */
+	public Integer getLastStationId() {
+		return lastStationId;
+	}
+
+	/**
+	 * @param lastStationId the lastStationId to set
+	 */
+	public void setLastStationId(Integer lastStationId) {
+		this.lastStationId = lastStationId;
+	}
+
+	/**
+	 * @return the lastMainReqId
+	 */
+	public Integer getLastMainReqId() {
+		return lastMainReqId;
+	}
+
+	/**
+	 * @param lastMainReqId the lastMainReqId to set
+	 */
+	public void setLastMainReqId(Integer lastMainReqId) {
+		this.lastMainReqId = lastMainReqId;
+	}
+	
 }
