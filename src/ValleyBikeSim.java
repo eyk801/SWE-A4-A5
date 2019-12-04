@@ -375,6 +375,13 @@ public class ValleyBikeSim {
 		// Create new station
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		this.stations.put(id, s);
+		// Save station data
+		try {
+			saveStationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Station successfully added to the system.";
 	}
 
@@ -391,8 +398,7 @@ public class ValleyBikeSim {
 	 */
 	public String equalizeStations() {
 		//Find the total number of bikes and total capacity
-		//The reason we use total bikes at stations instead of just bikes.size()
-		//Is because we can't move bikes that are currently checked out by users
+		// Use total bikes at each station instead of bikes.size() to account for bikes taken out by users
 		int totalBikes = 0;
 		int totalCap = 0;
 		for (Station s : this.stations.values()) {
@@ -424,6 +430,14 @@ public class ValleyBikeSim {
 					bikes.get(bikeToAdd).setLastStationId(s.getId());
 					}
 			}
+		}
+		// Save station and bike data
+		try {
+			saveStationData();
+			saveBikeData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return "The number of bikes at all stations have been equalized.";
 	}
@@ -484,7 +498,16 @@ public class ValleyBikeSim {
 		b.setUserId(username);
 		// Update the station info
 		s.removeBike(bikeId);
-		
+		// Save all data
+		try {
+			saveStationData();
+			saveBikeData();
+			saveUserData();
+			saveRideData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +". Your account has been charged $" + cost;
 	};
 	
@@ -521,7 +544,16 @@ public class ValleyBikeSim {
 		r.end(stationId);
 		// Update user info (end ride), add ride to ride history
 		currentUser.endRide();
-
+		// Save data
+		try {
+			saveStationData();
+			saveUserData();
+			saveBikeData();
+			saveRideData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Successfully checked in. Ride completed.";
 	}
 	
@@ -571,6 +603,13 @@ public class ValleyBikeSim {
 		// Create new MainReq object
 		MainReq req = new MainReq(id, username, stationId, issueMessage);
 		mainReqs.put(id, req);
+		// Save mainreq data
+		try {
+			saveMainReqData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Issue reported.";
 	}
 	
@@ -719,7 +758,14 @@ public class ValleyBikeSim {
 			bikes.put(id, bike);
 			s.addBike(id);
 		}
-		
+		// Save station and bike data
+		try {
+			saveStationData();
+			saveBikeData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Bikes added.";
 	}
 	
@@ -755,6 +801,13 @@ public class ValleyBikeSim {
 		if (!invalid.equalsIgnoreCase("")) {
 			invalid = "Issue(s) " + invalid + "invalid. Could not resolve.";
 		}
+		// Save mainreq data
+		try {
+			saveMainReqData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return resolved + "\n" + invalid;
 	}
 	
@@ -771,6 +824,13 @@ public class ValleyBikeSim {
 			int membershipCharge = newUser.getType();
 			newUser.addToBill(membershipCharge);
 			users.put(username, newUser);
+			// Save user data
+			try {
+				saveUserData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return true;
 		} else {
 			return false;
