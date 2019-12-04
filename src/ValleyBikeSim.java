@@ -583,7 +583,7 @@ public class ValleyBikeSim {
 		User currentUser = users.get(username);
 		
 		return ("Account Information: \n "
-				+ "Username	Password	Membership	Current Ride	Credit Card\t Total Bill	Rides\n" 
+				+ "Username	Password	Membership	Current Ride	Credit Card\t	Rides\n" 
 				+ currentUser.toViewString());
 	}
 	

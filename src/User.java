@@ -244,7 +244,6 @@ public class User {
     					+ membership + "\t"
     					+ this.currentRideId + "\t\t" 
     					+ this.creditCardNum + "\t"
-    					+ this.totalBill + "\t"
     					+ rideIds + "\n");  
     }
 }
