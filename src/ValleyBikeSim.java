@@ -566,12 +566,13 @@ public class ValleyBikeSim {
 	 */
 	public String viewHistory(String username) {
 		User currentUser = users.get(username);
-		String rideList = "";
+		String rideList = "Ride id \t Start Time \t\t End Time \n";
 		// Loop through all rides in User
 		for (int r : currentUser.getRides()) {
-			rideList = rideList + ("Ride " + r + "\n");
+			Ride ride = rides.get(r);
+			rideList = rideList + ("Ride " + r + "\t\t" + ride.getStartTime() + "\t" + ride.getEndTime() + "\n");
 		}
-		return "Ride History: \n" + rideList;
+		return "Ride History: \n\n" + rideList;
 	}
 	
 	/**
