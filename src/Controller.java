@@ -427,6 +427,98 @@ public class Controller {
 	}
 	
 	/**
+	 * Validate user input based on type
+	 * </p>
+	 * Unbounded user input 
+	 * </p>
+	 * @param line	user input
+	 * @param type	desired type
+	 * @return the user input in desired form (Object type)
+	 */
+	public Object validate_Line(String line, VariableType type) {
+		System.out.println("in validate");
+		if (line.equals("q")) {
+			return null;
+		} else {
+			// Switch statement for variable types
+			switch (type) {
+			case STRING:
+				return line;
+			case INT:
+				try {
+					return Integer.parseInt(line);
+				} catch (Exception NumberFormatException) {
+					return "Error";
+				}
+			case LONG:
+				try {
+					return Long.parseLong(line);
+				} catch (Exception FormatException) {
+					return "Error";
+				}
+			case BOOLEAN:
+				try {
+					return Boolean.parseBoolean(line);
+					} catch (Exception FormatException) {
+					return "Error";
+				}
+			case DATE:
+				// add in date verification
+				return null;
+			default: // catch for other var types
+				return "Error";
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param line	User input
+	 * @param type	Desired output type
+	 * @param min	The lower bound
+	 * @param max	The upper bound
+	 * @return	the user input in desired form
+	 */
+	public Object validate_Line(String line, VariableType type, long min, long max) {
+		if (line.equals("q")) {
+			return null;
+		} else {
+			switch (type) {
+			case INT:
+				int i = 0;
+				// Check if valid int
+				try {
+					i = Integer.parseInt(line);
+				} catch (Exception NumberFormatException) {
+					return "Error";
+				}
+				// Check if int is within bounds
+				if ((int)min <= i && i <= (int)max) {
+					return i;
+				} else {
+					return "Error";
+				}
+			case LONG:
+				long l = 0;
+				// Check if valid long
+				try {
+					l = Long.parseLong(line);
+				} catch (Exception NumberFormatException) {
+					return "Error";
+				}
+				// Check if long is within bounds
+				if (min <= l && l <= max) {
+					return l;
+				} else {
+					return "Error";
+				}
+			default: // catch for other var types
+				return "Error";	
+			}
+		}
+	}
+	
+	/**
 	 * Allows the user to check out a bike.
 	 * </p>
 	 * User enters ID of station they're checking a bike out from
@@ -436,12 +528,60 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.checkOut
 	 */
 	private String checkOutBike(String username) {
-		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		if (valleyBike.stationExists(stationId)) {
-			return valleyBike.checkOutBike(username, stationId);
-		} else {
-			return "The station you entered does not exist. Please enter an existing station id.";
-		}
+		// Clear scanner
+		sc.nextLine();
+		System.out.println("Please enter your current station: ");
+		String line = sc.nextLine();
+		System.out.println(line);
+		// Get user input
+		Object obj = validate_Line(line, VariableType.INT);
+		System.out.println(obj);
+		System.out.println(obj.getClass());
+		// If output is an int
+		if (obj.getClass() == Integer.class) {
+			System.out.println("object is int");
+			int id = (int)obj;
+			if (valleyBike.stationExists(id)) {
+				return valleyBike.checkOutBike(username, id);
+			} else {
+				return "The station you entered does not exist. Please enter an existing station id.";
+			}
+		} else if (obj.getClass() == String.class) { // if output is String
+			String s = (String)obj;
+			if (s.equals("Error")) {
+				System.out.println("Please enter a valid station id.");
+				checkOutBike(username);
+			}
+		} 
+		// Catch case
+		// If user enters "q", quit to main menu (return empty string)
+		return "";
+		
+//		if (stationID == null) {
+//			try {
+//				executeUser(username);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		} else if (stationID.equals("Error")) {
+//			System.out.println("Please enter a valid station id.");
+//			checkOutBike(username);
+//		}
+//		
+//		int id = (int)stationID;
+//		if (valleyBike.stationExists(id)) {
+//			return valleyBike.checkOutBike(username, id);
+//		} else {
+//			return "The station you entered does not exist. Please enter an existing station id.";
+//		}
+		
+//		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
+//		if (valleyBike.stationExists(stationId)) {
+//			return valleyBike.checkOutBike(username, stationId);
+//		} else {
+//			return "The station you entered does not exist. Please enter an existing station id.";
+//		}
 	}
 	
 	/**

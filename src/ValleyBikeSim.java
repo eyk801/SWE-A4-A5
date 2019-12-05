@@ -19,7 +19,7 @@ public class ValleyBikeSim {
 	 * For dev: "data-files/"
 	 * For testing: "test-data-files/"
 	 */
-	private static String path = /** "data-files" */ "test-data-files/";
+	private static String path = /** "data-files" */ "data-files/";
 	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
 	/** Hashmap of all user objects userId:User)*/
@@ -313,7 +313,7 @@ public class ValleyBikeSim {
 	 * @throws IOException
 	 */
 	public void saveBikeData() throws IOException {
-		FileWriter bikeWriter = new FileWriter("data-files/bike-data.csv");
+		FileWriter bikeWriter = new FileWriter(path+ "bike-data.csv");
 		bikeWriter.write("ID,Last Station Id,User Id,Checked Out\n");
 			for (Bike b  : this.bikes.values()) {
 				bikeWriter.write(b.toSaveString());
