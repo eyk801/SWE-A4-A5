@@ -5,11 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
+import junit.framework.Test;
+
 /**
  * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
  * @version     1.0
  */
 public class ValleyBikeSim {
+	/**
+	 * String that denotes the path for the data files
+	 * ValleyBikeSim will be accessing.
+	 * Make sure to set proper path before running!!
+	 * For dev: "data-files/"
+	 * For testing: "test-data-files/"
+	 */
+	private static String path = /** "data-files" */ "test-data-files/";
 	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
 	/** Hashmap of all user objects userId:User)*/
@@ -34,6 +44,7 @@ public class ValleyBikeSim {
 	private PaymentSys paymentSystem = new PaymentSys();
 	/** Instance of the ValleyBikeSim */
 	private static ValleyBikeSim instance = null;
+
 	
 	/**
 	 * ValleyBikeSim class constructor.
@@ -74,7 +85,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Station> stations = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "station-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -116,7 +127,7 @@ public class ValleyBikeSim {
 
 		HashMap<String, User> users = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/user-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "user-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -157,7 +168,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Bike> bikes = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/bike-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "bike-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -188,7 +199,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Ride> rides = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/ride-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "ride-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -229,7 +240,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, MainReq> mainReqs = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/mainreq-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "mainreq-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -249,6 +260,7 @@ public class ValleyBikeSim {
 			return null;
 		}
 	}
+	
 	
 	/**
 	 * Saves current station data into csv file.
@@ -989,6 +1001,5 @@ public class ValleyBikeSim {
 	 */
 	public void setLastMainReqId(Integer lastMainReqId) {
 		this.lastMainReqId = lastMainReqId;
-	}
-	
+	}	
 }
