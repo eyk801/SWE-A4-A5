@@ -11,7 +11,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+/**
+ * ValleyBikeSim Testing Class
+ * Be sure to change the path variable
+ * in ValleyBikeSim before running!
+ */
 class ValleyBikeSimTest {
 	
 	static ValleyBikeSim vBSTester = ValleyBikeSim.getInstance();
@@ -26,27 +30,6 @@ class ValleyBikeSimTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		List<Integer> bikeIds1 = new ArrayList<>();
-		Station station1 = new Station(1, 10, 20, true,
-	            "testAddress1", "testAddress2", bikeIds1);
-		Map<Integer, Station> stations = new HashMap<>();
-		stations.put(1, station1);
-		
-		User user1 = new User("testUser1", "testPassword1", 0, 
-				1234567890, 122, "12/25");
-		Map<String, User> users = new HashMap<>();
-		users.put("testUser1", user1);
-		
-		vBSTester.setStations(stations);
-		vBSTester.setUsers(users);
-		vBSTester.setBikes(new HashMap<>());
-		vBSTester.setCurrRides(new ArrayList<>());
-		vBSTester.setMainReqs(new HashMap<>());
-		vBSTester.setLastBikeId(0);
-		vBSTester.setLastMainReqId(0);
-		vBSTester.setLastRideId(0);
-		vBSTester.setLastStationId(1);
-		vBSTester.setRides(null);
 	}
 
 	@AfterEach
@@ -54,20 +37,23 @@ class ValleyBikeSimTest {
 	}
 
 	@Test
-	void testCreateStation() {
-		assertFalse(vBSTester.stationExists(2));
-		vBSTester.addStation(10, false, "testAddress2", "testStation2");
-		assertTrue(vBSTester.stationExists(2));
-		assertEquals(vBSTester.getStations().get(2).getName(), "testStation2");
+	void testReadData_validData() {
+		assertEquals(vBSTester.getBikes().size(), 1);
+		assertEquals(vBSTester.getStations().size(), 2);
+		assertEquals(vBSTester.getRides().size(), 3);
+		assertEquals(vBSTester.getCurrRides().size(), 0);
+		assertEquals(vBSTester.getMainReqs().size(), 2 );
+		assertEquals(vBSTester.getUsers().size(), 2);
+		
 	}
 	
 	@Test
-	void testAddBikes() {
-		assertEquals(vBSTester.getBikes().size(), 0);
+	void testCheckOutBike_rideCreated_dataUpdated() {
+		String user1 = "emilykim";
+		assertEquals(vBSTester.getStations().get(1).getNumBikes(), 1);
+		vBSTester.checkOutBike(user1, 1);
 		assertEquals(vBSTester.getStations().get(1).getNumBikes(), 0);
-		vBSTester.addBikes(1, 10);
-		assertEquals(vBSTester.getBikes().size(), 10);
-		assertEquals(vBSTester.getStations().get(1).getNumBikes(), 10);
+		assertEquals(vBSTester.getCurrRides().size(), 1);
+		assertEquals(vBSTester.getRides().size(), 4);
 	}
-
 }

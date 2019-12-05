@@ -5,11 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
+import junit.framework.Test;
+
 /**
  * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
  * @version     1.0
  */
 public class ValleyBikeSim {
+	/**
+	 * String that denotes the path for the data files
+	 * ValleyBikeSim will be accessing.
+	 * Make sure to set proper path before running!!
+	 * For dev: "data-files/"
+	 * For testing: "test-data-files/"
+	 */
+	private static String path = /** "data-files" */ "test-data-files/";
 	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
 	/** Hashmap of all user objects userId:User)*/
@@ -34,6 +44,7 @@ public class ValleyBikeSim {
 	private PaymentSys paymentSystem = new PaymentSys();
 	/** Instance of the ValleyBikeSim */
 	private static ValleyBikeSim instance = null;
+
 	
 	/**
 	 * ValleyBikeSim class constructor.
@@ -74,7 +85,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Station> stations = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/station-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "station-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -116,7 +127,7 @@ public class ValleyBikeSim {
 
 		HashMap<String, User> users = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/user-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "user-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -157,7 +168,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Bike> bikes = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/bike-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "bike-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -188,7 +199,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, Ride> rides = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/ride-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "ride-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -229,7 +240,7 @@ public class ValleyBikeSim {
 
 		HashMap<Integer, MainReq> mainReqs = new HashMap<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data-files/mainreq-data.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "mainreq-data.csv"));
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",");
@@ -257,7 +268,7 @@ public class ValleyBikeSim {
 	 */
 	public String saveData() throws IOException {
 		// Save station data
-		FileWriter stationWriter = new FileWriter("data-files/station-data.csv");
+		FileWriter stationWriter = new FileWriter(path + "station-data.csv");
 		stationWriter.write("ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids\n");
 			for (Station s : this.stations.values()) {
 				stationWriter.write(s.toSaveString());
@@ -265,7 +276,7 @@ public class ValleyBikeSim {
 			stationWriter.flush();
 			stationWriter.close();
 		// Save user data
-		FileWriter userWriter = new FileWriter("data-files/user-data.csv");
+		FileWriter userWriter = new FileWriter(path + "user-data.csv");
 		userWriter.write("Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History\n");
 			for (User u : this.users.values()) {
 				userWriter.write(u.toSaveString());
@@ -273,7 +284,7 @@ public class ValleyBikeSim {
 			userWriter.flush();
 			userWriter.close();
 		// Save ride data
-		FileWriter rideWriter = new FileWriter("data-files/ride-data.csv");
+		FileWriter rideWriter = new FileWriter(path + "ride-data.csv");
 		rideWriter.write("ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time,Current Ride\n");
 			for (Ride r : this.rides.values()) {
 				rideWriter.write(r.toSaveString());
@@ -281,7 +292,7 @@ public class ValleyBikeSim {
 			rideWriter.flush();
 			rideWriter.close();
 		// Save bike data
-		FileWriter bikeWriter = new FileWriter("data-files/bike-data.csv");
+		FileWriter bikeWriter = new FileWriter(path + "bike-data.csv");
 		bikeWriter.write("ID,Last Station Id,User Id,Checked Out\n");
 			for (Bike b  : this.bikes.values()) {
 				bikeWriter.write(b.toSaveString());
@@ -289,7 +300,7 @@ public class ValleyBikeSim {
 			bikeWriter.flush();
 			bikeWriter.close();
 		// Save maintenance requests data
-		FileWriter reqWriter = new FileWriter("data-files/mainreq-data.csv");
+		FileWriter reqWriter = new FileWriter(path + "mainreq-data.csv");
 		reqWriter.write("ID,User Id,Station Id,Message\n");
 			for (MainReq req : this.mainReqs.values()) {
 				reqWriter.write(req.toSaveString());
@@ -883,6 +894,5 @@ public class ValleyBikeSim {
 	 */
 	public void setLastMainReqId(Integer lastMainReqId) {
 		this.lastMainReqId = lastMainReqId;
-	}
-	
+	}	
 }
