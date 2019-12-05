@@ -436,7 +436,6 @@ public class Controller {
 	 * @return the user input in desired form (Object type)
 	 */
 	public Object validate_Line(String line, VariableType type) {
-		System.out.println("in validate");
 		if (line.equals("q")) {
 			return null;
 		} else {
@@ -532,13 +531,12 @@ public class Controller {
 		sc.nextLine();
 		System.out.println("Please enter your current station: ");
 		String line = sc.nextLine();
-		System.out.println(line);
 		// Get user input
 		Object obj = validate_Line(line, VariableType.INT);
-		System.out.println(obj);
-		System.out.println(obj.getClass());
 		// If output is an int
-		if (obj.getClass() == Integer.class) {
+		if (obj == null) {
+			return "";
+		} else if (obj.getClass() == Integer.class) {
 			System.out.println("object is int");
 			int id = (int)obj;
 			if (valleyBike.stationExists(id)) {

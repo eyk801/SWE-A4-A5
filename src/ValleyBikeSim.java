@@ -19,8 +19,8 @@ public class ValleyBikeSim {
 	 * For dev: "data-files/"
 	 * For testing: "test-data-files/"
 	 */
-	private static String path = /** "data-files" */ "data-files/";
-	private static String savePath = /** "data-files" */ "data-files-junk/";
+	private static String path = "data-files/" /*"test-data-files/"*/;
+	private static String savePath = "data-files/" /*"test-data-files-junk/"*/;
 	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
 	/** Hashmap of all user objects userId:User)*/
