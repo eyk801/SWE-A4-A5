@@ -537,7 +537,6 @@ public class Controller {
 		if (obj == null) {
 			return "";
 		} else if (obj.getClass() == Integer.class) {
-			System.out.println("object is int");
 			int id = (int)obj;
 			if (valleyBike.stationExists(id)) {
 				return valleyBike.checkOutBike(username, id);
