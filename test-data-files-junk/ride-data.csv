@@ -1,0 +1,4 @@
+ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time,Current Ride
+1,esterzhao,1,1,2,2019-11-10 12:00:00,2019-11-10 13:00:00,false
+2,esterzhao,2,2,1,2019-11-10 12:00:00,2019-11-10 13:00:00,false
+3,emilykim,3,3,4,2019-11-10 12:00:00,2019-11-10 13:00:00,false

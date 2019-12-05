@@ -20,6 +20,7 @@ public class ValleyBikeSim {
 	 * For testing: "test-data-files/"
 	 */
 	private static String path = /** "data-files" */ "data-files/";
+	private static String savePath = /** "data-files" */ "data-files-junk/";
 	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
 	/** Hashmap of all user objects userId:User)*/
@@ -268,7 +269,7 @@ public class ValleyBikeSim {
 	 * @throws IOException
 	 */
 	public void saveStationData() throws IOException {
-		FileWriter stationWriter = new FileWriter(path + "station-data.csv");
+		FileWriter stationWriter = new FileWriter(savePath + "station-data.csv");
 		stationWriter.write("ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids\n");
 			for (Station s : this.stations.values()) {
 				stationWriter.write(s.toSaveString());
@@ -283,7 +284,7 @@ public class ValleyBikeSim {
 	 * @throws IOException
 	 */
 	public void saveUserData() throws IOException {
-		FileWriter userWriter = new FileWriter(path + "user-data.csv");
+		FileWriter userWriter = new FileWriter(savePath + "user-data.csv");
 		userWriter.write("Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History\n");
 			for (User u : this.users.values()) {
 				userWriter.write(u.toSaveString());
@@ -298,7 +299,7 @@ public class ValleyBikeSim {
 	 * @throws IOException
 	 */
 	public void saveRideData() throws IOException {
-		FileWriter rideWriter = new FileWriter(path + "ride-data.csv");
+		FileWriter rideWriter = new FileWriter(savePath + "ride-data.csv");
 		rideWriter.write("ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time,Current Ride\n");
 			for (Ride r : this.rides.values()) {
 				rideWriter.write(r.toSaveString());
@@ -313,7 +314,7 @@ public class ValleyBikeSim {
 	 * @throws IOException
 	 */
 	public void saveBikeData() throws IOException {
-		FileWriter bikeWriter = new FileWriter(path+ "bike-data.csv");
+		FileWriter bikeWriter = new FileWriter(savePath + "bike-data.csv");
 		bikeWriter.write("ID,Last Station Id,User Id,Checked Out\n");
 			for (Bike b  : this.bikes.values()) {
 				bikeWriter.write(b.toSaveString());
@@ -328,7 +329,7 @@ public class ValleyBikeSim {
 	 * @throws IOException
 	 */
 	public void saveMainReqData() throws IOException {
-		FileWriter reqWriter = new FileWriter(path + "mainreq-data.csv");
+		FileWriter reqWriter = new FileWriter(savePath + "mainreq-data.csv");
 		reqWriter.write("ID,User Id,Station Id,Message\n");
 			for (MainReq req : this.mainReqs.values()) {
 				reqWriter.write(req.toSaveString());
