@@ -323,6 +323,15 @@ public class Controller {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * </p>
+	 * @param 
+	 * @param 
+	 * @param 
+	 * @return
+	 */
 	private Long valCardNum(Long cardNum) {
 		String length = Long.toString(cardNum);
 		if (length.length() != 16) {
