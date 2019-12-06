@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 public class MapApp extends JPanel {
 	
 	private ArrayList<Point> points;
+	private JFrame dialog;
+	private boolean userClick = false;
 	
 	public void MapApp() {
 		points = new ArrayList<Point>();
@@ -59,6 +61,13 @@ public class MapApp extends JPanel {
             g2.fillOval(point.x, point.y, 20, 20);
         }
     }
+    
+    public void showInfo() {
+    	JOptionPane.showMessageDialog(dialog,
+    		    "Info",
+    		    "Station Information",
+    		    JOptionPane.INFORMATION_MESSAGE);
+    }
 
 	
 	public static void runUserMap() {
@@ -86,6 +95,8 @@ public class MapApp extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			Point p = new Point(e.getX(), e.getY());
 			System.out.println("Click event at (" + p + ")");
+			userClick = true;
+			showInfo();
 			//points.add(p);
 			//points.add(new Point(e.getX(), e.getY()));
             //System.out.println(points);
