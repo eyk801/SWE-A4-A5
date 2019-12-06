@@ -1,6 +1,7 @@
 import java.io.*;
 import java.text.ParseException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
@@ -458,42 +459,45 @@ public class Controller {
 	 * @param type	desired type
 	 * @return the user input in desired form (Object type)
 	 */
-	public Object validate_Line(String line, VariableType type) {
-		if (line.equals("q")) {
-			return null;
-		} else {
-			// Switch statement for variable types
-			switch (type) {
-			case STRING:
-				return line;
-			case INT:
-				try {
-					return Integer.parseInt(line);
-				} catch (Exception NumberFormatException) {
-					return "Error";
-				}
-			case LONG:
-				try {
-					return Long.parseLong(line);
-				} catch (Exception FormatException) {
-					return "Error";
-				}
-			case BOOLEAN:
-				try {
-					return Boolean.parseBoolean(line);
-					} catch (Exception FormatException) {
-					return "Error";
-				}
-			case DATE:
-				// add in date verification
-				try {
-					
-				}
+	public Object validate_Line(String prompt, VariableType type) {
+		Object obj = null;
+		System.out.println(prompt + ": ");
+		while (sc.hasNext()) {
+			// Global quit functionality
+			if (sc.hasNext(Pattern.compile("q"))) {
 				return null;
-			default: // catch for other var types
-				return "Error";
+			} else {
+				switch (type) {
+				case INT:
+					if (sc.hasNextInt()) {
+						int i = Integer.parseInt(sc.nextLine());
+						obj = i;
+					} else {
+						// Else, call the prompt again
+						validate_Line(prompt, type);
+					}
+				case LONG:
+					if (sc.hasNextLong()) {
+						long l = Long.parseLong(sc.nextLine());
+						obj = l;
+					} else {
+						// Else, call the prompt again
+						validate_Line(prompt, type);
+					}
+				case BOOLEAN: 
+					if (sc.hasNextBoolean()) {
+						boolean b = Boolean.parseBoolean(sc.nextLine());
+						obj = b;
+					} else {
+						// Else, call prompt again
+						validate_Line(prompt, type);
+					}
+				case DATE:
+					// input emily's stuff
+				}
 			}
 		}
+		return obj;
 	}
 	
 	/**
@@ -504,43 +508,47 @@ public class Controller {
 	 * @param max	The upper bound
 	 * @return	the user input in desired form
 	 */
-	public Object validate_Line(String line, VariableType type, long min, long max) {
-		if (line.equals("q")) {
-			return null;
-		} else {
-			switch (type) {
-			case INT:
-				int i = 0;
-				// Check if valid int
-				try {
-					i = Integer.parseInt(line);
-				} catch (Exception NumberFormatException) {
-					return "Error";
+	public Object validate_Line(String prompt, VariableType type, long min, long max)  {
+		Object obj = null;
+		System.out.println(prompt + ": ");
+		while (sc.hasNext()) {
+			// Global quit functionality
+			if (sc.hasNext(Pattern.compile("q"))) {
+				return null;
+			} else {
+				switch (type) {
+				case INT:
+					if (sc.hasNextInt()) {
+						int i = Integer.parseInt(sc.nextLine());
+						// Check if int is within bounds
+						if ((int)min <= i && i <= (int)max) {
+							obj = i;
+						} else {
+							validate_Line(prompt, type, min, max);
+						}
+					} else {
+						// Else, call the prompt again
+						validate_Line(prompt, type, min, max);
+					}
+				case LONG:
+					if (sc.hasNextLong()) {
+						long l = Long.parseLong(sc.nextLine());
+						// Check if int is within bounds
+						if (min <= l && l <= max) {
+							obj = l;
+						} else {
+							validate_Line(prompt, type, min, max);
+						}
+					} else {
+						// Else, call the prompt again
+						validate_Line(prompt, type, min, max);
+					}
+				default: // catch case
+					return null;	
 				}
-				// Check if int is within bounds
-				if ((int)min <= i && i <= (int)max) {
-					return i;
-				} else {
-					return "Error";
-				}
-			case LONG:
-				long l = 0;
-				// Check if valid long
-				try {
-					l = Long.parseLong(line);
-				} catch (Exception NumberFormatException) {
-					return "Error";
-				}
-				// Check if long is within bounds
-				if (min <= l && l <= max) {
-					return l;
-				} else {
-					return "Error";
-				}
-			default: // catch for other var types
-				return "Error";	
 			}
 		}
+		return obj;
 	}
 	
 	/**
@@ -555,56 +563,20 @@ public class Controller {
 	private String checkOutBike(String username) {
 		// Clear scanner
 		sc.nextLine();
-		System.out.println("Please enter your current station: ");
-		String line = sc.nextLine();
-		// Get user input
-		Object obj = validate_Line(line, VariableType.INT);
-		// If output is an int
+		Object obj = validate_Line("Please enter your current station", VariableType.INT);
 		if (obj == null) {
+			// Global quit functionality - return to menu
 			return "";
-		} else if (obj.getClass() == Integer.class) {
+		} else {
 			int id = (int)obj;
 			if (valleyBike.stationExists(id)) {
 				return valleyBike.checkOutBike(username, id);
 			} else {
-				return "The station you entered does not exist. Please enter an existing station id.";
+				System.out.println("The station you entered does not exist. Please enter an existing station id.");
+				// Call func again
+				return checkOutBike(username);
 			}
-		} else if (obj.getClass() == String.class) { // if output is String
-			String s = (String)obj;
-			if (s.equals("Error")) {
-				System.out.println("Please enter a valid station id.");
-				checkOutBike(username);
-			}
-		} 
-		// Catch case
-		// If user enters "q", quit to main menu (return empty string)
-		return "";
-		
-//		if (stationID == null) {
-//			try {
-//				executeUser(username);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		} else if (stationID.equals("Error")) {
-//			System.out.println("Please enter a valid station id.");
-//			checkOutBike(username);
-//		}
-//		
-//		int id = (int)stationID;
-//		if (valleyBike.stationExists(id)) {
-//			return valleyBike.checkOutBike(username, id);
-//		} else {
-//			return "The station you entered does not exist. Please enter an existing station id.";
-//		}
-		
-//		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-//		if (valleyBike.stationExists(stationId)) {
-//			return valleyBike.checkOutBike(username, stationId);
-//		} else {
-//			return "The station you entered does not exist. Please enter an existing station id.";
-//		}
+		}
 	}
 	
 	/**
