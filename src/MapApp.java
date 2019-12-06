@@ -20,7 +20,7 @@ public class MapApp extends JPanel {
      *  Creates and shows the GUI.
      */
     public void createGUI() {
-    	
+
     	JFrame frame = new JFrame();
     	
     	JPanel panel = new JPanel();
@@ -40,17 +40,12 @@ public class MapApp extends JPanel {
 			System.out.println("Invalid file name.");
 			e.printStackTrace();
 		}
-
-		addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                points.add(new Point(e.getX(), e.getY()));
-                repaint();
-            }
-        });
 		
-		frame.add(panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
+		frame.addMouseListener(new MouseListener());
+		frame.addMouseMotionListener(new MouseListener());
+		
+		frame.add(panel);		
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
     
@@ -85,6 +80,30 @@ public class MapApp extends JPanel {
 		});
 	}
 	*/
+	
+	private class MouseListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Point p = new Point(e.getX(), e.getY());
+			System.out.println("Click event at (" + p + ")");
+			//points.add(p);
+			//points.add(new Point(e.getX(), e.getY()));
+            //System.out.println(points);
+
+		}
+		public void mousePressed(MouseEvent e) {
+
+		}
+		public void mouseReleased(MouseEvent e) {
+
+		}
+		public void mouseEntered(MouseEvent e) {
+
+		}
+		public void mouseExited(MouseEvent e) {
+
+		}
+    }
 
 }
 
