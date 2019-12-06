@@ -13,7 +13,7 @@ public class MapApp extends JPanel {
 	private ArrayList<Point> points;
 	private JFrame dialog;
 	private boolean userClick = false;
-	private boolean user = true;
+	private boolean user;
 	
 	public void MapApp() {
 		
@@ -86,17 +86,17 @@ public class MapApp extends JPanel {
 		});
 	}
 	
-	/*
+
 	public static void runBackendMap() {
 		final MapApp backendMap = new MapApp();
-		userMap.user = false;
+		backendMap.user = false;
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-			    backendMap.createAndShowGUI();
+			    backendMap.createGUI();
 			}
 		});
 	}
-	*/
+
 	
 	private class MouseListener extends MouseAdapter {
 		@Override
