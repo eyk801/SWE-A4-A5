@@ -304,12 +304,13 @@ public class Controller {
 					+ "1 = Pay-per-month, $12 per month \n"
 					+ "2 = Pay-per-year, $100 per year.");
 			Integer membership = getIntResponse("Please enter your preferred membership type (0,1,2)", 0, 2);
-			//TODO: validate cardNum: 16 digits, etc.
-			Long cardNum = getUnboundedLongResponse("Please enter you credit card number",(long)0);
+			//TODO: validate cardNum: 16 digits, etc. I THINK I DID THIS
+			Long cardNum = getUnboundedLongResponse("Please enter your credit card number",(long)0);
+			valCardNum(cardNum);
 			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
 			System.out.println("Please enter expiration date(MM/YY): ");
 			//TODO: validate this date
-			String expDate = sc.next(); 
+			String expDate = sc.next();
 			userAccounts.put(username, password);
 			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
 				// Add username and password to controller csvs
@@ -320,6 +321,17 @@ public class Controller {
 				return false;
 			}
 		}
+	}
+	
+	private Long valCardNum(Long cardNum) {
+		String length = Long.toString(cardNum);
+		if (length.length() != 16) {
+			System.out.println("Please enter a sufficient credit card with 16 digits");
+			getUnboundedLongResponse("Please enter a valid credit card number", (long)0);
+		} else {
+			System.out.println("It worked");
+		}
+		return cardNum;
 	}
 	
 	private boolean getBoolResponse(String request) {
@@ -378,6 +390,7 @@ public class Controller {
 	private Long getUnboundedLongResponse(String request, Long i) {
 		Long input = (long)0;
 		System.out.println(request + ": ");
+		String length = Long.toString(input);
 		while (sc.hasNext()){
 			if(!sc.hasNextLong()){
 				System.out.println("Entry must be an integer");
@@ -396,6 +409,7 @@ public class Controller {
 		}
 		return input;
 	}
+
 	
 	/**
 	 * Gets an unbounded int response from the user.
@@ -463,6 +477,9 @@ public class Controller {
 				}
 			case DATE:
 				// add in date verification
+				try {
+					
+				}
 				return null;
 			default: // catch for other var types
 				return "Error";
