@@ -61,8 +61,9 @@ public class Controller {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. Check out bike.\n" + "3. Check in bike.\n" + "4. View history.\n"
 				+ "5. View account info.\n" + "6. Report issue.\n");
-
-		Integer option = this.getIntResponse("Please enter your selection (0-6)", 0, 6);
+		// Get user input
+		Object obj = validate_Line("Please enter your selection (0-6)", VariableType.INT, 0, 6);
+		int option = (int)obj;
 		
 		switch (option) {
 		/* 0. Quit program */
@@ -240,6 +241,8 @@ public class Controller {
 			System.out.println("Enter password: ");
 			String password = sc.next();
 			if (login(username, password) == true) {
+				// Clear out scanner
+				sc.nextLine();
 				return username;
 			} else {
 				// If username exists, but password was incorrect
@@ -256,6 +259,8 @@ public class Controller {
 			System.out.println("Enter password: ");
 			String password = sc.next();
 			if (createAccount(username, password) == true) {
+				// Clear out scanner
+				sc.nextLine();
 				return username;
 			} else {
 				System.out.println("Error creating account (username taken or payment invalid)");
@@ -460,8 +465,6 @@ public class Controller {
 	 * @return the user input in desired form (Object type)
 	 */
 	public Object validate_Line(String prompt, VariableType type) {
-		// Clear out scanner
-		sc.nextLine();
 		Object obj = null;
 		System.out.println(prompt + ": ");
 		while (sc.hasNext()) {
@@ -473,7 +476,6 @@ public class Controller {
 				switch (type) {
 				case INT:
 					if (sc.hasNextInt()) {
-						System.out.println("In INT");
 						int i = Integer.parseInt(sc.nextLine());
 						// Check if == 0
 						obj = i;
@@ -577,20 +579,23 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.checkOut
 	 */
 	private String checkOutBike(String username) {
+		// Initialize response string
+		String response = new String();
 		Object obj = validate_Line("Please enter your current station", VariableType.INT);
 		if (obj == null) {
 			// Global quit functionality - return to menu
-			return "";
+			response = "";
 		} else {
 			int id = (int)obj;
 			if (valleyBike.stationExists(id)) {
-				return valleyBike.checkOutBike(username, id);
+				response = valleyBike.checkOutBike(username, id);
 			} else {
 				System.out.println("The station you entered does not exist. Please enter an existing station id.");
 				// Call func again
-				return checkOutBike(username);
+				checkOutBike(username);
 			}
 		}
+		return response;
 	}
 	
 	/**
