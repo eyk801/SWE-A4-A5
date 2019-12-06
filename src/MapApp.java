@@ -12,9 +12,9 @@ public class MapApp extends JPanel {
 	
 	private ArrayList<Point> points  = new ArrayList<Point>();
 	private JFrame dialog;
-	private boolean userClick = false;
 	private boolean user;
 	BufferedImage mapImage;
+	JFrame frame;
 	
 	public void MapApp() {
 
@@ -25,12 +25,11 @@ public class MapApp extends JPanel {
      */
     public void createGUI() {
 
-    	JFrame frame = new JFrame();
+    	frame = new JFrame();
     	
     	JPanel panel = new JPanel();
     	panel.setLayout(new FlowLayout());
     	
-    	//BufferedImage mapImage;
     	int imageWidth;
     	int imageHeight;
 		try {
@@ -63,15 +62,25 @@ public class MapApp extends JPanel {
     }
     
     public void showInfo() {
-    	if (userClick == true) {
-    		JOptionPane.showMessageDialog(dialog,
-        		    "Info",
-        		    "Station Information",
-        		    JOptionPane.INFORMATION_MESSAGE);
-    		userClick = false;
-    	}
-    	
+    	JOptionPane.showMessageDialog(dialog,
+    			"Info",
+        		"Station Information",
+        		JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public int confirmStation() {
+    	return JOptionPane.showConfirmDialog(dialog,
+    			"Is this location correct?",
+    			"Confirm Station",       		
+        	    JOptionPane.YES_NO_OPTION);
+    }
+    
+	boolean inBounds(int mouseX, int mouseY, int x, int y) {
+	    return ((mouseX >= x - 10) && (mouseY >= y - 10) && (mouseX < x + 10) && (mouseY < y + 10));
+	}
+	
+	
+	
 
 	
 	public static void runUserMap() {
@@ -95,35 +104,32 @@ public class MapApp extends JPanel {
 		});
 	}
 	
-	boolean inBounds(int mouseX, int mouseY, int x, int y) {
-	    return ((mouseX >= x - 10) && (mouseY >= y - 10) && (mouseX < x + 10) && (mouseY < y + 10));
-	}
 
-	
 	private class MouseListener extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Point p = new Point(e.getX(), e.getY());
 			System.out.println("Click event at (" + p + ")");
 			if (user == false) {
-				userClick = true;
 				showInfo();
 			}
 			else {
-				points.add(p);
-	            System.out.println(points);
-	            
-	            if (mapImage != null) {
-	            	System.out.println("circle");
-                    Graphics2D g2d = mapImage.createGraphics();
-                    g2d.setColor(Color.black);
-                    g2d.fillOval(p.x - 10, p.y - 10, 20, 20);
-                    g2d.dispose();
-                    repaint();
-                }
+				if (confirmStation() == 0) {
+					points.add(p);
+		            System.out.println(points);
+		            
+		            if (mapImage != null) {
+		            	System.out.println("circle");
+	                    Graphics2D g2d = mapImage.createGraphics();
+	                    g2d.setColor(Color.black);
+	                    g2d.fillOval(p.x - 10, p.y - 10, 20, 20);
+	                    g2d.dispose();
+	                    repaint();
+	                }
+		            
+		            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				}           
 			}
-	
-
 		}
 		public void mousePressed(MouseEvent e) {
 
