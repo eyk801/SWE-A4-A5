@@ -10,14 +10,13 @@ import javax.imageio.ImageIO;
 
 public class MapApp extends JPanel {
 	
-	private ArrayList<Point> points;
+	private ArrayList<Point> points  = new ArrayList<Point>();
 	private JFrame dialog;
 	private boolean userClick = false;
 	private boolean user;
 	
 	public void MapApp() {
-		
-		points = new ArrayList<Point>();
+
 	}
 	
 	/**
@@ -109,12 +108,10 @@ public class MapApp extends JPanel {
 			}
 			else {
 				System.out.println("nope");
+				points.add(p);
+	            System.out.println(points);
 			}
-			
-			
-			//points.add(p);
-			//points.add(new Point(e.getX(), e.getY()));
-            //System.out.println(points);
+	
 
 		}
 		public void mousePressed(MouseEvent e) {
