@@ -460,6 +460,8 @@ public class Controller {
 	 * @return the user input in desired form (Object type)
 	 */
 	public Object validate_Line(String prompt, VariableType type) {
+		// Clear out scanner
+		sc.nextLine();
 		Object obj = null;
 		System.out.println(prompt + ": ");
 		while (sc.hasNext()) {
@@ -470,8 +472,11 @@ public class Controller {
 				switch (type) {
 				case INT:
 					if (sc.hasNextInt()) {
+						System.out.println("In INT");
 						int i = Integer.parseInt(sc.nextLine());
+						// Check if == 0
 						obj = i;
+						break;
 					} else {
 						// Else, call the prompt again
 						validate_Line(prompt, type);
@@ -480,6 +485,7 @@ public class Controller {
 					if (sc.hasNextLong()) {
 						long l = Long.parseLong(sc.nextLine());
 						obj = l;
+						break;
 					} else {
 						// Else, call the prompt again
 						validate_Line(prompt, type);
@@ -488,6 +494,7 @@ public class Controller {
 					if (sc.hasNextBoolean()) {
 						boolean b = Boolean.parseBoolean(sc.nextLine());
 						obj = b;
+						break;
 					} else {
 						// Else, call prompt again
 						validate_Line(prompt, type);
@@ -495,6 +502,7 @@ public class Controller {
 				case DATE:
 					// input emily's stuff
 				}
+				break;
 			}
 		}
 		return obj;
@@ -561,14 +569,14 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.checkOut
 	 */
 	private String checkOutBike(String username) {
-		// Clear scanner
-		sc.nextLine();
 		Object obj = validate_Line("Please enter your current station", VariableType.INT);
+		System.out.println("Station id: " + obj);
 		if (obj == null) {
 			// Global quit functionality - return to menu
 			return "";
 		} else {
 			int id = (int)obj;
+			System.out.println(id);
 			if (valleyBike.stationExists(id)) {
 				return valleyBike.checkOutBike(username, id);
 			} else {
@@ -589,6 +597,9 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.checkIn
 	 */
 	private String checkInBike(String username){
+		
+		
+		
 		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
 		if (valleyBike.stationExists(stationId)) {
 			return valleyBike.checkInBike(username, stationId);
