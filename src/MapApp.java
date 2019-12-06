@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 import javax.imageio.ImageIO;
+import java.awt.*; 
 
 public class MapApp extends JPanel {
 	
@@ -14,6 +14,7 @@ public class MapApp extends JPanel {
 	private JFrame dialog;
 	private boolean userClick = false;
 	private boolean user;
+	BufferedImage mapImage;
 	
 	public void MapApp() {
 
@@ -29,7 +30,7 @@ public class MapApp extends JPanel {
     	JPanel panel = new JPanel();
     	panel.setLayout(new FlowLayout());
     	
-    	BufferedImage mapImage;
+    	//BufferedImage mapImage;
     	int imageWidth;
     	int imageHeight;
 		try {
@@ -54,13 +55,11 @@ public class MapApp extends JPanel {
     
 
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.black);
-        for (Point point : points) {
-            g2.fillOval(point.x, point.y, 20, 20);
-        }
+    protected void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.drawImage(mapImage, 0, 0, this);
+        g2d.dispose();
     }
     
     public void showInfo() {
@@ -95,6 +94,10 @@ public class MapApp extends JPanel {
 			}
 		});
 	}
+	
+	boolean inBounds(int mouseX, int mouseY, int x, int y) {
+	    return ((mouseX >= x - 10) && (mouseY >= y - 10) && (mouseX < x + 10) && (mouseY < y + 10));
+	}
 
 	
 	private class MouseListener extends MouseAdapter {
@@ -102,14 +105,22 @@ public class MapApp extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			Point p = new Point(e.getX(), e.getY());
 			System.out.println("Click event at (" + p + ")");
-			if (user == true) {
+			if (user == false) {
 				userClick = true;
 				showInfo();
 			}
 			else {
-				System.out.println("nope");
 				points.add(p);
 	            System.out.println(points);
+	            
+	            if (mapImage != null) {
+	            	System.out.println("circle");
+                    Graphics2D g2d = mapImage.createGraphics();
+                    g2d.setColor(Color.black);
+                    g2d.fillOval(p.x - 10, p.y - 10, 20, 20);
+                    g2d.dispose();
+                    repaint();
+                }
 			}
 	
 
