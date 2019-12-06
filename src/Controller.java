@@ -467,6 +467,7 @@ public class Controller {
 		while (sc.hasNext()) {
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
+				sc.nextLine();
 				return null;
 			} else {
 				switch (type) {
@@ -501,9 +502,12 @@ public class Controller {
 					}
 				case DATE:
 					// input emily's stuff
+					break;
+				default: // catch case
+					break;
 				}
-				break;
 			}
+			break;
 		}
 		return obj;
 	}
@@ -522,6 +526,7 @@ public class Controller {
 		while (sc.hasNext()) {
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
+				sc.nextLine();
 				return null;
 			} else {
 				switch (type) {
@@ -531,6 +536,7 @@ public class Controller {
 						// Check if int is within bounds
 						if ((int)min <= i && i <= (int)max) {
 							obj = i;
+							break;
 						} else {
 							validate_Line(prompt, type, min, max);
 						}
@@ -544,6 +550,7 @@ public class Controller {
 						// Check if int is within bounds
 						if (min <= l && l <= max) {
 							obj = l;
+							break;
 						} else {
 							validate_Line(prompt, type, min, max);
 						}
@@ -552,9 +559,10 @@ public class Controller {
 						validate_Line(prompt, type, min, max);
 					}
 				default: // catch case
-					return null;	
+					break;
 				}
 			}
+			break;
 		}
 		return obj;
 	}
@@ -570,13 +578,11 @@ public class Controller {
 	 */
 	private String checkOutBike(String username) {
 		Object obj = validate_Line("Please enter your current station", VariableType.INT);
-		System.out.println("Station id: " + obj);
 		if (obj == null) {
 			// Global quit functionality - return to menu
 			return "";
 		} else {
 			int id = (int)obj;
-			System.out.println(id);
 			if (valleyBike.stationExists(id)) {
 				return valleyBike.checkOutBike(username, id);
 			} else {
@@ -597,14 +603,19 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.checkIn
 	 */
 	private String checkInBike(String username){
-		
-		
-		
-		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		if (valleyBike.stationExists(stationId)) {
-			return valleyBike.checkInBike(username, stationId);
+		Object obj = validate_Line("Please enter your current station", VariableType.INT);
+		if (obj == null) {
+			// Global quit functionality - return to menu
+			return "";
 		} else {
-			return "The station you entered does not exist. Please enter an existing station id.";
+			int id = (int)obj;
+			if (valleyBike.stationExists(id)) {
+				return valleyBike.checkInBike(username, id);
+			} else {
+				System.out.println("The station you entered does not exist. Please enter an existing station id.");
+				// Call func again
+				return checkInBike(username);
+			}
 		}
 	}
 	
