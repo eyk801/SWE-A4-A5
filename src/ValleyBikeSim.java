@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
-import junit.framework.Test;
-
 /**
  * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
  * @version     1.0
