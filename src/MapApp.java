@@ -13,8 +13,10 @@ public class MapApp extends JPanel {
 	private ArrayList<Point> points;
 	private JFrame dialog;
 	private boolean userClick = false;
+	private boolean user = true;
 	
 	public void MapApp() {
+		
 		points = new ArrayList<Point>();
 	}
 	
@@ -63,15 +65,20 @@ public class MapApp extends JPanel {
     }
     
     public void showInfo() {
-    	JOptionPane.showMessageDialog(dialog,
-    		    "Info",
-    		    "Station Information",
-    		    JOptionPane.INFORMATION_MESSAGE);
+    	if (userClick == true) {
+    		JOptionPane.showMessageDialog(dialog,
+        		    "Info",
+        		    "Station Information",
+        		    JOptionPane.INFORMATION_MESSAGE);
+    		userClick = false;
+    	}
+    	
     }
 
 	
 	public static void runUserMap() {
 		final MapApp userMap = new MapApp();
+		userMap.user = true;
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 			    userMap.createGUI();
@@ -82,6 +89,7 @@ public class MapApp extends JPanel {
 	/*
 	public static void runBackendMap() {
 		final MapApp backendMap = new MapApp();
+		userMap.user = false;
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 			    backendMap.createAndShowGUI();
@@ -95,8 +103,15 @@ public class MapApp extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			Point p = new Point(e.getX(), e.getY());
 			System.out.println("Click event at (" + p + ")");
-			userClick = true;
-			showInfo();
+			if (user == true) {
+				userClick = true;
+				showInfo();
+			}
+			else {
+				System.out.println("nope");
+			}
+			
+			
 			//points.add(p);
 			//points.add(new Point(e.getX(), e.getY()));
             //System.out.println(points);
