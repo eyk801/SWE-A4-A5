@@ -241,9 +241,9 @@ public class Controller {
 			username = sc.next();
 			System.out.println("Enter password: ");
 			String password = sc.next();
+			// Clear out scanner
+			sc.nextLine();
 			if (login(username, password) == true) {
-				// Clear out scanner
-				sc.nextLine();
 				return username;
 			} else {
 				// If username exists, but password was incorrect
@@ -259,9 +259,9 @@ public class Controller {
 			username = sc.next();
 			System.out.println("Enter password: ");
 			String password = sc.next();
+			// Clear out scanner
+			sc.nextLine();
 			if (createAccount(username, password) == true) {
-				// Clear out scanner
-				sc.nextLine();
 				return username;
 			} else {
 				System.out.println("Error creating account (username taken or payment invalid)");
@@ -325,7 +325,7 @@ public class Controller {
 				membership = (int)obj;
 			}
 			// Get credit card number
-			Object obj1 = validateLine("Please enter your credit card number", VariableType.LONG, 0, (long)9999999999999999);
+			Object obj1 = validateLine("Please enter your credit card number", VariableType.LONG);
 			if (obj1 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -341,7 +341,7 @@ public class Controller {
 				CVV = (int)obj2;
 			}
 			// Get card expiration date
-			Object obj3 = validateLine("Please enter expiration date(MM/YY): ", VariableType.DATE);
+			Object obj3 = validateLine("Please enter expiration date(MM/YY)", VariableType.DATE);
 			if (obj3 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -531,15 +531,23 @@ public class Controller {
 						break;
 					} else {
 						// Else, call the prompt again
+						sc.nextLine();
 						validateLine(prompt, type);
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
-						long l = Long.parseLong(sc.nextLine());
-						obj = l;
-						break;
+						String line = sc.nextLine();
+						if (line.length() != 16) {
+							System.out.println("Please enter a valid credit card number. (16 digits)");
+							validateLine(prompt, type);
+						} else {
+							long l = Long.parseLong(line);
+							obj = l;
+							break;
+						}
 					} else {
 						// Else, call the prompt again
+						sc.nextLine();
 						validateLine(prompt, type);
 					}
 				case BOOLEAN: 
@@ -549,10 +557,31 @@ public class Controller {
 						break;
 					} else {
 						// Else, call prompt again
+						sc.nextLine();
 						validateLine(prompt, type);
 					}
 				case DATE:
-					// input emily's stuff
+					String pattern = "../..";
+					String line = sc.nextLine();
+					if (line.length() != 5 || !Pattern.matches(pattern, line)) {
+			    		System.out.println("Incorrect date format. Please enter expiration date.");
+			    		validateLine(prompt, type);
+					} else {
+			    		String[] arrDate = line.split("/");
+					    String userMonth = arrDate[0];
+					    String userYear = arrDate[1];
+					    
+					    try {
+						    int month = Integer.parseInt(userMonth);
+						    int year = Integer.parseInt(userYear);
+							// String is in correct format
+							obj = line;
+							break;
+					    } catch (Exception FormatException) {
+					    	System.out.println("Incorrect date format. Please enter expiration date.");
+					    	validateLine(prompt, type);
+					    }
+					}
 					break;
 				default: // catch case
 					break;
@@ -594,6 +623,7 @@ public class Controller {
 						}
 					} else {
 						// Else, call the prompt again
+						sc.nextLine();
 						validateLine(prompt, type, min, max);
 					}
 				case LONG:
@@ -609,6 +639,7 @@ public class Controller {
 						}
 					} else {
 						// Else, call the prompt again
+						sc.nextLine();
 						validateLine(prompt, type, min, max);
 					}
 				case STRING:
