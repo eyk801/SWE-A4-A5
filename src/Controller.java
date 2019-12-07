@@ -774,16 +774,25 @@ public class Controller {
 	 * Prompts user for the issue IDs and creates a list
 	 * Calls valleyBike resolveIssues method to remove the issues from the mainReqs hashmap
 	 * </p>
-	 * @return report	String confirmingsuccess from valleyBike.resolveIssue
+	 * @return report	String confirming success from valleyBike.resolveIssue
 	 */
 	private String resolveIssues() {
+		// Print out all issues
+		System.out.println(valleyBike.viewIssues());
+		
 		ArrayList<Integer> issues = new ArrayList<Integer>();
 		String response = "y";
 		while (response.equalsIgnoreCase("y")) {
-			Integer issue = getUnboundedIntResponse("Please enter issue number", 0);
-			issues.add(issue);
-			System.out.println("Would you like to add another issue to resolve? (y/n): ");
-			response = sc.next();
+			Object obj = validate_Line("Please enter issue number", VariableType.INT);
+			if (obj == null) {
+				// Global quit functionality - return to menu
+				return "";
+			} else {
+				int issue = (int)obj;
+				issues.add(issue);
+				System.out.println("Would you like to add another issue to resolve? (y/n): ");
+				response = sc.next();
+			}
 		}
 		return valleyBike.resolveIssues(issues);
 	}
