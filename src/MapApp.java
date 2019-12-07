@@ -10,13 +10,16 @@ import java.awt.*;
 
 public class MapApp{
 	
-	public MapApp() {
+	// to call in valleybike functions: new MapApp(boolean);
+	// true for user, false for employee
+	public MapApp(boolean user) {
 		SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 JFrame frame = new JFrame();
-                frame.add(new App());
+                frame.add(new App(user));
                 frame.pack();
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
@@ -28,11 +31,13 @@ public class MapApp{
     	
     	private ArrayList<Point> points  = new ArrayList<Point>();
     	private JFrame dialog;
-    	private boolean user = false;
+    	private boolean user;
     	BufferedImage mapImage;
     	JFrame frame;
     	
-    	public App() {
+    	public App(boolean user) {
+    		this.user = user;
+    		
     		try {
     			mapImage = ImageIO.read(new File("data-files/ValleyBikeMap.png"));
     		} catch (IOException e) {
@@ -49,26 +54,21 @@ public class MapApp{
     					//get station from coordinates here
     					showInfo();
     				}
-    				else {
+    				else {   					
     					if (confirmStation() == 0) {
     						points.add(p);
-    			            System.out.println(points);
-    			            
+    			            System.out.println(points); 
     			            if (mapImage != null) {
-    			            	System.out.println("circle");
     		                    Graphics2D g2d = mapImage.createGraphics();
     		                    g2d.setColor(Color.black);
     		                    g2d.fillOval(p.x - 10, p.y - 10, 20, 20);
     		                    g2d.dispose();
     		                    repaint();
     		                }
-    			            
-    			            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-    					}           
+    					}
     				}
                 }
-            });
-    		
+            });   		
     	}
     	
     	@Override
