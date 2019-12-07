@@ -590,6 +590,7 @@ public class Controller {
 							obj = i;
 							break;
 						} else {
+							System.out.println("Please enter a number in the range "+min+"-"+max);
 							validate_Line(prompt, type, min, max);
 						}
 					} else {
@@ -604,6 +605,7 @@ public class Controller {
 							obj = l;
 							break;
 						} else {
+							System.out.println("Please enter a number in the range "+min+"-"+max);
 							validate_Line(prompt, type, min, max);
 						}
 					} else {
@@ -616,6 +618,7 @@ public class Controller {
 						obj = line;
 						break;
 					} else {
+						System.out.println("Please ensure your input is in the range of "+min+"-"+max+" characters.");
 						validate_Line(prompt, type, min, max);
 					}
 				default: // catch case
@@ -721,9 +724,25 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.addStation
 	 */
 	private String addStation() {
-		Integer capacity = getIntResponse("Please enter station capacity", 0,40);
-		boolean kiosk = getBoolResponse("Please enter whether station has a kiosk or not (true/false)");
-		sc.nextLine();
+		int capacity = 0;
+		boolean kiosk = false;
+		
+		// Get station capacity
+		Object capObj = validate_Line("Please enter station capacity", VariableType.INT, 0, 40);
+		if (capObj == null) {
+			// Global quit functionality - return to menu
+			return "";
+		} else {
+			capacity = (int)capObj;
+		}
+		// Get station kiosk
+		Object kioskObj = validate_Line("Please enter whether station has a kiosk or not (true/false)", VariableType.BOOLEAN);
+		if (kioskObj == null) {
+			return "";
+		} else {
+			kiosk = (boolean)kioskObj;
+		}
+		// Get station address and name
 		System.out.println("Please enter station address: ");
 		String address = sc.nextLine();
 		System.out.println("Please enter station name: ");
