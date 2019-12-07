@@ -758,20 +758,32 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.addBikes
 	 */
 	private String addBikes() {
-		Integer stationId = getIntResponse("What station would you like to put the bikes at?", 0, 100);
-		sc.nextLine();
-		if (valleyBike.stationExists(stationId)) {
-			Integer numBikes = getIntResponse("How many bikes would you like to add?", 
-					0, 100);
-			// If no bikes are added, no need to go into valleyBike.addBikes
-			if (numBikes <= 0) {
-				return "No bikes added.";
-			} else {
-				return valleyBike.addBikes(stationId, numBikes);
-			}
+		String response = new String();
+		Object stationObj = validate_Line("Please enter the station you would like to add bikes to", VariableType.INT);
+		if (stationObj == null) {
+			// Global quit functionality - return to menu
+			response = "";
 		} else {
-			return "The station you entered does not exist. Please enter an existing station id.";
+			int stationId = (int)stationObj;
+			if (valleyBike.stationExists(stationId)) {
+				Object bikesObj = validate_Line("Please enter the number of bikes you would like to add", VariableType.INT, 0, 40);
+				if (bikesObj == null) {
+					response = "";
+				} else {
+					int numBikes = (int)bikesObj;
+					if (numBikes <= 0) {
+						response = "No bikes added.";
+					} else {
+						response = valleyBike.addBikes(stationId, numBikes);
+					}
+				}
+			} else {
+				System.out.println("The station you entered does not exist. Please enter an existing station id.");
+				// Call func again
+				addBikes();
+			}
 		}
+		return response;
 	}
 	
 	/**
