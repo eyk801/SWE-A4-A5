@@ -38,6 +38,17 @@ public class MapApp{
     	public App(boolean user) {
     		this.user = user;
     		
+    		Point p1 = new Point(500, 500);
+    		Point p2 = new Point(300, 100);
+    		Point p3 = new Point(110, 400);
+    		Point p4 = new Point(310, 900);
+    		Point p5 = new Point(700, 600);
+    		points.add(p1);
+    		points.add(p2);
+    		points.add(p3);
+    		points.add(p4);
+    		points.add(p5);
+    		
     		try {
     			mapImage = ImageIO.read(new File("data-files/ValleyBikeMap.png"));
     		} catch (IOException e) {
@@ -49,10 +60,14 @@ public class MapApp{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                 	Point p = new Point(e.getX(), e.getY());
-    				System.out.println("Click event at (" + p + ")");
     				if (user == true) {
     					//get station from coordinates here
-    					showInfo();
+    					for (Point pt : points) {
+    						if (inBounds(p.x, p.y, pt.x, pt.y)) {
+    							showInfo();
+    						}
+    					}
+    					
     				}
     				else {   					
     					if (confirmStation() == 0) {
@@ -82,6 +97,16 @@ public class MapApp{
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.drawImage(mapImage, 0, 0, this);
             g2d.dispose();
+            
+            for (Point pt : points) {
+				if (mapImage != null) {
+                    Graphics2D gr = mapImage.createGraphics();
+                    gr.setColor(Color.black);
+                    gr.fillOval(pt.x - 10, pt.y - 10, 20, 20);
+                    gr.dispose();
+                    repaint();
+                }
+			}
         }
         
         public void showInfo() {
