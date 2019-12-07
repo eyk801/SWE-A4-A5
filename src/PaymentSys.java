@@ -1,3 +1,6 @@
+import java.util.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 /**
@@ -22,10 +25,14 @@ public class PaymentSys {
 	 * @return
 	 */
 	public boolean validate(long creditNum, int CVV, String expirationDate) {
-		Random rand = new Random();
-		int i = rand.nextInt(10);
-		if (i != 0) {
-			return true;
+		if (checkExprDate(expirationDate)) {
+			Random rand = new Random();
+			int i = rand.nextInt(10);
+			if (i != 0) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -38,7 +45,42 @@ public class PaymentSys {
 	 * @return false if expiration date has passed
 	 */
 	public boolean checkExprDate(String expirationDate) {
-		// TODO: Update this after Emily decides on controller validation
-		return true;
+		// Response bool
+		boolean response = false;
+		// Parse String expiration date
+		String[] arrDate = expirationDate.split("/");
+	    String userMonth = arrDate[0];
+	    String userYear = arrDate[1];
+		
+	    // Get current date/time
+		Date date = new Date();
+		long time = date.getTime();
+		Timestamp ts = new Timestamp(time);
+     	SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yy");
+     	String monthYear = dateFormat.format(new Date());
+     	String[] currDate = monthYear.split("/");
+     	String currMonth = currDate[0];
+     	String currYear = currDate[1];
+		// Set months and years to integers
+     	int userMonthNum = Integer.parseInt(userMonth);
+    	int userYearNum = Integer.parseInt(userYear);
+     	int currMonthNum = Integer.parseInt(currMonth);
+     	int currYearNum = Integer.parseInt(currYear);
+     	// Checks if dates have passed
+     	if (currYearNum > userYearNum){
+     		response = false;
+     	}
+     	else if (currYearNum < userYearNum){
+     		response = true;
+     	}
+     	else if ( currYearNum == userYearNum ){
+     		if (currMonthNum >= userMonthNum){
+     			response = false;
+     		}
+     		else if (currMonthNum < userMonthNum){
+     			response = true;
+     		}
+     	}
+     	return response;
 	}
 }

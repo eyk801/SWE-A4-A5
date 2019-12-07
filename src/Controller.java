@@ -570,7 +570,7 @@ public class Controller {
 			    		String[] arrDate = line.split("/");
 					    String userMonth = arrDate[0];
 					    String userYear = arrDate[1];
-					    
+					    // Check if values are ints, if not prompt user to enter again
 					    try {
 						    int month = Integer.parseInt(userMonth);
 						    int year = Integer.parseInt(userYear);
