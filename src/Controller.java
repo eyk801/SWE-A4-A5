@@ -62,7 +62,7 @@ public class Controller {
 				+ "1. View station list.\n" + "2. Check out bike.\n" + "3. Check in bike.\n" + "4. View history.\n"
 				+ "5. View account info.\n" + "6. Report issue.\n");
 		// Get user input
-		Object obj = validate_Line("Please enter your selection (0-6)", VariableType.INT, 0, 6);
+		Object obj = validateLine("Please enter your selection (0-6)", VariableType.INT, 0, 6);
 		int option = (int)obj;
 		
 		switch (option) {
@@ -114,7 +114,7 @@ public class Controller {
 				+ "5. Add Station.\n" + "6. View System Overview.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Equalize Stations.\n");
 
 		// Get user input
-		Object obj = validate_Line("Please enter your selection (0-9)", VariableType.INT, 0, 9);
+		Object obj = validateLine("Please enter your selection (0-9)", VariableType.INT, 0, 9);
 		int option = (int)obj;
 		
 		switch (option) {
@@ -228,7 +228,6 @@ public class Controller {
 	 * User chooses to either log in or create a new account 
 	 * Log in prompts user to enter username and password and verifies
 	 * New account prompts user to enter new account information and saves new user
-	 * TODO: validate input?
 	 * </p>
 	 * @return username		current user's username
 	 */
@@ -317,7 +316,7 @@ public class Controller {
 					+ "1 = Pay-per-month, $12 per month \n"
 					+ "2 = Pay-per-year, $100 per year.");
 			// Get membership type
-			Object obj = validate_Line("Please enter your preferred membership type (0,1,2)", VariableType.INT, 0, 2);
+			Object obj = validateLine("Please enter your preferred membership type (0,1,2)", VariableType.INT, 0, 2);
 			if (obj == null) {
 				// Global quit functionality - return to menu
 				//TODO: figure out how to do this
@@ -326,7 +325,7 @@ public class Controller {
 				membership = (int)obj;
 			}
 			// Get credit card number
-			Object obj1 = validate_Line("Please enter your credit card number", VariableType.LONG, 0, (long)9999999999999999);
+			Object obj1 = validateLine("Please enter your credit card number", VariableType.LONG, 0, (long)9999999999999999);
 			if (obj1 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -334,7 +333,7 @@ public class Controller {
 				cardNum = (long)obj1;
 			}
 			// Get card cvv
-			Object obj2 = validate_Line("Please enter your CVV", VariableType.INT, 0, 999);
+			Object obj2 = validateLine("Please enter your CVV", VariableType.INT, 0, 999);
 			if (obj2 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -342,7 +341,7 @@ public class Controller {
 				CVV = (int)obj2;
 			}
 			// Get card expiration date
-			Object obj3 = validate_Line("Please enter expiration date(MM/YY): ", VariableType.DATE);
+			Object obj3 = validateLine("Please enter expiration date(MM/YY): ", VariableType.DATE);
 			if (obj3 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -514,7 +513,7 @@ public class Controller {
 	 * @param type	desired type
 	 * @return the user input in desired form (Object type)
 	 */
-	public Object validate_Line(String prompt, VariableType type) {
+	public Object validateLine(String prompt, VariableType type) {
 		Object obj = null;
 		System.out.println(prompt + ": ");
 		while (sc.hasNext()) {
@@ -532,7 +531,7 @@ public class Controller {
 						break;
 					} else {
 						// Else, call the prompt again
-						validate_Line(prompt, type);
+						validateLine(prompt, type);
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
@@ -541,7 +540,7 @@ public class Controller {
 						break;
 					} else {
 						// Else, call the prompt again
-						validate_Line(prompt, type);
+						validateLine(prompt, type);
 					}
 				case BOOLEAN: 
 					if (sc.hasNextBoolean()) {
@@ -550,7 +549,7 @@ public class Controller {
 						break;
 					} else {
 						// Else, call prompt again
-						validate_Line(prompt, type);
+						validateLine(prompt, type);
 					}
 				case DATE:
 					// input emily's stuff
@@ -572,7 +571,7 @@ public class Controller {
 	 * @param max	The upper bound
 	 * @return	the user input in desired form
 	 */
-	public Object validate_Line(String prompt, VariableType type, long min, long max)  {
+	public Object validateLine(String prompt, VariableType type, long min, long max)  {
 		Object obj = null;
 		System.out.println(prompt + ": ");
 		while (sc.hasNext()) {
@@ -591,11 +590,11 @@ public class Controller {
 							break;
 						} else {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
-							validate_Line(prompt, type, min, max);
+							validateLine(prompt, type, min, max);
 						}
 					} else {
 						// Else, call the prompt again
-						validate_Line(prompt, type, min, max);
+						validateLine(prompt, type, min, max);
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
@@ -606,11 +605,11 @@ public class Controller {
 							break;
 						} else {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
-							validate_Line(prompt, type, min, max);
+							validateLine(prompt, type, min, max);
 						}
 					} else {
 						// Else, call the prompt again
-						validate_Line(prompt, type, min, max);
+						validateLine(prompt, type, min, max);
 					}
 				case STRING:
 					String line = sc.nextLine();
@@ -619,7 +618,7 @@ public class Controller {
 						break;
 					} else {
 						System.out.println("Please ensure your input is in the range of "+min+"-"+max+" characters.");
-						validate_Line(prompt, type, min, max);
+						validateLine(prompt, type, min, max);
 					}
 				default: // catch case
 					break;
@@ -642,7 +641,7 @@ public class Controller {
 	private String checkOutBike(String username) {
 		// Initialize response string
 		String response = new String();
-		Object obj = validate_Line("Please enter your current station", VariableType.INT);
+		Object obj = validateLine("Please enter your current station", VariableType.INT);
 		if (obj == null) {
 			// Global quit functionality - return to menu
 			response = "";
@@ -669,7 +668,7 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.checkIn
 	 */
 	private String checkInBike(String username){
-		Object obj = validate_Line("Please enter your current station", VariableType.INT);
+		Object obj = validateLine("Please enter your current station", VariableType.INT);
 		if (obj == null) {
 			// Global quit functionality - return to menu
 			return "";
@@ -695,24 +694,25 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.reportIssue
 	 */
 	private String reportIssue(String username){
-		int stationID = 0;
-		Object obj = validate_Line("Please enter your current station", VariableType.INT);
+		String response = new String();
+		Object obj = validateLine("Please enter your current station", VariableType.INT);
 		if (obj == null) {
 			// Global quit functionality - return to menu
-			return "";
+			response = "";
 		} else {
 			int stationId = (int)obj;
-			if (valleyBike.stationExists(id)) {
+			if (valleyBike.stationExists(stationId)) {
 				// Get issue message
 				System.out.println("Please enter issue message: ");
 				String issueMessage = sc.nextLine();
-				return valleyBike.reportIssue(username, stationId, issueMessage);
+				response = valleyBike.reportIssue(username, stationId, issueMessage);
 			} else {
 				System.out.println("The station you entered does not exist. Please enter an existing station id.");
 				// Call func again
 				reportIssue(username);
 			}
 		}
+		return response;
 	}
 		
 	
@@ -728,7 +728,7 @@ public class Controller {
 		boolean kiosk = false;
 		
 		// Get station capacity
-		Object capObj = validate_Line("Please enter station capacity", VariableType.INT, 0, 40);
+		Object capObj = validateLine("Please enter station capacity", VariableType.INT, 0, 40);
 		if (capObj == null) {
 			// Global quit functionality - return to menu
 			return "";
@@ -736,7 +736,7 @@ public class Controller {
 			capacity = (int)capObj;
 		}
 		// Get station kiosk
-		Object kioskObj = validate_Line("Please enter whether station has a kiosk or not (true/false)", VariableType.BOOLEAN);
+		Object kioskObj = validateLine("Please enter whether station has a kiosk or not (true/false)", VariableType.BOOLEAN);
 		if (kioskObj == null) {
 			return "";
 		} else {
@@ -759,14 +759,14 @@ public class Controller {
 	 */
 	private String addBikes() {
 		String response = new String();
-		Object stationObj = validate_Line("Please enter the station you would like to add bikes to", VariableType.INT);
+		Object stationObj = validateLine("Please enter the station you would like to add bikes to", VariableType.INT);
 		if (stationObj == null) {
 			// Global quit functionality - return to menu
 			response = "";
 		} else {
 			int stationId = (int)stationObj;
 			if (valleyBike.stationExists(stationId)) {
-				Object bikesObj = validate_Line("Please enter the number of bikes you would like to add", VariableType.INT, 0, 40);
+				Object bikesObj = validateLine("Please enter the number of bikes you would like to add", VariableType.INT, 0, 40);
 				if (bikesObj == null) {
 					response = "";
 				} else {
@@ -814,7 +814,7 @@ public class Controller {
 		ArrayList<Integer> issues = new ArrayList<Integer>();
 		String response = "y";
 		while (response.equalsIgnoreCase("y")) {
-			Object obj = validate_Line("Please enter issue number", VariableType.INT);
+			Object obj = validateLine("Please enter issue number", VariableType.INT);
 			if (obj == null) {
 				// Global quit functionality - return to menu
 				return "";
