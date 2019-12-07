@@ -692,15 +692,23 @@ public class Controller {
 	 * @return report	String confirming success from valleyBike.reportIssue
 	 */
 	private String reportIssue(String username){
-		Integer stationId = getUnboundedIntResponse("Please enter your current station", 0);
-		sc.nextLine(); //throw away the \n not consumed by nextInt()
-		// Check if valid station id
-		if (valleyBike.stationExists(stationId)) {
-			System.out.println("Please enter issue message: ");
-			String issueMessage = sc.nextLine();
-			return valleyBike.reportIssue(username, stationId, issueMessage);
+		int stationID = 0;
+		Object obj = validate_Line("Please enter your current station", VariableType.INT);
+		if (obj == null) {
+			// Global quit functionality - return to menu
+			return "";
 		} else {
-			return "The station you entered does not exist. Please enter an existing station id.";
+			int stationId = (int)obj;
+			if (valleyBike.stationExists(id)) {
+				// Get issue message
+				System.out.println("Please enter issue message: ");
+				String issueMessage = sc.nextLine();
+				return valleyBike.reportIssue(username, stationId, issueMessage);
+			} else {
+				System.out.println("The station you entered does not exist. Please enter an existing station id.");
+				// Call func again
+				reportIssue(username);
+			}
 		}
 	}
 		
