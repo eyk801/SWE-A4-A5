@@ -555,8 +555,8 @@ public class ValleyBikeSim {
 		r.end(stationId);
 		// Update user info (end ride), add ride to ride history
 		currentUser.endRide();
-		// Remove ride from current ride
-		currRides.remove(r.getId());
+		// Remove ride from current rides
+		currRides.remove(r);
 		// Save data
 		try {
 			saveStationData();

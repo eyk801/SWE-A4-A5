@@ -78,7 +78,6 @@ public class Controller {
 			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
-			// Take in all ride data
 			System.out.println(checkOutBike(username));
 			break;
 		case 3: 
@@ -114,7 +113,9 @@ public class Controller {
 				+ "1. View station list.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
 				+ "5. Add Station.\n" + "6. View System Overview.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Equalize Stations.\n");
 
-		Integer option = this.getIntResponse("Please enter your selection (0-9)", 0, 9);
+		// Get user input
+		Object obj = validate_Line("Please enter your selection (0-9)", VariableType.INT, 0, 9);
+		int option = (int)obj;
 		
 		switch (option) {
 		/* 0. Quit program */
@@ -227,6 +228,7 @@ public class Controller {
 	 * User chooses to either log in or create a new account 
 	 * Log in prompts user to enter username and password and verifies
 	 * New account prompts user to enter new account information and saves new user
+	 * TODO: validate input?
 	 * </p>
 	 * @return username		current user's username
 	 */
@@ -268,7 +270,7 @@ public class Controller {
 			};
 			
 		} else {
-			System.out.println("Input invalid try again.");
+			System.out.println("Input invalid. Please enter 'l' or 'n'.");
 			accountLogin();
 		}
 		return username;
@@ -302,22 +304,52 @@ public class Controller {
 	 * @return boolean		True if account can be successfully created and validated.
 	 */
 	private boolean createAccount(String username, String password){
+		int membership = 0;
+		long cardNum = 0;
+		int CVV = 0;
+		String expDate = new String();
+		
 		if (userAccounts.containsKey(username) == true) {
 			return false;
 		} else {
-			System.out.println("Please enter you preferred membership type.\n"
+			System.out.println("Types of ValleyBike Memberships:\n"
 					+ "0 = Pay-per-ride, $2 per ride.\n"
 					+ "1 = Pay-per-month, $12 per month \n"
 					+ "2 = Pay-per-year, $100 per year.");
-			Integer membership = getIntResponse("Please enter your preferred membership type (0,1,2)", 0, 2);
-			//TODO: validate cardNum: 16 digits, etc. I THINK I DID THIS
-			Long cardNum = getUnboundedLongResponse("Please enter your credit card number",(long)0);
-			valCardNum(cardNum);
-			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
-			System.out.println("Please enter expiration date(MM/YY): ");
-			//TODO: validate this date
-			String expDate = sc.next();
-			userAccounts.put(username, password);
+			// Get membership type
+			Object obj = validate_Line("Please enter your preferred membership type (0,1,2)", VariableType.INT, 0, 2);
+			if (obj == null) {
+				// Global quit functionality - return to menu
+				//TODO: figure out how to do this
+			} else {
+				// Set membership #
+				membership = (int)obj;
+			}
+			// Get credit card number
+			Object obj1 = validate_Line("Please enter your credit card number", VariableType.LONG, 0, (long)9999999999999999);
+			if (obj1 == null) {
+				//TODO: figure out how to do this
+			} else {
+				// Set card num
+				cardNum = (long)obj1;
+			}
+			// Get card cvv
+			Object obj2 = validate_Line("Please enter your CVV", VariableType.INT, 0, 999);
+			if (obj2 == null) {
+				//TODO: figure out how to do this
+			} else {
+				// Set cvv
+				CVV = (int)obj2;
+			}
+			// Get card expiration date
+			Object obj3 = validate_Line("Please enter expiration date(MM/YY): ", VariableType.DATE);
+			if (obj3 == null) {
+				//TODO: figure out how to do this
+			} else {
+				// Set expiration date
+				expDate = (String)obj3;
+			}
+			// Create user in valleybike
 			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
 				// Add username and password to controller csvs
 				this.userAccounts.put(username, password);
@@ -326,6 +358,24 @@ public class Controller {
 			} else {
 				return false;
 			}
+			
+//			Integer membership = getIntResponse("Please enter your preferred membership type (0,1,2)", 0, 2);
+//			//TODO: validate cardNum: 16 digits, etc. I THINK I DID THIS
+//			Long cardNum = getUnboundedLongResponse("Please enter your credit card number",(long)0);
+//			valCardNum(cardNum);
+//			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
+//			System.out.println("Please enter expiration date(MM/YY): ");
+//			//TODO: validate this date
+//			String expDate = sc.next();
+//			userAccounts.put(username, password);
+//			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
+//				// Add username and password to controller csvs
+//				this.userAccounts.put(username, password);
+//				System.out.println("Account successfully created!");
+//				return true;
+//			} else {
+//				return false;
+//			}
 		}
 	}
 	
@@ -558,6 +608,14 @@ public class Controller {
 						}
 					} else {
 						// Else, call the prompt again
+						validate_Line(prompt, type, min, max);
+					}
+				case STRING:
+					String line = sc.nextLine();
+					if ((int)min <= line.length() && line.length() <= (int)max) {
+						obj = line;
+						break;
+					} else {
 						validate_Line(prompt, type, min, max);
 					}
 				default: // catch case
