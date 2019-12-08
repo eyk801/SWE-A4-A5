@@ -334,6 +334,7 @@ public class Controller {
 			}
 			// Get card cvv
 			Object obj2 = validateLine("Please enter your CVV", VariableType.INT, 0, 999);
+			System.out.println("Object is: " + (int)(obj2));
 			if (obj2 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -342,6 +343,7 @@ public class Controller {
 			}
 			// Get card expiration date
 			Object obj3 = validateLine("Please enter expiration date(MM/YY)", VariableType.DATE);
+			System.out.println("Object is: " + obj3.toString());
 			if (obj3 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -533,13 +535,15 @@ public class Controller {
 						// Else, call the prompt again
 						sc.nextLine();
 						validateLine(prompt, type);
+						break;
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
 						String line = sc.nextLine();
 						if (line.length() != 16) {
 							System.out.println("Please enter a valid credit card number. (16 digits)");
-							validateLine(prompt, type);
+							validateLine(prompt, VariableType.LONG);
+							break;
 						} else {
 							long l = Long.parseLong(line);
 							obj = l;
@@ -549,6 +553,7 @@ public class Controller {
 						// Else, call the prompt again
 						sc.nextLine();
 						validateLine(prompt, type);
+						break;
 					}
 				case BOOLEAN: 
 					if (sc.hasNextBoolean()) {
@@ -559,6 +564,7 @@ public class Controller {
 						// Else, call prompt again
 						sc.nextLine();
 						validateLine(prompt, type);
+						break;
 					}
 				case DATE:
 					String pattern = "../..";
@@ -566,6 +572,7 @@ public class Controller {
 					if (line.length() != 5 || !Pattern.matches(pattern, line)) {
 			    		System.out.println("Incorrect date format. Please enter expiration date.");
 			    		validateLine(prompt, type);
+			    		break;
 					} else {
 			    		String[] arrDate = line.split("/");
 					    String userMonth = arrDate[0];
@@ -574,15 +581,23 @@ public class Controller {
 					    try {
 						    int month = Integer.parseInt(userMonth);
 						    int year = Integer.parseInt(userYear);
-							// String is in correct format
-							obj = line;
-							break;
+						    // String is in correct format
+						    if (month < 13 && month > 0) {
+						    	obj = line;
+						    	System.out.println("in switch with: " + obj.toString());
+								break;
+						    } else {
+						    	System.out.println("Invalid month. Please enter expiration date.");
+						    	validateLine(prompt, type);
+						    	break;
+						    }	
 					    } catch (Exception FormatException) {
 					    	System.out.println("Incorrect date format. Please enter expiration date.");
 					    	validateLine(prompt, type);
+					    	break;
 					    }
+					    
 					}
-					break;
 				default: // catch case
 					break;
 				}
@@ -620,11 +635,13 @@ public class Controller {
 						} else {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
 							validateLine(prompt, type, min, max);
+							break;
 						}
 					} else {
 						// Else, call the prompt again
 						sc.nextLine();
 						validateLine(prompt, type, min, max);
+						break;
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
@@ -636,11 +653,13 @@ public class Controller {
 						} else {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
 							validateLine(prompt, type, min, max);
+							break;
 						}
 					} else {
 						// Else, call the prompt again
 						sc.nextLine();
 						validateLine(prompt, type, min, max);
+						break;
 					}
 				case STRING:
 					String line = sc.nextLine();
@@ -650,6 +669,7 @@ public class Controller {
 					} else {
 						System.out.println("Please ensure your input is in the range of "+min+"-"+max+" characters.");
 						validateLine(prompt, type, min, max);
+						break;
 					}
 				default: // catch case
 					break;
