@@ -577,9 +577,7 @@ public class Controller {
 	 * @throws ParseException 
 	 */
 	public static void main(String[] args){
-		MapApp.runUserMap();
-		//Controller controller = new Controller();
-		/*
+		Controller controller = new Controller();
 		try {
 			controller.chooseView();
 		} catch (IOException e) {
@@ -587,6 +585,5 @@ public class Controller {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		*/
 	}
 }
