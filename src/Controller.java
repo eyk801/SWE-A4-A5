@@ -43,6 +43,7 @@ public class Controller {
 			executeUser(username);
 		} else if (response.equalsIgnoreCase("employee")) {
 			//TODO: Add employee login in A5
+			String employeeUsername = employeeLogin();
 			executeEmployee();
 		} else {
 			System.out.println("Invalid input, try again.");
@@ -273,6 +274,31 @@ public class Controller {
 			accountLogin();
 		}
 		return username;
+	}
+	
+	private String employeeLogin() {
+		String employeeUsername = ""; 
+		System.out.println("Enter username: ");
+		employeeUsername = sc.next();
+		System.out.println("Enter password: ");
+		String password = sc.next();
+
+		// Clear out scanner
+		sc.nextLine();
+		if (login(employeeUsername, password) == true) {
+			return employeeUsername; 
+		}
+		else {
+			if (employeeAccounts.containsKey(employeeUsername)){
+				// If employeeUsername exists but password was incorrect
+				System.out.println("Incorrect password. Please re-enter your credentials.");
+			} else { // if employeeUsername does not exist
+				System.out.println("Invalid username. Please re-enter employee credentials.");
+			}
+			employeeLogin();
+		}
+		return employeeUsername;
+		
 	}
 	
 	/**
