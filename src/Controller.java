@@ -595,6 +595,9 @@ public class Controller {
 					    	System.out.println("Incorrect date format. Please enter expiration date.");
 					    	validateLine(prompt, type);
 					    	break;
+					    } finally {
+					    	obj = line;
+					    	//break;
 					    }
 					    
 					}
