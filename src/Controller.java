@@ -254,20 +254,24 @@ public class Controller {
 					System.out.println("Invalid credentials. Please create an account, or re-enter your information.");
 				}
 				accountLogin();
-			};
+			}
 		} else if (choice.equalsIgnoreCase("n")) {
 			System.out.println("Enter username: ");
 			username = sc.next();
 			System.out.println("Enter password: ");
 			String password = sc.next();
+			
 			// Clear out scanner
-			sc.nextLine();
-			if (createAccount(username, password) == true) {
-				return username;
-			} else {
-				System.out.println("Error creating account (username taken or payment invalid)");
+			sc.nextLine();	
+			
+			// Accepted username is greater than 5 characters
+			if (username.length() >= 5 && password.length() >= 5 && createAccount(username, password) == true) {
+					return username;
+			}
+			else {
+				System.out.println("Error creating account (username taken, username/password invalid, or payment invalid)");
 				accountLogin();
-			};
+			}
 			
 		} else {
 			System.out.println("Input invalid. Please enter 'l' or 'n'.");
@@ -614,6 +618,7 @@ public class Controller {
 								break;
 						    } else {
 						    	System.out.println("Invalid month. Please enter expiration date.");
+						    	obj = line;
 						    	validateLine(prompt, type);
 						    	break;
 						    }	
