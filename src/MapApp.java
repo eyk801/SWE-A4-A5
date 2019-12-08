@@ -14,6 +14,8 @@ public class MapApp{
 	private ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
 	/** New station point */
 	private Point newPoint = new Point();
+	/** JFrame frame */
+	JFrame frame;
 	
 	// to call in valleybike functions: new MapApp(boolean);
 	// true for user, false for employee
@@ -21,7 +23,7 @@ public class MapApp{
 		SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
+                frame = new JFrame();
                 frame.add(new App(user));
                 frame.pack();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +40,7 @@ public class MapApp{
     	private JFrame dialog;
     	private boolean user;
     	BufferedImage mapImage;
-    	JFrame frame;
+    	
     	
     	public App(boolean user) {
     		this.user = user;
@@ -48,7 +50,6 @@ public class MapApp{
     		for (Map.Entry<Integer,Station> entry : stations.entrySet()) {
     			// Add station coordinates to points list
     			points.add(entry.getValue().getPoint());
-    			System.out.println(entry.getValue().getPoint());
     		}
     		
     		try {
@@ -67,15 +68,17 @@ public class MapApp{
     					//get station from coordinates here
     					for (Point pt : points) {
     						if (inBounds(p.x, p.y, pt.x, pt.y)) {
-    							showInfo();
+    							for (Map.Entry<Integer,Station> s : stations.entrySet()) {
+    				    			if (inBounds(p.x, p.y, s.getValue().getPoint().x, s.getValue().getPoint().y)) {
+    				    				showInfo(s.getValue());
+    				    			}
+    				    		}    							
     						}
-    					}
-    					
+    					}    					
     				}
     				else { // if in employee view				
     					if (confirmStation() == 0) {
     						points.add(p);
-    						System.out.println(p);
     						// Set the newStation point to the new point
     						setPoint(p);
     			            if (mapImage != null) {
@@ -84,8 +87,8 @@ public class MapApp{
     		                    g2d.fillOval(p.x - 10, p.y - 10, 20, 20);
     		                    g2d.dispose();
     		                    repaint();
-    		                    // TODO: Close window once station has been added
     		                }
+    			            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     					}
     				}
                 }
@@ -115,9 +118,12 @@ public class MapApp{
 			}
         }
         
-        public void showInfo() {
+        public void showInfo(Station s) {
         	JOptionPane.showMessageDialog(dialog,
-        			"Info",
+        			"Station " + s.getId() + "\n" +
+        					s.getName() + "\n" +
+        					"Available Bikes: " + s.getNumBikes() + "\n" +
+        					"Available Docks: " + s.getAvDocks() + "\n",
             		"Station Information",
             		JOptionPane.INFORMATION_MESSAGE);
         }
@@ -155,7 +161,7 @@ public class MapApp{
 	 * @throws ParseException 
 	 */
 	public static void main(String[] args){
-		MapApp map = new MapApp(false);
+		MapApp map = new MapApp(true);
 	}
 	
 	
