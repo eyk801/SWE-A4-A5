@@ -689,16 +689,12 @@ public class ValleyBikeSim {
 		//sets date to a week ago
 		date.setTime(currentDate.getTime()-604800000);
 		
-		
-		Iterator<Entry<Integer, Ride>> ridesIterator = rides.entrySet().iterator();
-
-		while(ridesIterator.hasNext()) {
-			Map.Entry<Integer, Ride> rideElement = (Map.Entry<Integer, Ride>)ridesIterator.next();
-			String rideDateString = rideElement.getValue().getStartTime();
+		for(Ride ride : rides.values()) {
+			String rideDateString = ride.getStartTime();
 			Date rideDate = formatter.parse(rideDateString);
 			if(!rideDate.before(date)) {
 				numWeeklyRides = numWeeklyRides + 1;
-				String userId = rideElement.getValue().getUserId();
+				String userId = ride.getUserId();
 				if (!userRideStats.containsKey(userId)) {
 					userRideStats.put(userId, 1);
 				} else {
@@ -708,10 +704,11 @@ public class ValleyBikeSim {
 			};
 		}
 		
-		Iterator<Entry<String, Integer>> userIterator = userRideStats.entrySet().iterator();
 		String bestUser = "";
 		int maxRides = 0;
 		String maxUser = "";
+		
+		Iterator<Entry<String, Integer>> userIterator = userRideStats.entrySet().iterator();
 		while(userIterator.hasNext()) {
 			Map.Entry<String, Integer> userElement = (Map.Entry<String, Integer>)userIterator.next();
 			if (userElement.getValue() > maxRides) {
