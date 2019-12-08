@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import java.awt.*; 
 
 public class MapApp{
+	/** Instance of the ValleyBikeSim */
+	private ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
 	
 	// to call in valleybike functions: new MapApp(boolean);
 	// true for user, false for employee
@@ -38,27 +40,26 @@ public class MapApp{
     	
     	public App(boolean user) {
     		this.user = user;
-    		// Get the valleybike singleton
-    		ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
     		Map<Integer, Station> stations = valleyBike.getStations();
     		
     		// Loop over stations map
     		for (Map.Entry<Integer,Station> entry : stations.entrySet()) {
     			// Add station coordinates to points list
-    			points.add(entry.getValue().getPoint());
+//    			points.add(entry.getValue().getPoint());
+    			System.out.println(entry.getValue().getPoint());
     		}
     		
     		
-//    		Point p1 = new Point(500, 500);
-//    		Point p2 = new Point(300, 100);
-//    		Point p3 = new Point(110, 400);
-//    		Point p4 = new Point(310, 900);
-//    		Point p5 = new Point(700, 600);
-//    		points.add(p1);
-//    		points.add(p2);
-//    		points.add(p3);
-//    		points.add(p4);
-//    		points.add(p5);
+    		Point p1 = new Point(500, 500);
+    		Point p2 = new Point(300, 100);
+    		Point p3 = new Point(110, 400);
+    		Point p4 = new Point(310, 900);
+    		Point p5 = new Point(700, 600);
+    		points.add(p1);
+    		points.add(p2);
+    		points.add(p3);
+    		points.add(p4);
+    		points.add(p5);
     		
     		try {
     			mapImage = ImageIO.read(new File("data-files/ValleyBikeMap.png"));
