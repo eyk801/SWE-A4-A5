@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.util.*;
 
 /**
@@ -19,6 +20,8 @@ public class Station {
     private String name = new String();
     /** List of bikes ids of bikes docked at the station */
     private List<Integer> bikeIds = new ArrayList<>();
+    /** Station map coordinates */
+    private Point point = new Point();
 
     
 	/**
@@ -154,6 +157,24 @@ public class Station {
     	this.bikeIds.remove(index);
     	this.avDocks = this.avDocks + 1;
     }
+    
+    /**
+     * Returns the station map coordinates
+     * @return
+     */
+    public Point getPoint() {
+    	return this.point;
+    }
+    
+    /**
+     * Sets the coordinations of the station map point
+     * @param x
+     * @param y
+     */
+    public void setPoint(int x, int y) {
+    	this.point.setLocation(x, y);
+    }
+    
     
     /**
      * toString method for station data to write to csv data files
