@@ -171,8 +171,8 @@ public class Station {
      * @param x
      * @param y
      */
-    public void setPoint(int x, int y) {
-    	this.point.setLocation(x, y);
+    public void setPoint(Point p) {
+    	this.point.setLocation(p);
     }
     
     

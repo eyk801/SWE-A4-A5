@@ -385,6 +385,10 @@ public class ValleyBikeSim {
 		List<Integer> bikeIds = new ArrayList<>();
 		// Create new station
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
+		// Add the station to the map
+		MapApp map = new MapApp(false);
+		// Set the station coordinates according to new point
+		s.setPoint(map.getPoint());
 		this.stations.put(id, s);
 		// Save station data
 		try {

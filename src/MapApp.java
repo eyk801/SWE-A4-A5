@@ -12,6 +12,8 @@ import java.awt.*;
 public class MapApp{
 	/** Instance of the ValleyBikeSim */
 	private ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
+	/** New station point */
+	private Point newPoint = new Point();
 	
 	// to call in valleybike functions: new MapApp(boolean);
 	// true for user, false for employee
@@ -26,7 +28,7 @@ public class MapApp{
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
-        });		
+        });
 	}
 
     
@@ -46,7 +48,7 @@ public class MapApp{
     		for (Map.Entry<Integer,Station> entry : stations.entrySet()) {
     			// Add station coordinates to points list
 //    			points.add(entry.getValue().getPoint());
-    			System.out.println(entry.getValue().getPoint());
+//    			System.out.println(entry.getValue().getPoint());
     		}
     		
     		
@@ -72,6 +74,7 @@ public class MapApp{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                 	Point p = new Point(e.getX(), e.getY());
+                	// If in user view
     				if (user == true) {
     					//get station from coordinates here
     					for (Point pt : points) {
@@ -81,16 +84,19 @@ public class MapApp{
     					}
     					
     				}
-    				else {   					
+    				else { // if in employee view				
     					if (confirmStation() == 0) {
     						points.add(p);
-    			            System.out.println(points); 
+    						System.out.println(p);
+    						// Set the newStation point to the new point
+    						setPoint(p);
     			            if (mapImage != null) {
     		                    Graphics2D g2d = mapImage.createGraphics();
     		                    g2d.setColor(Color.black);
     		                    g2d.fillOval(p.x - 10, p.y - 10, 20, 20);
     		                    g2d.dispose();
     		                    repaint();
+    		                    // TODO: Close window once station has been added
     		                }
     					}
     				}
@@ -140,13 +146,31 @@ public class MapApp{
     	}
     	
     }
+    
+	/**
+	 * Set the new station coordinates
+	 * @param p - the new station coordinates
+	 */
+	public void setPoint(Point p) {
+		this.newPoint = p;
+	}
+	
+	/**
+	 * 
+	 */
+	public Point getPoint() {
+		return this.newPoint;
+	}
+    
 	/**
 	 * MapApp main method.
 	 * @throws ParseException 
 	 */
 	public static void main(String[] args){
-		MapApp map = new MapApp(true);
+		MapApp map = new MapApp(false);
 	}
+	
+	
 }
 
 
