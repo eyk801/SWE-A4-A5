@@ -12,6 +12,10 @@ import java.awt.*;
 public class MapApp{
 	/** Instance of the ValleyBikeSim */
 	private ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
+	/** New station point */
+	private Point newPoint = new Point();
+	/** JFrame frame */
+	JFrame frame;
 	
 	// to call in valleybike functions: new MapApp(boolean);
 	// true for user, false for employee
@@ -19,14 +23,14 @@ public class MapApp{
 		SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
+                frame = new JFrame();
                 frame.add(new App(user));
                 frame.pack();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
-        });		
+        });
 	}
 
     
@@ -36,7 +40,7 @@ public class MapApp{
     	private JFrame dialog;
     	private boolean user;
     	BufferedImage mapImage;
-    	JFrame frame;
+    	
     	
     	public App(boolean user) {
     		this.user = user;
@@ -45,21 +49,8 @@ public class MapApp{
     		// Loop over stations map
     		for (Map.Entry<Integer,Station> entry : stations.entrySet()) {
     			// Add station coordinates to points list
-//    			points.add(entry.getValue().getPoint());
-    			System.out.println(entry.getValue().getPoint());
+    			points.add(entry.getValue().getPoint());
     		}
-    		
-    		
-    		Point p1 = new Point(500, 500);
-    		Point p2 = new Point(300, 100);
-    		Point p3 = new Point(110, 400);
-    		Point p4 = new Point(310, 900);
-    		Point p5 = new Point(700, 600);
-    		points.add(p1);
-    		points.add(p2);
-    		points.add(p3);
-    		points.add(p4);
-    		points.add(p5);
     		
     		try {
     			mapImage = ImageIO.read(new File("data-files/ValleyBikeMap.png"));
@@ -72,19 +63,24 @@ public class MapApp{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                 	Point p = new Point(e.getX(), e.getY());
+                	// If in user view
     				if (user == true) {
     					//get station from coordinates here
     					for (Point pt : points) {
     						if (inBounds(p.x, p.y, pt.x, pt.y)) {
-    							showInfo();
+    							for (Map.Entry<Integer,Station> s : stations.entrySet()) {
+    				    			if (inBounds(p.x, p.y, s.getValue().getPoint().x, s.getValue().getPoint().y)) {
+    				    				showInfo(s.getValue());
+    				    			}
+    				    		}    							
     						}
-    					}
-    					
+    					}    					
     				}
-    				else {   					
+    				else { // if in employee view				
     					if (confirmStation() == 0) {
     						points.add(p);
-    			            System.out.println(points); 
+    						// Set the newStation point to the new point
+    						setPoint(p);
     			            if (mapImage != null) {
     		                    Graphics2D g2d = mapImage.createGraphics();
     		                    g2d.setColor(Color.black);
@@ -92,6 +88,7 @@ public class MapApp{
     		                    g2d.dispose();
     		                    repaint();
     		                }
+    			            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     					}
     				}
                 }
@@ -121,9 +118,12 @@ public class MapApp{
 			}
         }
         
-        public void showInfo() {
+        public void showInfo(Station s) {
         	JOptionPane.showMessageDialog(dialog,
-        			"Info",
+        			"Station " + s.getId() + "\n" +
+        					s.getName() + "\n" +
+        					"Available Bikes: " + s.getNumBikes() + "\n" +
+        					"Available Docks: " + s.getAvDocks() + "\n",
             		"Station Information",
             		JOptionPane.INFORMATION_MESSAGE);
         }
@@ -140,6 +140,22 @@ public class MapApp{
     	}
     	
     }
+    
+	/**
+	 * Set the new station coordinates
+	 * @param p - the new station coordinates
+	 */
+	public void setPoint(Point p) {
+		this.newPoint = p;
+	}
+	
+	/**
+	 * 
+	 */
+	public Point getPoint() {
+		return this.newPoint;
+	}
+    
 	/**
 	 * MapApp main method.
 	 * @throws ParseException 
@@ -147,6 +163,8 @@ public class MapApp{
 	public static void main(String[] args){
 		MapApp map = new MapApp(true);
 	}
+	
+	
 }
 
 

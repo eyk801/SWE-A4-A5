@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.io.*;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -94,14 +95,19 @@ public class ValleyBikeSim {
 				int cap = Integer.parseInt(values[3]);
 				boolean kiosk = Boolean.parseBoolean(values[4]);
 				String address = values[5];
+				int coordX = Integer.parseInt(values[6]);
+				int coordY = Integer.parseInt(values[7]);
 				List<Integer> bikeIds = new ArrayList<>();
 				// Loop to end of csv line for all bikeIds
-				for (int i=6; i < values.length;i++) {
+				for (int i=8; i < values.length;i++) {
 					// Add bike ids to ArrayList
 					bikeIds.add(Integer.parseInt(values[i]));
 				}
 				// Create station object using parsed data
 				Station station = new Station(id, avDocks, cap, kiosk, address, name, bikeIds);
+				// Set map coordinates
+				Point p = new Point(coordX, coordY);
+				station.setPoint(p);
 				stations.put(id, station);
 				// Update this.lastStationId var
 				if (id > this.lastStationId) {
@@ -385,6 +391,10 @@ public class ValleyBikeSim {
 		List<Integer> bikeIds = new ArrayList<>();
 		// Create new station
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
+		// Add the station to the map
+		MapApp map = new MapApp(false);
+		// Set the station coordinates according to new point
+		s.setPoint(map.getPoint());
 		this.stations.put(id, s);
 		// Save station data
 		try {
