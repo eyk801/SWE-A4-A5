@@ -681,13 +681,14 @@ public class ValleyBikeSim {
 		int numUsers = users.size();
 		int numRides = rides.size();
 		int numWeeklyRides = 0;
-		ArrayList<String> rideUsers = new ArrayList<String>();
+		HashMap<String, Integer> userRideStats = new HashMap<>();
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Timestamp currentDate = new Timestamp(System.currentTimeMillis());
 		Date date = new Date();
 		//sets date to a week ago
 		date.setTime(currentDate.getTime()-604800000);
+		
 		
 		Iterator<Entry<Integer, Ride>> ridesIterator = rides.entrySet().iterator();
 
@@ -698,16 +699,37 @@ public class ValleyBikeSim {
 			if(!rideDate.before(date)) {
 				numWeeklyRides = numWeeklyRides + 1;
 				String userId = rideElement.getValue().getUserId();
-				if (!rideUsers.contains(userId)) {
-					rideUsers.add(userId);
+				if (!userRideStats.containsKey(userId)) {
+					userRideStats.put(userId, 1);
+				} else {
+					int rides = userRideStats.get(userId);
+					userRideStats.replace(userId, rides+1);
 				}
 			};
 		}
 		
+		Iterator<Entry<String, Integer>> userIterator = userRideStats.entrySet().iterator();
+		String bestUser = "";
+		int maxRides = 0;
+		String maxUser = "";
+		while(userIterator.hasNext()) {
+			Map.Entry<String, Integer> userElement = (Map.Entry<String, Integer>)userIterator.next();
+			if (userElement.getValue() > maxRides) {
+				maxRides = userElement.getValue();
+				maxUser = userElement.getKey();
+			}
+		}
+		
+		if(maxRides != 0 && !maxUser.equalsIgnoreCase("")) {
+			bestUser = "\nUser with most rides this week is "
+					+ maxUser + " with " + maxRides + " rides!";
+		}
+	
+		
 		
 		String stats = "In the past week there were a total of "+ numWeeklyRides + " ride(s) with "
-				+ rideUsers.size() + " user(s)" + "\nThere are a total of " + numRides + " rides and "
-						+ numUsers + " users in the system.";
+				+ userRideStats.size() + " user(s)" + "\nThere are a total of " + numRides + " rides and "
+						+ numUsers + " users in the system." + bestUser;
 				
 		return stats;
 	}
