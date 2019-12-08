@@ -343,7 +343,7 @@ public class Controller {
 			}
 			// Get card expiration date
 			Object obj3 = validateLine("Please enter expiration date(MM/YY)", VariableType.DATE);
-			System.out.println("Object is: " + obj3.toString());
+			System.out.println("Object 3 is: " + obj3.toString());
 			if (obj3 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -566,6 +566,9 @@ public class Controller {
 						validateLine(prompt, type);
 						break;
 					}
+				//TODO: The date thing breaks when the first attempt is not in correct format
+				//TODO: If first date is invalid but in correct format it
+				// also returns wrong (previously entered incorrect date) after new correct date is entered
 				case DATE:
 					String pattern = "../..";
 					String line = sc.nextLine();
@@ -597,7 +600,6 @@ public class Controller {
 					    	break;
 					    } finally {
 					    	obj = line;
-					    	//break;
 					    }
 					    
 					}
