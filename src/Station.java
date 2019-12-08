@@ -21,7 +21,8 @@ public class Station {
     /** List of bikes ids of bikes docked at the station */
     private List<Integer> bikeIds = new ArrayList<>();
     /** Station map coordinates */
-    private Point point = new Point();
+    private int coordX = 0;
+    private int coordY = 0;
 
     
 	/**
@@ -159,20 +160,21 @@ public class Station {
     }
     
     /**
-     * Returns the station map coordinates
+     * Returns the station map coordinate point
      * @return
      */
     public Point getPoint() {
-    	return this.point;
+    	Point p = new Point(this.coordX, this.coordY);
+    	return p;
     }
     
     /**
      * Sets the coordinations of the station map point
-     * @param x
-     * @param y
+     * @param p The point
      */
     public void setPoint(Point p) {
-    	this.point.setLocation(p);
+    	this.coordX = (int)p.getX();
+    	this.coordY = (int)p.getY();
     }
     
     
@@ -192,7 +194,7 @@ public class Station {
     		}
     	}
         return (this.id + "," + this.name + "," + this.avDocks + "," + this.capacity + "," +
-				this.kiosk + "," + this.address + "," + bikes + "\n");
+				this.kiosk + "," + this.address + "," + this.coordX + "," + this.coordY + "," + bikes + "\n");
     }
     
     /**
