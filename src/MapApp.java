@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 import javax.imageio.ImageIO;
 import java.awt.*; 
@@ -37,17 +38,27 @@ public class MapApp{
     	
     	public App(boolean user) {
     		this.user = user;
+    		// Get the valleybike singleton
+    		ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();
+    		Map<Integer, Station> stations = valleyBike.getStations();
     		
-    		Point p1 = new Point(500, 500);
-    		Point p2 = new Point(300, 100);
-    		Point p3 = new Point(110, 400);
-    		Point p4 = new Point(310, 900);
-    		Point p5 = new Point(700, 600);
-    		points.add(p1);
-    		points.add(p2);
-    		points.add(p3);
-    		points.add(p4);
-    		points.add(p5);
+    		// Loop over stations map
+    		for (Map.Entry<Integer,Station> entry : stations.entrySet()) {
+    			// Add station coordinates to points list
+    			points.add(entry.getValue().getPoint());
+    		}
+    		
+    		
+//    		Point p1 = new Point(500, 500);
+//    		Point p2 = new Point(300, 100);
+//    		Point p3 = new Point(110, 400);
+//    		Point p4 = new Point(310, 900);
+//    		Point p5 = new Point(700, 600);
+//    		points.add(p1);
+//    		points.add(p2);
+//    		points.add(p3);
+//    		points.add(p4);
+//    		points.add(p5);
     		
     		try {
     			mapImage = ImageIO.read(new File("data-files/ValleyBikeMap.png"));
@@ -128,6 +139,13 @@ public class MapApp{
     	}
     	
     }
+	/**
+	 * MapApp main method.
+	 * @throws ParseException 
+	 */
+	public static void main(String[] args){
+		MapApp map = new MapApp(true);
+	}
 }
 
 
