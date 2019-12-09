@@ -1075,19 +1075,6 @@ public class Controller {
 	}
 	
 	/**
-	 * TODO: Consider implementing for A5
-	 */
-	private String moveBikes() {
-		Integer stationFrom = getUnboundedIntResponse("Please enter station ID to move from", 0);
-		sc.nextLine();
-		Integer stationTo = getUnboundedIntResponse("Please enter station ID to move to", 0);
-		sc.nextLine();
-		Integer numBikes = getUnboundedIntResponse("Please enter number of bikes to move", 0);
-		sc.nextLine();
-		return valleyBike.moveBikes(stationFrom, stationTo, numBikes);
-	}
-	
-	/**
 	 * Allows employee to resolve issues.
 	 * </p>
 	 * Prompts user for the issue IDs and creates a list

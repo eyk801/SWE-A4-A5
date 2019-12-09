@@ -830,12 +830,6 @@ public class ValleyBikeSim {
 		return "Bikes added.";
 	}
 	
-	/**
-	 * TODO: Consider implementing for A5
-	 */
-	public String moveBikes(Integer stationFrom, Integer stationTo, Integer numBikes) {
-		return null;
-	}
 	
 	/**
 	 * Resolve maintenance request issues.
