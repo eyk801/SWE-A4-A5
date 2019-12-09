@@ -726,7 +726,7 @@ public class Controller {
 		int capacity = 0;
 		boolean kiosk = false;
 		// Get station capacity
-		Object capObj = validateLine("Please enter station capacity", VariableType.INT, 0, 40);
+		Object capObj = validateLine("Please enter station capacity", VariableType.INT, 5, 27);
 		if (capObj == null) {
 			// Global quit functionality - return to menu
 			return "";
