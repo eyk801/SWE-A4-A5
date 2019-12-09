@@ -405,6 +405,19 @@ public class ValleyBikeSim {
 		}
 		return "Station successfully added to the system.";
 	}
+	
+	/**
+	 * Remove a station from the system.
+	 * </p>
+	 * @return String to show function success.
+	 * TODO look at this
+	 */
+	public String removeStation(String id) {
+		//this.lastStationId = this.lastStationId + 1;
+		int idNum = this.lastStationId;
+		this.stations.remove(idNum);
+		return "Station successfully removed from the system.";
+	}
 
 	/**
 	 * Balances bikes across the system's stations.
