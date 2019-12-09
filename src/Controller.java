@@ -721,47 +721,51 @@ public class Controller {
 		// Catch case
 		default:
 			System.out.println("In default");
-			break;
+			return validateLine(prompt, type);
+			//break;
 		case INT:
 			if (sc.hasNextInt()) {
 				int i = Integer.parseInt(sc.nextLine());
 				// Check if == 0
 				obj = i;
-				break;
+				return obj;
+				//break;
 			} else {
 				// Else, call the prompt again
 				sc.nextLine();
-				validateLine(prompt, type);
-				break;
+				return validateLine(prompt, type);
+				//break;
 			}
 		case LONG:
 			if (sc.hasNextLong()) {
 				String line = sc.nextLine();
 				if (line.length() != 16) {
 					System.out.println("Please enter a valid credit card number. (16 digits)");
-					validateLine(prompt, VariableType.LONG);
-					break;
+					return validateLine(prompt, VariableType.LONG);
+					//break;
 				} else {
 					long l = Long.parseLong(line);
 					obj = l;
-					break;
+					return obj;
+					//break;
 				}
 			} else {
 				// Else, call the prompt again
 				sc.nextLine();
-				validateLine(prompt, type);
-				break;
+				return validateLine(prompt, type);
+				//break;
 			}
 		case BOOLEAN: 
 			if (sc.hasNextBoolean()) {
 				boolean b = Boolean.parseBoolean(sc.nextLine());
 				obj = b;
-				break;
+				return obj;
+				//break;
 			} else {
 				// Else, call prompt again
 				sc.nextLine();
-				validateLine(prompt, type);
-				break;
+				return validateLine(prompt, type);
+				//break;
 			}
 		case DATE:
 			String line = sc.nextLine();
@@ -769,42 +773,59 @@ public class Controller {
 			String pattern = "../..";
 			if (line.length() != 5 || !Pattern.matches(pattern, line)) {
 	    		System.out.println("Incorrect date format. Please enter expiration date.");
-	    		validateLine(prompt, type);
-	    		break;
+	    		return validateLine(prompt, type);
+	    		//break;
 			} else {
 				System.out.println("In correct format else");
 	    		String[] arrDate = line.split("/");
 			    String userMonth = arrDate[0];
 			    String userYear = arrDate[1];
-			    // Check if values are ints, if not prompt user to enter again
-			    try {
-			    	System.out.println("In the try");
-				    int month = Integer.parseInt(userMonth);
-				    int year = Integer.parseInt(userYear);
-			    } catch (Exception FormatException) {
-			    	System.out.println("In the catch");
-			    	System.out.println("Incorrect date format. Please enter expiration date.");
-			    	validateLine(prompt, type);
-			    	break;
-			    }
-			    System.out.println("Out of try/catch");
-			    // String is in correct format
-			    int month = Integer.parseInt(userMonth);
-			    if (month < 13 && month > 0) {
-			    	obj = line;
-			    	System.out.println(obj);
-			    	System.out.println("in switch with: " + obj.toString());
-					break;
+			    if (isInteger(userYear) && isInteger(userMonth)) {
+			    	 int month = Integer.parseInt(userMonth);
+					    if (month < 13 && month > 0) {
+					    	obj = line;
+					    	return obj;
+//					    	System.out.println(obj);
+//					    	System.out.println("in switch with: " + obj.toString());
+//							break;
+					    } else {
+					    	System.out.println("Invalid month. Please enter expiration date.");
+//					    	obj = line;
+					    	return validateLine(prompt, type);
+					    	//break;
+					    }
 			    } else {
-			    	System.out.println("Invalid month. Please enter expiration date.");
-//			    	obj = line;
-			    	validateLine(prompt, type);
-			    	break;
+			    	System.out.println("Incorrect date format. Please enter expiration date.");
+			    	return validateLine(prompt, type);
+			    	//break;
 			    }
+			    // Check if values are ints, if not prompt user to enter again
+//			    try {
+//			    	System.out.println("In the try");
+//				    int month = Integer.parseInt(userMonth);
+//				    int year = Integer.parseInt(userYear);
+//			    } catch (Exception FormatException) {
+//			    	System.out.println("In the catch");
+//			    	System.out.println("Incorrect date format. Please enter expiration date.");
+//			    	validateLine(prompt, type);
+//			    	break;
+//			    }
+//			    System.out.println("Out of try/catch");
+			    // String is in correct format
+			   
 			    
 			}
 		}
-		return obj;
+		//return obj;
+	}
+	
+	private boolean isInteger(String value) {
+		try {
+		    Integer.parseInt(value);
+	    } catch (Exception FormatException) {
+	    	return false;
+	    }
+		return true;
 	}
 	
 	/**
