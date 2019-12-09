@@ -34,7 +34,7 @@ public class Controller {
 	 * @throws IOException
 	 * @throws ParseException 
 	 */
-	public void chooseView() throws IOException, ParseException {
+	private void chooseView() throws IOException, ParseException {
 		System.out.println("Welcome to ValleyBike! "
 				+ "Please enter 'user' for user and 'employee' for employee: ");
 		String response = sc.next();
@@ -57,7 +57,7 @@ public class Controller {
 	 * </p>
 	 * @throws IOException
 	 */
-	public void executeUser(String username) throws IOException {
+	private void executeUser(String username) throws IOException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View map. \n" + "3. Check out bike.\n" + "4. Check in bike.\n" + "5. View history.\n"
 				+ "6. View account info.\n" + "7. Report issue.\n");
@@ -113,7 +113,7 @@ public class Controller {
 	 * @throws IOException
 	 * @throws ParseException 
 	 */
-	public void executeEmployee() throws IOException, ParseException {
+	private void executeEmployee() throws IOException, ParseException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View map.\n" + "3. View current Rides\n" + "4. View Issues.\n" + "5. Resolve Issues.\n"
 				+ "6. Add Station.\n" + "7. View System Overview.\n" + "8. Check Stats.\n" + "9. Add Bikes.\n" + "10. Equalize Stations.\n" 
@@ -184,7 +184,7 @@ public class Controller {
 	 * </p>
 	 * @return users:passwords global Hashmap
 	 */
-	public HashMap<String, String> readUserData() {
+	private HashMap<String, String> readUserData() {
 
 		HashMap<String, String> userAccounts = new HashMap<>();
 		try {
@@ -215,7 +215,7 @@ public class Controller {
 	 * </p>
 	 * @return employee:password global Hashmap
 	 */
-	public HashMap<String, String> readEmployeeData() {
+	private HashMap<String, String> readEmployeeData() {
 
 		HashMap<String, String> employeeAccounts = new HashMap<>();
 		try {
@@ -436,7 +436,7 @@ public class Controller {
 	 * @param type	desired type
 	 * @return the user input in desired form (Object type)
 	 */
-	public Object validateLine(String prompt, VariableType type) {
+	private Object validateLine(String prompt, VariableType type) {
 		Object obj = null;
 		System.out.println(prompt + ": ");
 		while (sc.hasNextLine()) {
@@ -460,7 +460,7 @@ public class Controller {
 	 * @param obj		the return object
 	 * @return obj		return the obj
 	 */
-	public Object typeSwitch(String prompt, VariableType type, Object obj) {
+	private Object typeSwitch(String prompt, VariableType type, Object obj) {
 		switch (type) {
 		// Catch case
 		default:
@@ -560,7 +560,7 @@ public class Controller {
 	 * @param max	The upper bound
 	 * @return	the user input in desired form
 	 */
-	public Object validateLine(String prompt, VariableType type, long min, long max)  {
+	private Object validateLine(String prompt, VariableType type, long min, long max)  {
 		Object obj = null;
 		System.out.println(prompt + ": ");
 		while (sc.hasNext()) {
