@@ -400,7 +400,6 @@ public class ValleyBikeSim {
 		try {
 			saveStationData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Station successfully added to the system.";
@@ -410,7 +409,6 @@ public class ValleyBikeSim {
 	 * Remove a station from the system.
 	 * </p>
 	 * @return String to show function success.
-	 * TODO look at this
 	 */
 	public String removeStation(int id) {
 		this.stations.remove(id);
@@ -418,7 +416,6 @@ public class ValleyBikeSim {
 		try {
 			saveStationData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Station successfully removed from the system.";
@@ -433,7 +430,6 @@ public class ValleyBikeSim {
 	 * and adding bikes if the station bike-capacity percentage is low.
 	 * </p>
 	 * @return String to confirm equalization
-	 * TODO: change implementation
 	 */
 	public String equalizeStations() {
 		//Find the total number of bikes and total capacity
@@ -475,7 +471,6 @@ public class ValleyBikeSim {
 			saveStationData();
 			saveBikeData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "The number of bikes at all stations have been equalized.";
@@ -507,7 +502,7 @@ public class ValleyBikeSim {
 		// Get new ride id
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
-		// Right now, we have 3 types of membership
+		// TODO: Right now, we have 3 types of membership
 		//With tiers (0,1,2) that each pay (2,1,0) respectively
 		int cost = 0;
 		if (currentUser.getType() == 0) {
@@ -544,7 +539,6 @@ public class ValleyBikeSim {
 			saveUserData();
 			saveRideData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +". Your account has been charged $" + cost;
@@ -592,7 +586,6 @@ public class ValleyBikeSim {
 			saveBikeData();
 			saveRideData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Successfully checked in. Ride completed.";
@@ -603,7 +596,6 @@ public class ValleyBikeSim {
 	 * </p>
 	 * @param username		user to view history
 	 * @return rideHistory	String of ride ids
-	 * TODO: Print ride stats for a more comprehensive user history (A5)
 	 */
 	public String viewHistory(String username) {
 		User currentUser = users.get(username);
@@ -649,7 +641,6 @@ public class ValleyBikeSim {
 		try {
 			saveMainReqData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Issue reported.";
@@ -779,7 +770,6 @@ public class ValleyBikeSim {
 	 * and concatenates each ride and associated data into the return string.
 	 * </p>
 	 * @return currentRides	String of current ride data
-	 * TODO: Ask our stakeholder if more info on current rides is wanted. (A5)
 	 */
 	public String viewCurrentRides() {
 		String currentRides = "Current Rides:\n";
@@ -824,7 +814,6 @@ public class ValleyBikeSim {
 			saveStationData();
 			saveBikeData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Bikes added.";
@@ -860,7 +849,6 @@ public class ValleyBikeSim {
 		try {
 			saveMainReqData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return resolved + "\n" + invalid;
@@ -883,7 +871,6 @@ public class ValleyBikeSim {
 			try {
 				saveUserData();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return true;
