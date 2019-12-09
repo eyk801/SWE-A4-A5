@@ -1,18 +1,7 @@
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import junit.framework.Assert;
 /**
  * ValleyBikeSim Testing Class
  * Be sure to change the path variable
@@ -21,22 +10,6 @@ import junit.framework.Assert;
 class ValleyBikeSimTest {
 	
 	static ValleyBikeSim vBSTester = ValleyBikeSim.getInstance();
-
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
 
 	@Test
 	void testReadData_validData() {
