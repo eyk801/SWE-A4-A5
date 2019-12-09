@@ -755,10 +755,13 @@ public class Controller {
 	 */
 	private String removeStation() {
 		//TODO: implement using validateLine
-		System.out.println("Please enter the ID of the station: ");
-		int id = sc.nextInt();
-		sc.nextLine();
-		return valleyBike.removeStation(id);
+		Object stationObj = validateLine("Please enter the ID of the station:", VariableType.INT);
+		if (stationObj == null) {
+			return "";
+		} else {
+			int id = (int)stationObj;
+			return valleyBike.removeStation(id);
+		}
 	}
 	
 	/**
