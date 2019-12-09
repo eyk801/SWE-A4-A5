@@ -161,7 +161,7 @@ public class ValleyBikeSim {
 				user.setRides(rideHistory);
 				//TODO: read in user bill history
 				List<String> billHistory = new ArrayList<>();
-				for (int i = numRides+9; i < values.length; i++) {
+				for (int i = numRides+8; i < values.length; i++) {
 					billHistory.add(values[i]);
 				}
 				user.setBillHistory(billHistory);

@@ -203,6 +203,8 @@ public class User {
      		}
      	} else {
      		 // If pay-per-ride, charge account
+     		System.out.println("day to string:");
+     		System.out.println(today.toString());
      		this.billHistory.add(today.toString());
      		return true;
      	}
@@ -291,6 +293,7 @@ public class User {
     public String toSaveString() {
     	String rideIds = ridesToString();
     	String billString = billToString();
+    	System.out.println("Bill string in save:");
     	System.out.println(billString);
         return (this.username + "," + this.password + "," + this.membershipType + "," + 
         		this.creditCardNum + "," + this.CVV + "," +
