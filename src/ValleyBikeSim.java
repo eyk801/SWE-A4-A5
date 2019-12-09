@@ -507,7 +507,13 @@ public class ValleyBikeSim {
 		int cost = 0;
 		if (currentUser.getType() == 0) {
 			cost = 2;
-			currentUser.addToBill(cost);
+			// Check if card still valid
+			if (paymentSystem.validate(currentUser.getCard(), currentUser.getCVV(), currentUser.getExprDate())) {
+				currentUser.addToBill(cost);
+			} else {
+				//TODO: decide what to do here?
+				return "Your payment is invalid. Please check your credit card information.";
+			}
 		}
 		if (currentUser.getType() == 1) {
 			cost = 1;

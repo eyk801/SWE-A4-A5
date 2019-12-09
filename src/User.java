@@ -22,6 +22,8 @@ public class User {
 	private List<Integer> rideHistory = new ArrayList<>();
 	/** Ride id number for user current ride. Default to 0.*/
 	private int currentRideId = 0;
+	/** User total bill */
+	private int totalBill = 0;
 	
 	/**
 	 * User class constructor.
@@ -50,6 +52,33 @@ public class User {
 	 */
 	public void addUserRide(int rideID) {
 		rideHistory.add(rideID);
+	}
+	
+	/**
+	 * Return user credit card number
+	 * </p>
+	 * @return long credit card number
+	 */
+	public long getCard() {
+		return this.creditCardNum;
+	}
+	
+	/**
+	 * Return user credit card CVV
+	 * </p>
+	 * @return int credit card CVV
+	 */
+	public int getCVV() {
+		return this.CVV;
+	}
+	
+	/**
+	 * Return user credit card expiration date
+	 * </p>
+	 * @return String credit card expiration date
+	 */
+	public String getExprDate() {
+		return this.expirationDate;
 	}
 	
 	/**
@@ -139,6 +168,24 @@ public class User {
 	 */
 	public void setRides(List<Integer> rides) {
 		this.rideHistory = rides;
+	}
+	
+	/**
+	 * Getter for user accumulated bill
+	 * </p>
+	 * @return totalBill
+	 */
+	public Integer getBill() {
+		return this.totalBill;
+	}
+	
+	/**
+	 * Add to user bill
+	 * </p>
+	 * @param bill		Amount to add to the user total bill
+	 */
+	public void addToBill(Integer bill) {
+		this.totalBill += bill;
 	}
 	
 	/**
