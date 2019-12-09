@@ -901,6 +901,23 @@ public class Controller {
 		return valleyBike.addStation(capacity, kiosk, address, name);
 	}
 	
+	
+	/**
+	 * Allows employee to remove stations.
+	 * </p>
+	 *  TODO: do this part of docstring
+	 * Prompts user for bike info input
+	 * </p>
+	 * @return 
+	 */
+	private String removeStation() {
+		
+		// Get id of station
+		System.out.println("Please enter the ID of the station: ");
+		String id = sc.nextLine();
+		return valleyBike.removeStation(id);
+	}
+	
 	/**
 	 * Allows employee to add bikes to a specific station.
 	 * </p>
