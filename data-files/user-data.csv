@@ -1,6 +1,6 @@
-Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History
-charlottegephart,password3,0,8765432187654321,123,01/21,0,4
-aliciagrubb,password5,0,1111222233334444,123,01/22,0,7,8
-emilykim,password2,0,1234567812345678,123,01/21,0,3
-alieshghi,password4,0,1234432112344321,123,01/21,0,5,6
-esterzhao,password1,0,1234123412341234,123,01/21,0,1,2,9,10,11
+Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Number of Rides,Current Ride,Ride History
+charlottegephart,password3,0,8765432187654321,123,01/21,0,1,4,2019-11-12
+aliciagrubb,password5,2,1111222233334444,123,01/22,0,2,7,8,2019-11-15
+emilykim,password2,1,1234567812345678,123,01/21,0,1,3,2019-11-10
+alieshghi,password4,0,1234432112344321,123,01/21,0,2,5,6,2019-11-11
+esterzhao,password1,0,1234123412341234,123,01/21,0,2,1,2,2019-11-10,2019-11-10
