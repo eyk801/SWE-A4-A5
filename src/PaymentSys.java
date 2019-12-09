@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.Random;
 
 /**
- * @author      Ali Eshghi, Ester Zhao
+ * @author      Ali Eshghi, Ester Zhao, Emily Kim
  * @version     1.0
  */
 public class PaymentSys {
