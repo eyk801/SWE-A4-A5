@@ -581,62 +581,116 @@ public class Controller {
 				return null;
 			} else {
 				System.out.println("in the switch else");
-				switch (type) {
-				// Catch case
-				default:
-					System.out.println("In default");
-					break;
-				case INT:
-					if (sc.hasNextInt()) {
-						int i = Integer.parseInt(sc.nextLine());
-						// Check if == 0
-						obj = i;
-						break;
-					} else {
-						// Else, call the prompt again
-						sc.nextLine();
-						validateLine(prompt, type);
-						break;
-					}
-				case LONG:
-					if (sc.hasNextLong()) {
-						String line = sc.nextLine();
-						if (line.length() != 16) {
-							System.out.println("Please enter a valid credit card number. (16 digits)");
-							validateLine(prompt, VariableType.LONG);
-							break;
-						} else {
-							long l = Long.parseLong(line);
-							obj = l;
-							break;
-						}
-					} else {
-						// Else, call the prompt again
-						sc.nextLine();
-						validateLine(prompt, type);
-						break;
-					}
-				case BOOLEAN: 
-					if (sc.hasNextBoolean()) {
-						boolean b = Boolean.parseBoolean(sc.nextLine());
-						obj = b;
-						break;
-					} else {
-						// Else, call prompt again
-						sc.nextLine();
-						validateLine(prompt, type);
-						break;
-					}
-				//TODO: The date thing breaks when the first attempt is not in correct format
-				//TODO: If first date is invalid but in correct format it
-				// also returns wrong (previously entered incorrect date) after new correct date is entered
-				case DATE:
-					String line = sc.nextLine();
-					System.out.println(line);
-					obj = date(line, prompt, type, obj);
-					break;
-					break scannerLoop;
-				}
+				obj = switchThing(prompt, type, obj);
+//				switch (type) {
+//				// Catch case
+//				default:
+//					System.out.println("In default");
+//					break;
+//				case INT:
+//					if (sc.hasNextInt()) {
+//						int i = Integer.parseInt(sc.nextLine());
+//						// Check if == 0
+//						obj = i;
+//						break;
+//					} else {
+//						// Else, call the prompt again
+//						sc.nextLine();
+//						validateLine(prompt, type);
+//						break;
+//					}
+//				case LONG:
+//					if (sc.hasNextLong()) {
+//						String line = sc.nextLine();
+//						if (line.length() != 16) {
+//							System.out.println("Please enter a valid credit card number. (16 digits)");
+//							validateLine(prompt, VariableType.LONG);
+//							break;
+//						} else {
+//							long l = Long.parseLong(line);
+//							obj = l;
+//							break;
+//						}
+//					} else {
+//						// Else, call the prompt again
+//						sc.nextLine();
+//						validateLine(prompt, type);
+//						break;
+//					}
+//				case BOOLEAN: 
+//					if (sc.hasNextBoolean()) {
+//						boolean b = Boolean.parseBoolean(sc.nextLine());
+//						obj = b;
+//						break;
+//					} else {
+//						// Else, call prompt again
+//						sc.nextLine();
+//						validateLine(prompt, type);
+//						break;
+//					}
+//				//TODO: The date thing breaks when the first attempt is not in correct format
+//				//TODO: If first date is invalid but in correct format it
+//				// also returns wrong (previously entered incorrect date) after new correct date is entered
+//				case DATE:
+//					String line = sc.nextLine();
+//					System.out.println("In DATE switch");
+//					String pattern = "../..";
+////					String line = sc.nextLine();
+//					if (line.length() != 5 || !Pattern.matches(pattern, line)) {
+//			    		System.out.println("Incorrect date format. Please enter expiration date.");
+//			    		validateLine(prompt, type);
+////			    		break;
+//					} else {
+//						System.out.println("In correct format else");
+//			    		String[] arrDate = line.split("/");
+//					    String userMonth = arrDate[0];
+//					    String userYear = arrDate[1];
+//					    // Check if values are ints, if not prompt user to enter again
+//					    try {
+//					    	System.out.println("In the try");
+//						    int month = Integer.parseInt(userMonth);
+//						    int year = Integer.parseInt(userYear);
+////						    // String is in correct format
+////						    if (month < 13 && month > 0) {
+////						    	obj = line;
+////						    	System.out.println("in switch with: " + obj.toString());
+////								break;
+////						    } else {
+////						    	System.out.println("Invalid month. Please enter expiration date.");
+//////						    	obj = line;
+////						    	validateLine(prompt, type);
+////						    	break;
+////						    }
+//					    } catch (Exception FormatException) {
+//					    	System.out.println("In the catch");
+//					    	System.out.println("Incorrect date format. Please enter expiration date.");
+//					    	validateLine(prompt, type);
+//					    	break;
+//					    }
+////					    finally {
+////					    	System.out.println("Finally");
+//////					    	obj = line;
+////					    	break;
+////					    }
+//					    System.out.println("Out of try/catch");
+//					    // String is in correct format
+//					    int month = Integer.parseInt(userMonth);
+//					    int year = Integer.parseInt(userYear);
+//					    if (month < 13 && month > 0) {
+//					    	obj = line;
+//					    	System.out.println(obj);
+//					    	System.out.println("in switch with: " + obj.toString());
+//							break;
+//					    } else {
+//					    	System.out.println("Invalid month. Please enter expiration date.");
+////					    	obj = line;
+//					    	validateLine(prompt, type);
+//					    	break;
+//					    }
+//					    
+//					}
+//					break;
+//				}
 			}
 			System.out.println("End of switch, inside while");
 			System.out.println(obj);
@@ -647,62 +701,93 @@ public class Controller {
 		return obj;
 	}
 	
-	public Object date(String line, String prompt, VariableType type, Object obj) {
-		System.out.println("In DATE switch");
-		String pattern = "../..";
-//		String line = sc.nextLine();
-		if (line.length() != 5 || !Pattern.matches(pattern, line)) {
-    		System.out.println("Incorrect date format. Please enter expiration date.");
-    		validateLine(prompt, type);
-//    		break;
-		} else {
-			System.out.println("In correct format else");
-    		String[] arrDate = line.split("/");
-		    String userMonth = arrDate[0];
-		    String userYear = arrDate[1];
-		    // Check if values are ints, if not prompt user to enter again
-		    try {
-		    	System.out.println("In the try");
+	public Object switchThing(String prompt, VariableType type, Object obj) {
+		switch (type) {
+		// Catch case
+		default:
+			System.out.println("In default");
+			break;
+		case INT:
+			if (sc.hasNextInt()) {
+				int i = Integer.parseInt(sc.nextLine());
+				// Check if == 0
+				obj = i;
+				break;
+			} else {
+				// Else, call the prompt again
+				sc.nextLine();
+				validateLine(prompt, type);
+				break;
+			}
+		case LONG:
+			if (sc.hasNextLong()) {
+				String line = sc.nextLine();
+				if (line.length() != 16) {
+					System.out.println("Please enter a valid credit card number. (16 digits)");
+					validateLine(prompt, VariableType.LONG);
+					break;
+				} else {
+					long l = Long.parseLong(line);
+					obj = l;
+					break;
+				}
+			} else {
+				// Else, call the prompt again
+				sc.nextLine();
+				validateLine(prompt, type);
+				break;
+			}
+		case BOOLEAN: 
+			if (sc.hasNextBoolean()) {
+				boolean b = Boolean.parseBoolean(sc.nextLine());
+				obj = b;
+				break;
+			} else {
+				// Else, call prompt again
+				sc.nextLine();
+				validateLine(prompt, type);
+				break;
+			}
+		case DATE:
+			String line = sc.nextLine();
+			System.out.println("In DATE switch");
+			String pattern = "../..";
+			if (line.length() != 5 || !Pattern.matches(pattern, line)) {
+	    		System.out.println("Incorrect date format. Please enter expiration date.");
+	    		validateLine(prompt, type);
+	    		break;
+			} else {
+				System.out.println("In correct format else");
+	    		String[] arrDate = line.split("/");
+			    String userMonth = arrDate[0];
+			    String userYear = arrDate[1];
+			    // Check if values are ints, if not prompt user to enter again
+			    try {
+			    	System.out.println("In the try");
+				    int month = Integer.parseInt(userMonth);
+				    int year = Integer.parseInt(userYear);
+			    } catch (Exception FormatException) {
+			    	System.out.println("In the catch");
+			    	System.out.println("Incorrect date format. Please enter expiration date.");
+			    	validateLine(prompt, type);
+			    	break;
+			    }
+			    System.out.println("Out of try/catch");
+			    // String is in correct format
 			    int month = Integer.parseInt(userMonth);
-			    int year = Integer.parseInt(userYear);
-//			    // String is in correct format
-//			    if (month < 13 && month > 0) {
+			    if (month < 13 && month > 0) {
+			    	obj = line;
+			    	System.out.println(obj);
+			    	System.out.println("in switch with: " + obj.toString());
+					break;
+			    } else {
+			    	System.out.println("Invalid month. Please enter expiration date.");
 //			    	obj = line;
-//			    	System.out.println("in switch with: " + obj.toString());
-//					break;
-//			    } else {
-//			    	System.out.println("Invalid month. Please enter expiration date.");
-////			    	obj = line;
-//			    	validateLine(prompt, type);
-//			    	break;
-//			    }
-		    } catch (Exception FormatException) {
-		    	System.out.println("In the catch");
-		    	System.out.println("Incorrect date format. Please enter expiration date.");
-		    	validateLine(prompt, type);
-//		    	break;
-		    }
-//		    finally {
-//		    	System.out.println("Finally");
-////		    	obj = line;
-//		    	break;
-//		    }
-		    System.out.println("Out of try/catch");
-		    // String is in correct format
-		    int month = Integer.parseInt(userMonth);
-		    int year = Integer.parseInt(userYear);
-		    if (month < 13 && month > 0) {
-		    	obj = line;
-		    	System.out.println(obj);
-		    	System.out.println("in switch with: " + obj.toString());
-//				break;
-		    } else {
-		    	System.out.println("Invalid month. Please enter expiration date.");
-//		    	obj = line;
-		    	validateLine(prompt, type);
-//		    	break;
-		    }
-		    
+			    	validateLine(prompt, type);
+			    	break;
+			    }
+			    
+			}
 		}
 		return obj;
 	}
