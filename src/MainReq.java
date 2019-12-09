@@ -69,14 +69,6 @@ public class MainReq {
 		return this.message;
 	}
 	
-	/**
-	 * Update issue message
-	 * @param newMessage	the new issue message for the request
-	 */
-	public void changeMessage(String newMessage) {
-		this.message = newMessage;
-	}
-	
     /**
      * toString method for data to write to csv data files
      * </p>
