@@ -22,8 +22,6 @@ public class User {
 	private List<Integer> rideHistory = new ArrayList<>();
 	/** Ride id number for user current ride. Default to 0.*/
 	private int currentRideId = 0;
-	/** User total bill */
-	private int totalBill = 0;
 	
 	/**
 	 * User class constructor.
@@ -141,24 +139,6 @@ public class User {
 	 */
 	public void setRides(List<Integer> rides) {
 		this.rideHistory = rides;
-	}
-	
-	/**
-	 * Getter for user accumulated bill
-	 * </p>
-	 * @return totalBill
-	 */
-	public Integer getBill() {
-		return this.totalBill;
-	}
-	
-	/**
-	 * Add to user bill
-	 * </p>
-	 * @param bill		Amount to add to the user total bill
-	 */
-	public void addToBill(Integer bill) {
-		this.totalBill += bill;
 	}
 	
 	/**
