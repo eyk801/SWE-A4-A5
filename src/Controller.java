@@ -833,8 +833,9 @@ public class Controller {
 				issues.add(issue);
 				System.out.println("Would you like to add another issue to resolve? (y/n): ");
 				response = sc.next();
-			}
+			}	
 		}
+		sc.nextLine();
 		return valleyBike.resolveIssues(issues);
 	}
 	
