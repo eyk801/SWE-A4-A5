@@ -60,10 +60,10 @@ public class Controller {
 	 */
 	public void executeUser(String username) throws IOException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
-				+ "1. View station list.\n" + "2. Check out bike.\n" + "3. Check in bike.\n" + "4. View history.\n"
-				+ "5. View account info.\n" + "6. Report issue.\n");
+				+ "1. View station list.\n" + "2. View map. \n" + "3. Check out bike.\n" + "4. Check in bike.\n" + "5. View history.\n"
+				+ "6. View account info.\n" + "7. Report issue.\n");
 		// Get user input
-		Object obj = validateLine("Please enter your selection (0-6)", VariableType.INT, 0, 6);
+		Object obj = validateLine("Please enter your selection (0-7)", VariableType.INT, 0, 7);
 		int option = (int)obj;
 		
 		switch (option) {
@@ -79,18 +79,21 @@ public class Controller {
 			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
+			MapApp map = new MapApp(true);
+			break;
+		case 3:
 			System.out.println(checkOutBike(username));
 			break;
-		case 3: 
+		case 4: 
 			System.out.println(checkInBike(username));
 			break;
-		case 4:
+		case 5:
 			System.out.println(valleyBike.viewHistory(username));
 			break;
-		case 5:
+		case 6:
 			System.out.println(valleyBike.viewAccount(username));
 			break;
-		case 6:
+		case 7:
 			System.out.println(reportIssue(username));
 			break;
 		default:
@@ -111,11 +114,11 @@ public class Controller {
 	 */
 	public void executeEmployee() throws IOException, ParseException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
-				+ "1. View station list.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
+				+ "1. View station list.\n" + "2. View map.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
 				+ "5. Add Station.\n" + "6. View System Overview.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Equalize Stations.\n");
 
 		// Get user input
-		Object obj = validateLine("Please enter your selection (0-9)", VariableType.INT, 0, 9);
+		Object obj = validateLine("Please enter your selection (0-10)", VariableType.INT, 0, 10);
 		int option = (int)obj;
 		
 		switch (option) {
@@ -130,28 +133,31 @@ public class Controller {
 			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
+			MapApp map = new MapApp(true);
+			break;
+		case 3:
 			// Take in all ride data
 			System.out.println(valleyBike.viewCurrentRides());
 			break;
-		case 3: 
+		case 4: 
 			System.out.println(valleyBike.viewIssues());
 			break;
-		case 4:
+		case 5:
 			System.out.println(resolveIssues());
 			break;
-		case 5:
+		case 6:
 			System.out.println(addStation());
 			break;
-		case 6:
+		case 7:
 			System.out.println(valleyBike.viewSystemOverview());
 			break;
-		case 7:
+		case 8:
 			System.out.println(valleyBike.viewStats());
 			break;
-		case 8:
+		case 9:
 			System.out.println(addBikes());
 			break;
-		case 9:
+		case 10:
 			System.out.println(valleyBike.equalizeStations());
 			break;
 		default:
