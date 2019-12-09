@@ -385,6 +385,7 @@ public class Controller {
 			// Get membership type
 			Object obj = validateLine("Please enter your preferred membership type (0,1,2)", VariableType.INT, 0, 2);
 			if (obj == null) {
+				System.out.println("Object was null, returning to login");
 				return "quit";
 			} else {
 				// Set membership #
@@ -576,17 +577,17 @@ public class Controller {
 						// Check if int is within bounds
 						if ((int)min <= i && i <= (int)max) {
 							obj = i;
-							break;
+							return obj;
 						} else {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
-							validateLine(prompt, type, min, max);
-							break;
+							return validateLine(prompt, type, min, max);
 						}
 					} else {
+						
 						// Else, call the prompt again
-						sc.nextLine();
-						validateLine(prompt, type, min, max);
-						break;
+						System.out.println("input was " + sc.nextLine());
+						System.out.println("type is "+ type.toString());
+						return validateLine(prompt, type, min, max);
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
@@ -594,33 +595,29 @@ public class Controller {
 						// Check if int is within bounds
 						if (min <= l && l <= max) {
 							obj = l;
-							break;
+							return obj;
 						} else {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
-							validateLine(prompt, type, min, max);
-							break;
+							return validateLine(prompt, type, min, max);
 						}
 					} else {
 						// Else, call the prompt again
 						sc.nextLine();
-						validateLine(prompt, type, min, max);
-						break;
+						return validateLine(prompt, type, min, max);
 					}
 				case STRING:
 					String line = sc.nextLine();
 					if ((int)min <= line.length() && line.length() <= (int)max) {
 						obj = line;
-						break;
+						return obj;
 					} else {
 						System.out.println("Please ensure your input is in the range of "+min+"-"+max+" characters.");
-						validateLine(prompt, type, min, max);
-						break;
+						return validateLine(prompt, type, min, max);
 					}
 				default: // catch case
-					break;
+					return validateLine(prompt, type, min, max);
 				}
 			}
-			break;
 		}
 		return obj;
 	}
