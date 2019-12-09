@@ -45,6 +45,7 @@ public class PaymentSys {
 	 * @return false if expiration date has passed
 	 */
 	public boolean checkExprDate(String expirationDate) {
+		System.out.println("Expr date: " + expirationDate);
 		// Response bool
 		boolean response = false;
 		// Parse String expiration date

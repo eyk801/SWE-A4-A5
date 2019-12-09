@@ -262,28 +262,44 @@ public class Controller {
 				accountLogin();
 			}
 		} else if (choice.equalsIgnoreCase("n")) {
-			System.out.println("Enter username (minimum of 5 characters): ");
-			username = sc.next();
-			System.out.println("Enter password (minimum of 5 characters): ");
-			String password = sc.next();
-			
-			// Clear out scanner
-			sc.nextLine();	
-			
-			// Accepted username is greater than 5 characters
-			if (username.length() >= 5 && password.length() >= 5 && createAccount(username, password) == true) {
-					return username;
-			}
-			else {
-				System.out.println("Error creating account (username taken, username/password invalid, or payment invalid)");
-				accountLogin();
-			}
-			
+			return createUserCredentials();
 		} else {
 			System.out.println("Input invalid. Please enter 'l' or 'n'.");
 			accountLogin();
 		}
 		return username;
+	}
+	
+	/**
+	 * Takes in user input to create a new user account
+	 * @return the username of the new account
+	 */
+	private String createUserCredentials() {
+		String response = "";
+		System.out.println("Enter username (min 5 characters): ");
+		String username = sc.next();
+		if (username.length() < 5) {
+			System.out.println("Username must be at least 5 characters long. Please enter a new username.");
+			createUserCredentials();
+		}
+		System.out.println("Enter password (min 5 characters): ");
+		String password = sc.next();
+		if (password.length() < 5) {
+			System.out.println("Password must be at least 5 characters long. Please enter a new username and password.");
+			createUserCredentials();
+		}
+		// Clear out scanner
+		sc.nextLine();	
+		
+		// Accepted username is greater than 5 characters
+		if (username.length() >= 5 && password.length() >= 5 && createAccount(username, password) == true) {
+			response = username;
+		}
+		else {
+			System.out.println("Error creating account (username taken or payment invalid)");
+			accountLogin();
+		}
+		return response;
 	}
 	
 	private String employeeLogin() {
@@ -368,6 +384,7 @@ public class Controller {
 				// Set card num
 				cardNum = (long)obj1;
 			}
+			//TODO: check if cvv has the right number of digits 
 			// Get card cvv
 			Object obj2 = validateLine("Please enter your CVV", VariableType.INT, 0, 999);
 			System.out.println("hi");
@@ -379,7 +396,7 @@ public class Controller {
 			}
 			// Get card expiration date
 			Object obj3 = validateLine("Please enter expiration date(MM/YY)", VariableType.DATE);
-			System.out.println("Object 3 is: " + obj3.toString());
+			System.out.println(obj3);
 			if (obj3 == null) {
 				//TODO: figure out how to do this
 			} else {
@@ -552,15 +569,23 @@ public class Controller {
 	 * @return the user input in desired form (Object type)
 	 */
 	public Object validateLine(String prompt, VariableType type) {
+		System.out.println("In validate");
 		Object obj = null;
 		System.out.println(prompt + ": ");
-		while (sc.hasNext()) {
+		scannerLoop:
+		while (sc.hasNextLine()) {
+			System.out.println("Top of while");
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
 				sc.nextLine();
 				return null;
 			} else {
+				System.out.println("in the switch else");
 				switch (type) {
+				// Catch case
+				default:
+					System.out.println("In default");
+					break;
 				case INT:
 					if (sc.hasNextInt()) {
 						int i = Integer.parseInt(sc.nextLine());
@@ -606,45 +631,78 @@ public class Controller {
 				//TODO: If first date is invalid but in correct format it
 				// also returns wrong (previously entered incorrect date) after new correct date is entered
 				case DATE:
-					String pattern = "../..";
 					String line = sc.nextLine();
-					if (line.length() != 5 || !Pattern.matches(pattern, line)) {
-			    		System.out.println("Incorrect date format. Please enter expiration date.");
-			    		validateLine(prompt, type);
-			    		break;
-					} else {
-			    		String[] arrDate = line.split("/");
-					    String userMonth = arrDate[0];
-					    String userYear = arrDate[1];
-					    // Check if values are ints, if not prompt user to enter again
-					    try {
-						    int month = Integer.parseInt(userMonth);
-						    int year = Integer.parseInt(userYear);
-						    // String is in correct format
-						    if (month < 13 && month > 0) {
-						    	obj = line;
-						    	System.out.println("in switch with: " + obj.toString());
-								break;
-						    } else {
-						    	System.out.println("Invalid month. Please enter expiration date.");
-						    	obj = line;
-						    	validateLine(prompt, type);
-						    	break;
-						    }	
-					    } catch (Exception FormatException) {
-					    	System.out.println("Incorrect date format. Please enter expiration date.");
-					    	validateLine(prompt, type);
-					    	break;
-					    } finally {
-					    	obj = line;
-					    }
-					    
-					}
-				default: // catch case
+					System.out.println(line);
+					obj = date(line, prompt, type, obj);
 					break;
+					break scannerLoop;
 				}
 			}
-			break;
+			System.out.println("End of switch, inside while");
+			System.out.println(obj);
+			break scannerLoop;
+		}
+		System.out.println("Outside while");
+		System.out.println(obj);
+		return obj;
+	}
+	
+	public Object date(String line, String prompt, VariableType type, Object obj) {
+		System.out.println("In DATE switch");
+		String pattern = "../..";
+//		String line = sc.nextLine();
+		if (line.length() != 5 || !Pattern.matches(pattern, line)) {
+    		System.out.println("Incorrect date format. Please enter expiration date.");
+    		validateLine(prompt, type);
+//    		break;
+		} else {
+			System.out.println("In correct format else");
+    		String[] arrDate = line.split("/");
+		    String userMonth = arrDate[0];
+		    String userYear = arrDate[1];
+		    // Check if values are ints, if not prompt user to enter again
+		    try {
+		    	System.out.println("In the try");
+			    int month = Integer.parseInt(userMonth);
+			    int year = Integer.parseInt(userYear);
+//			    // String is in correct format
+//			    if (month < 13 && month > 0) {
+//			    	obj = line;
+//			    	System.out.println("in switch with: " + obj.toString());
+//					break;
+//			    } else {
+//			    	System.out.println("Invalid month. Please enter expiration date.");
+////			    	obj = line;
+//			    	validateLine(prompt, type);
+//			    	break;
+//			    }
+		    } catch (Exception FormatException) {
+		    	System.out.println("In the catch");
+		    	System.out.println("Incorrect date format. Please enter expiration date.");
+		    	validateLine(prompt, type);
+//		    	break;
+		    }
+//		    finally {
+//		    	System.out.println("Finally");
+////		    	obj = line;
+//		    	break;
+//		    }
+		    System.out.println("Out of try/catch");
+		    // String is in correct format
+		    int month = Integer.parseInt(userMonth);
+		    int year = Integer.parseInt(userYear);
+		    if (month < 13 && month > 0) {
+		    	obj = line;
+		    	System.out.println(obj);
+		    	System.out.println("in switch with: " + obj.toString());
+//				break;
+		    } else {
+		    	System.out.println("Invalid month. Please enter expiration date.");
+//		    	obj = line;
+		    	validateLine(prompt, type);
+//		    	break;
+		    }
+		    
 		}
 		return obj;
 	}
