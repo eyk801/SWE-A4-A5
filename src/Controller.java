@@ -42,7 +42,7 @@ public class Controller {
 			String username = accountLogin();
 			executeUser(username);
 		} else if (response.equalsIgnoreCase("employee")) {
-			String employeeUsername = employeeLogin();
+			employeeLogin();
 			executeEmployee();
 		} else {
 			System.out.println("Invalid input, try again.");
@@ -78,7 +78,7 @@ public class Controller {
 			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
-			MapApp map = new MapApp(true);
+			new MapApp(true);
 			break;
 		case 3:
 			System.out.println(checkOutBike(username));
@@ -133,7 +133,7 @@ public class Controller {
 			System.out.println(valleyBike.viewStationList());
 			break;
 		case 2:
-			MapApp map = new MapApp(true);
+			new MapApp(true);
 			break;
 		case 3:
 			// Take in all ride data
@@ -297,8 +297,7 @@ public class Controller {
 			createUserCredentials();
 		}
 		// Clear out scanner
-		sc.nextLine();	
-		
+		sc.nextLine();
 		// Accepted username is greater than 5 characters
 		String createAccountResponse = createAccount(username, password);
 		if (username.length() >= 5 && password.length() >= 5 && createAccountResponse.equalsIgnoreCase("true")) {
@@ -383,7 +382,6 @@ public class Controller {
 			Object obj = validateLine("Please enter your preferred membership type (0,1,2)", VariableType.INT, 0, 2);
 			if (obj == null) {
 				return "quit";
-				//TODO: figure out how to do this
 			} else {
 				// Set membership #
 				membership = (int)obj;
@@ -392,7 +390,6 @@ public class Controller {
 			Object obj1 = validateLine("Please enter your credit card number", VariableType.LONG);
 			if (obj1 == null) {
 				return "quit";
-				//TODO: figure out how to do this
 			} else {
 				// Set card num
 				cardNum = (long)obj1;
@@ -403,7 +400,6 @@ public class Controller {
 			System.out.println("hi");
 			if (obj2 == null) {
 				return "quit";
-				//TODO: figure out how to do this
 			} else {
 				// Set cvv
 				CVV = (int)obj2;
@@ -413,7 +409,6 @@ public class Controller {
 			System.out.println(obj3);
 			if (obj3 == null) {
 				return "quit";
-				//TODO: figure out how to do this
 			} else {
 				// Set expiration date
 				expDate = (String)obj3;
@@ -427,151 +422,7 @@ public class Controller {
 			} else {
 				return "false";
 			}
-			
-//			Integer membership = getIntResponse("Please enter your preferred membership type (0,1,2)", 0, 2);
-//			//TODO: validate cardNum: 16 digits, etc. I THINK I DID THIS
-//			Long cardNum = getUnboundedLongResponse("Please enter your credit card number",(long)0);
-//			valCardNum(cardNum);
-//			Integer CVV = getIntResponse("Please enter your CVV", 0, 999);
-//			System.out.println("Please enter expiration date(MM/YY): ");
-//			//TODO: validate this date
-//			String expDate = sc.next();
-//			userAccounts.put(username, password);
-//			if (valleyBike.createUser(username, password, membership, cardNum, CVV, expDate) == true) {
-//				// Add username and password to controller csvs
-//				this.userAccounts.put(username, password);
-//				System.out.println("Account successfully created!");
-//				return true;
-//			} else {
-//				return false;
-//			}
 		}
-	}
-	
-	
-	/**
-	 * 
-	 * </p>
-	 * @param 
-	 * @param 
-	 * @param 
-	 * @return
-	 */
-	private Long valCardNum(Long cardNum) {
-		String length = Long.toString(cardNum);
-		if (length.length() != 16) {
-			System.out.println("Please enter a sufficient credit card with 16 digits");
-			getUnboundedLongResponse("Please enter a valid credit card number", (long)0);
-		} else {
-			System.out.println("It worked");
-		}
-		return cardNum;
-	}
-	
-	private boolean getBoolResponse(String request) {
-		boolean entry = true;
-		System.out.println(request + ": ");
-		while(sc.hasNext()) {
-			if(!sc.hasNextBoolean()) {
-				System.out.println("Entry must be a boolean");
-				System.out.println(request + ": ");
-				sc.next();
-			}else{
-				entry = sc.nextBoolean();
-				break;
-			}
-		}
-		return entry;
-	}
-	
-	/**
-	 * Gets an int response from the user within a specific range.
-	 * </p>
-	 * @param request
-	 * @param min
-	 * @param max
-	 * @return the integer entry
-	 */
-	private Integer getIntResponse(String request, Integer min, Integer max){
-		Integer entry = 0;
-		System.out.println(request + ": ");
-		while (sc.hasNext()){
-			if(!sc.hasNextInt()){
-				System.out.println("Entry must be an integer");
-				System.out.println(request + ": ");
-				sc.next();
-			}else{
-				entry = sc.nextInt();
-				if(min <= entry && entry <= max){
-					break;
-				} else{
-					System.out.println("Entry must be an integer in range "+min + "-" + max);
-					System.out.println(request + ": ");
-					sc.nextLine();
-				}	
-			}
-		}
-		return entry;
-	}
-	
-	/**
-	 * Gets a long response from the user within a specific range.
-	 * </p>
-	 * @param request
-	 * @param i
-	 * @return the long input
-	 */
-	private Long getUnboundedLongResponse(String request, Long i) {
-		Long input = (long)0;
-		System.out.println(request + ": ");
-		String length = Long.toString(input);
-		while (sc.hasNext()){
-			if(!sc.hasNextLong()){
-				System.out.println("Entry must be an integer");
-				System.out.println(request + ": ");
-				sc.next();
-			}else{
-				input = sc.nextLong();
-				if(i <= input){
-					break;
-				} else{
-					System.out.println("Entry must be an integer equal to or above "+i);
-					System.out.println(request + ": ");
-					sc.nextLine();
-				}	
-			}
-		}
-		return input;
-	}
-
-	
-	/**
-	 * Gets an unbounded int response from the user.
-	 * </p>
-	 * @param request
-	 * @param min
-	 * @return the integer entry
-	 */
-	private Integer getUnboundedIntResponse(String request, Integer min) {
-		Integer entry = 0;
-		System.out.println(request + ": ");
-		while (sc.hasNext()){
-			if(!sc.hasNextInt()){
-				System.out.println("Entry must be an integer");
-				System.out.println(request + ": ");
-				sc.next();
-			}else{
-				entry = sc.nextInt();
-				if(min <= entry){
-					break;
-				} else{
-					System.out.println("Entry must be an integer equal to or above "+min);
-					System.out.println(request + ": ");
-					sc.nextLine();
-				}	
-			}
-		}
-		return entry;
 	}
 	
 	/**
@@ -584,157 +435,45 @@ public class Controller {
 	 * @return the user input in desired form (Object type)
 	 */
 	public Object validateLine(String prompt, VariableType type) {
-		System.out.println("In validate");
 		Object obj = null;
 		System.out.println(prompt + ": ");
-		scannerLoop:
 		while (sc.hasNextLine()) {
-			System.out.println("Top of while");
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
 				sc.nextLine();
 				return null;
 			} else {
-				System.out.println("in the switch else");
-				obj = switchThing(prompt, type, obj);
-//				switch (type) {
-//				// Catch case
-//				default:
-//					System.out.println("In default");
-//					break;
-//				case INT:
-//					if (sc.hasNextInt()) {
-//						int i = Integer.parseInt(sc.nextLine());
-//						// Check if == 0
-//						obj = i;
-//						break;
-//					} else {
-//						// Else, call the prompt again
-//						sc.nextLine();
-//						validateLine(prompt, type);
-//						break;
-//					}
-//				case LONG:
-//					if (sc.hasNextLong()) {
-//						String line = sc.nextLine();
-//						if (line.length() != 16) {
-//							System.out.println("Please enter a valid credit card number. (16 digits)");
-//							validateLine(prompt, VariableType.LONG);
-//							break;
-//						} else {
-//							long l = Long.parseLong(line);
-//							obj = l;
-//							break;
-//						}
-//					} else {
-//						// Else, call the prompt again
-//						sc.nextLine();
-//						validateLine(prompt, type);
-//						break;
-//					}
-//				case BOOLEAN: 
-//					if (sc.hasNextBoolean()) {
-//						boolean b = Boolean.parseBoolean(sc.nextLine());
-//						obj = b;
-//						break;
-//					} else {
-//						// Else, call prompt again
-//						sc.nextLine();
-//						validateLine(prompt, type);
-//						break;
-//					}
-//				//TODO: The date thing breaks when the first attempt is not in correct format
-//				//TODO: If first date is invalid but in correct format it
-//				// also returns wrong (previously entered incorrect date) after new correct date is entered
-//				case DATE:
-//					String line = sc.nextLine();
-//					System.out.println("In DATE switch");
-//					String pattern = "../..";
-////					String line = sc.nextLine();
-//					if (line.length() != 5 || !Pattern.matches(pattern, line)) {
-//			    		System.out.println("Incorrect date format. Please enter expiration date.");
-//			    		validateLine(prompt, type);
-////			    		break;
-//					} else {
-//						System.out.println("In correct format else");
-//			    		String[] arrDate = line.split("/");
-//					    String userMonth = arrDate[0];
-//					    String userYear = arrDate[1];
-//					    // Check if values are ints, if not prompt user to enter again
-//					    try {
-//					    	System.out.println("In the try");
-//						    int month = Integer.parseInt(userMonth);
-//						    int year = Integer.parseInt(userYear);
-////						    // String is in correct format
-////						    if (month < 13 && month > 0) {
-////						    	obj = line;
-////						    	System.out.println("in switch with: " + obj.toString());
-////								break;
-////						    } else {
-////						    	System.out.println("Invalid month. Please enter expiration date.");
-//////						    	obj = line;
-////						    	validateLine(prompt, type);
-////						    	break;
-////						    }
-//					    } catch (Exception FormatException) {
-//					    	System.out.println("In the catch");
-//					    	System.out.println("Incorrect date format. Please enter expiration date.");
-//					    	validateLine(prompt, type);
-//					    	break;
-//					    }
-////					    finally {
-////					    	System.out.println("Finally");
-//////					    	obj = line;
-////					    	break;
-////					    }
-//					    System.out.println("Out of try/catch");
-//					    // String is in correct format
-//					    int month = Integer.parseInt(userMonth);
-//					    int year = Integer.parseInt(userYear);
-//					    if (month < 13 && month > 0) {
-//					    	obj = line;
-//					    	System.out.println(obj);
-//					    	System.out.println("in switch with: " + obj.toString());
-//							break;
-//					    } else {
-//					    	System.out.println("Invalid month. Please enter expiration date.");
-////					    	obj = line;
-//					    	validateLine(prompt, type);
-//					    	break;
-//					    }
-//					    
-//					}
-//					break;
-//				}
+				obj = typeSwitch(prompt, type, obj);
 			}
-			System.out.println("End of switch, inside while");
-			System.out.println(obj);
-			break scannerLoop;
+			break;
 		}
-		System.out.println("Outside while");
-		System.out.println(obj);
 		return obj;
 	}
-	
-	public Object switchThing(String prompt, VariableType type, Object obj) {
+
+	/**
+	 * Runs switch on different types of variable input
+	 * </p>
+	 * @param prompt	validateLine prompt
+	 * @param type		expected type of variable
+	 * @param obj		the return object
+	 * @return obj		return the obj
+	 */
+	public Object typeSwitch(String prompt, VariableType type, Object obj) {
 		switch (type) {
 		// Catch case
 		default:
 			System.out.println("In default");
 			return validateLine(prompt, type);
-			//break;
 		case INT:
 			if (sc.hasNextInt()) {
 				int i = Integer.parseInt(sc.nextLine());
 				// Check if == 0
 				obj = i;
 				return obj;
-				//break;
 			} else {
 				// Else, call the prompt again
 				sc.nextLine();
 				return validateLine(prompt, type);
-				//break;
 			}
 		case LONG:
 			if (sc.hasNextLong()) {
@@ -742,83 +481,63 @@ public class Controller {
 				if (line.length() != 16) {
 					System.out.println("Please enter a valid credit card number. (16 digits)");
 					return validateLine(prompt, VariableType.LONG);
-					//break;
 				} else {
 					long l = Long.parseLong(line);
 					obj = l;
 					return obj;
-					//break;
 				}
 			} else {
 				// Else, call the prompt again
 				sc.nextLine();
 				return validateLine(prompt, type);
-				//break;
 			}
 		case BOOLEAN: 
 			if (sc.hasNextBoolean()) {
 				boolean b = Boolean.parseBoolean(sc.nextLine());
 				obj = b;
 				return obj;
-				//break;
 			} else {
 				// Else, call prompt again
 				sc.nextLine();
 				return validateLine(prompt, type);
-				//break;
 			}
 		case DATE:
 			String line = sc.nextLine();
-			System.out.println("In DATE switch");
 			String pattern = "../..";
+			// Check if input matches pattern
 			if (line.length() != 5 || !Pattern.matches(pattern, line)) {
 	    		System.out.println("Incorrect date format. Please enter expiration date.");
 	    		return validateLine(prompt, type);
-	    		//break;
 			} else {
-				System.out.println("In correct format else");
+				// Split input string on /
 	    		String[] arrDate = line.split("/");
 			    String userMonth = arrDate[0];
 			    String userYear = arrDate[1];
+			    // Check if month and year vars are both integers
 			    if (isInteger(userYear) && isInteger(userMonth)) {
+			    	// Check if month is a valid month (1-12)
 			    	 int month = Integer.parseInt(userMonth);
 					    if (month < 13 && month > 0) {
 					    	obj = line;
 					    	return obj;
-//					    	System.out.println(obj);
-//					    	System.out.println("in switch with: " + obj.toString());
-//							break;
 					    } else {
 					    	System.out.println("Invalid month. Please enter expiration date.");
-//					    	obj = line;
 					    	return validateLine(prompt, type);
-					    	//break;
 					    }
 			    } else {
 			    	System.out.println("Incorrect date format. Please enter expiration date.");
 			    	return validateLine(prompt, type);
-			    	//break;
-			    }
-			    // Check if values are ints, if not prompt user to enter again
-//			    try {
-//			    	System.out.println("In the try");
-//				    int month = Integer.parseInt(userMonth);
-//				    int year = Integer.parseInt(userYear);
-//			    } catch (Exception FormatException) {
-//			    	System.out.println("In the catch");
-//			    	System.out.println("Incorrect date format. Please enter expiration date.");
-//			    	validateLine(prompt, type);
-//			    	break;
-//			    }
-//			    System.out.println("Out of try/catch");
-			    // String is in correct format
-			   
-			    
+			    }  
 			}
 		}
-		//return obj;
 	}
 	
+	/**
+	 * Checks whether an inputed string can be parsed into an integer
+	 * </p>
+	 * @param value		String to parse to int
+	 * @return boolean	True if string can be parsed to int
+	 */
 	private boolean isInteger(String value) {
 		try {
 		    Integer.parseInt(value);
@@ -829,7 +548,10 @@ public class Controller {
 	}
 	
 	/**
-	 * 
+	 * Validate user input based on type
+	 * </p>
+	 * Bounded user input 
+	 * </p>
 	 * @param line	User input
 	 * @param type	Desired output type
 	 * @param min	The lower bound
@@ -998,7 +720,6 @@ public class Controller {
 	private String addStation() {
 		int capacity = 0;
 		boolean kiosk = false;
-		
 		// Get station capacity
 		Object capObj = validateLine("Please enter station capacity", VariableType.INT, 0, 40);
 		if (capObj == null) {
