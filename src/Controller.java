@@ -269,6 +269,7 @@ public class Controller {
 				accountLogin();
 			}
 		} else if (choice.equalsIgnoreCase("n")) {
+			sc.nextLine();
 			String response = createUserCredentials();
 			if (response.equalsIgnoreCase("quit")) {
 				accountLogin();
@@ -287,33 +288,34 @@ public class Controller {
 	 * @return the username of the new account
 	 */
 	private String createUserCredentials() {
-		String response = "";
-		System.out.println("Enter username (min 5 characters): ");
-		String username = sc.next();
-		if (username.length() < 5) {
-			System.out.println("Username must be at least 5 characters long. Please enter a new username.");
-			createUserCredentials();
+		
+		String username = "";
+		String password = "";
+		Object usernameObj = validateLine("Enter username (min 5 characters)", VariableType.STRING, 5, 25);
+		if (usernameObj == null) {
+			return "quit";
+		} else {
+			username = usernameObj.toString();
 		}
-		System.out.println("Enter password (min 5 characters): ");
-		String password = sc.next();
-		if (password.length() < 5) {
-			System.out.println("Password must be at least 5 characters long. Please enter a new username and password.");
-			createUserCredentials();
+		
+		Object passwordObj = validateLine("Enter password (min 5 characters)", VariableType.STRING, 5, 25);
+		if (passwordObj == null) {
+			return "quit";
+		} else {
+			password = passwordObj.toString();
 		}
-		// Clear out scanner
-		sc.nextLine();
 		// Accepted username is greater than 5 characters
 		String createAccountResponse = createAccount(username, password);
 		if (username.length() >= 5 && password.length() >= 5 && createAccountResponse.equalsIgnoreCase("true")) {
-			response = username;
+			return username;
 		}
 		else if (createAccountResponse.equalsIgnoreCase("false")) {
 			System.out.println("Error creating account (username taken or payment invalid)");
-			accountLogin();
+			return accountLogin();
 		} else {
 			return "quit";
 		}
-		return response;
+		//return response;
 	}
 	
 	private String employeeLogin() {
@@ -607,13 +609,18 @@ public class Controller {
 					}
 				case STRING:
 					String line = sc.nextLine();
-					if ((int)min <= line.length() && line.length() <= (int)max) {
+					
+					if(line.contains(" ")) {
+						System.out.println("No spaces are allowed, try again");
+						return validateLine(prompt, type, min, max);
+					} else if ((int)min <= line.length() && line.length() <= (int)max) {
 						obj = line;
 						return obj;
 					} else {
 						System.out.println("Please ensure your input is in the range of "+min+"-"+max+" characters.");
 						return validateLine(prompt, type, min, max);
 					}
+					
 				default: // catch case
 					return validateLine(prompt, type, min, max);
 				}
