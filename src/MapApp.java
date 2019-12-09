@@ -1,7 +1,3 @@
-/**
- * @author      Charlotte Gephart, Ester Zhao
- * @version     1.0
- */
 import javax.swing.*; 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,6 +7,10 @@ import java.io.IOException;
 import java.util.*;
 import javax.imageio.ImageIO;
 
+/**
+ * @author      Charlotte Gephart, Ester Zhao
+ * @version     1.0
+ */
 public class MapApp{
 	/** Instance of the ValleyBikeSim */
 	private ValleyBikeSim valleyBike = ValleyBikeSim.getInstance();

@@ -1,5 +1,4 @@
 import java.util.Date;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
@@ -45,7 +44,6 @@ public class PaymentSys {
 	 * @return false if expiration date has passed
 	 */
 	public boolean checkExprDate(String expirationDate) {
-		System.out.println("Expr date: " + expirationDate);
 		// Response bool
 		boolean response = false;
 		// Parse String expiration date
@@ -54,9 +52,6 @@ public class PaymentSys {
 	    String userYear = arrDate[1];
 		
 	    // Get current date/time
-		Date date = new Date();
-		long time = date.getTime();
-		Timestamp ts = new Timestamp(time);
      	SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yy");
      	String monthYear = dateFormat.format(new Date());
      	String[] currDate = monthYear.split("/");

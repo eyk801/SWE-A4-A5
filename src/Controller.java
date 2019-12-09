@@ -401,7 +401,6 @@ public class Controller {
 			//TODO: check if cvv has the right number of digits 
 			// Get card cvv
 			Object obj2 = validateLine("Please enter your CVV", VariableType.INT, 0, 999);
-			System.out.println("hi");
 			if (obj2 == null) {
 				return "quit";
 			} else {
@@ -410,7 +409,6 @@ public class Controller {
 			}
 			// Get card expiration date
 			Object obj3 = validateLine("Please enter expiration date(MM/YY)", VariableType.DATE);
-			System.out.println(obj3);
 			if (obj3 == null) {
 				return "quit";
 			} else {
