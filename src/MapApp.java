@@ -26,7 +26,7 @@ public class MapApp{
                 frame = new JFrame();
                 frame.add(new App(user));
                 frame.pack();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
@@ -38,12 +38,10 @@ public class MapApp{
     	
     	private ArrayList<Point> points  = new ArrayList<Point>();
     	private JFrame dialog;
-    	private boolean user;
     	BufferedImage mapImage;
     	
     	
     	public App(boolean user) {
-    		this.user = user;
     		Map<Integer, Station> stations = valleyBike.getStations();
     		
     		// Loop over stations map
@@ -155,15 +153,6 @@ public class MapApp{
 	public Point getPoint() {
 		return this.newPoint;
 	}
-    
-	/**
-	 * MapApp main method.
-	 * @throws ParseException 
-	 */
-	public static void main(String[] args){
-		MapApp map = new MapApp(true);
-	}
-	
 	
 }
 
