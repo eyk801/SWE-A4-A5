@@ -70,6 +70,8 @@ public class Controller {
 		case 0:
 			// Close scanner
 			sc.close();
+			// Save all system data
+			valleyBike.saveData();
 			// Exit statement
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
@@ -126,6 +128,8 @@ public class Controller {
 		case 0:
 			// Close scanner
 			sc.close();
+			// Save all system data
+			valleyBike.saveData();
 			System.out.println("Thank you for using ValleyBike, have a great day!");
 			System.exit(0);
 			break;
