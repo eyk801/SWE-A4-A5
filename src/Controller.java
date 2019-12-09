@@ -42,7 +42,6 @@ public class Controller {
 			String username = accountLogin();
 			executeUser(username);
 		} else if (response.equalsIgnoreCase("employee")) {
-			//TODO: Add employee login in A5
 			String employeeUsername = employeeLogin();
 			executeEmployee();
 		} else {
@@ -994,13 +993,12 @@ public class Controller {
 	/**
 	 * Allows employee to remove stations.
 	 * </p>
-	 *  TODO: do this part of docstring
 	 * Prompts user for bike info input
 	 * </p>
-	 * @return 
+	 * @return confirmation String
 	 */
 	private String removeStation() {
-		
+		//TODO: implement using validateLine
 		System.out.println("Please enter the ID of the station: ");
 		int id = sc.nextInt();
 		sc.nextLine();
