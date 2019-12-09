@@ -19,8 +19,11 @@ public class MapApp{
 	/** JFrame frame */
 	JFrame frame;
 	
-	// to call in valleybike functions: new MapApp(boolean);
-	// true for user, false for employee
+	/**
+	 * MapApp class constructor.
+	 * </p>
+	 * Creates JFrame and calls App class
+	 */ 
 	public MapApp(boolean user) {
 		SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -35,14 +38,23 @@ public class MapApp{
         });
 	}
 
-    
+	 
     public class App extends JPanel {
     	
+    	/** ArrayList of station points on the map */
     	private ArrayList<Point> points  = new ArrayList<Point>();
+    	/** JFrame dialog box for station information and adding station confirmation */
     	private JFrame dialog;
+    	/** Map image for map background */
     	BufferedImage mapImage;
     	
-    	
+    	/**
+    	 * App class constructor.
+    	 * </p>
+    	 * Initializes class variables, calls method to get stations and get existing station points
+    	 * Reads in and loads map image
+    	 * Adds MouseListener and provides protocol on click activity
+    	 */
     	public App(boolean user) {
     		Map<Integer, Station> stations = valleyBike.getStations();
     		
@@ -52,6 +64,7 @@ public class MapApp{
     			points.add(entry.getValue().getPoint());
     		}
     		
+    		// Load in map image
     		try {
     			mapImage = ImageIO.read(new File("data-files/ValleyBikeMap.png"));
     		} catch (IOException e) {
@@ -59,13 +72,14 @@ public class MapApp{
     			e.printStackTrace();
     		}
     		
+    		// Add MouseListener and declare protocol for action
     		addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                 	Point p = new Point(e.getX(), e.getY());
                 	// If in user view
     				if (user == true) {
-    					//get station from coordinates here
+    					//get station from coordinates here and show station info
     					for (Point pt : points) {
     						if (inBounds(p.x, p.y, pt.x, pt.y)) {
     							for (Map.Entry<Integer,Station> s : stations.entrySet()) {
@@ -79,7 +93,7 @@ public class MapApp{
     				else { // if in employee view				
     					if (confirmStation() == 0) {
     						points.add(p);
-    						// Set the newStation point to the new point
+    						// Set the newStation point to the new point and draw new station onto map
     						setPoint(p);
     			            if (mapImage != null) {
     		                    Graphics2D g2d = mapImage.createGraphics();
@@ -88,6 +102,7 @@ public class MapApp{
     		                    g2d.dispose();
     		                    repaint();
     		                }
+    			            // close window
     			            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     					}
     				}
@@ -95,11 +110,22 @@ public class MapApp{
             });   		
     	}
     	
+    	/**
+    	 * Creates new Dimension
+    	 * </p>
+    	 * Sets frame dimension to size of mapImage
+    	 * @return Dimension for mapImage JFrame
+    	 */
     	@Override
         public Dimension getPreferredSize() {
             return mapImage == null ? new Dimension(200, 200) : new Dimension(mapImage.getWidth(), mapImage.getHeight());
         }
     	
+    	/**
+    	 * Paints graphics onto frame
+    	 * </p>
+    	 * Paints mapImage to background and existing station points to frame
+    	 */
         @Override
         protected void paintComponent(Graphics g) {
         	super.paintComponent(g);
@@ -118,6 +144,11 @@ public class MapApp{
 			}
         }
         
+        /**
+    	 * Shows station info dialog
+    	 * </p>
+    	 * Creates a dialog box in a frame to display station information
+    	 */
         public void showInfo(Station s) {
         	JOptionPane.showMessageDialog(dialog,
         			"Station " + s.getId() + "\n" +
@@ -128,6 +159,12 @@ public class MapApp{
             		JOptionPane.INFORMATION_MESSAGE);
         }
         
+        /**
+    	 * Shows station confirmation dialog
+    	 * </p>
+    	 * Creates a dialog box in a frame to request confirmation of correct location during station addition
+    	 * @return 0 if user clicks "yes" option, 1 if user clicks "no" option
+    	 */
         public int confirmStation() {
         	return JOptionPane.showConfirmDialog(dialog,
         			"Is this location correct?",
@@ -135,6 +172,11 @@ public class MapApp{
             	    JOptionPane.YES_NO_OPTION);
         }
         
+        /**
+    	 * Checks if a click was inside a station map marker
+    	 * </p>
+    	 * @return true if the click was inside the coordinates + tolerance, else false
+    	 */
     	boolean inBounds(int mouseX, int mouseY, int x, int y) {
     	    return ((mouseX >= x - 10) && (mouseY >= y - 10) && (mouseX < x + 10) && (mouseY < y + 10));
     	}
@@ -150,7 +192,8 @@ public class MapApp{
 	}
 	
 	/**
-	 * 
+	 * Get the station point
+	 * @return newPoint
 	 */
 	public Point getPoint() {
 		return this.newPoint;
