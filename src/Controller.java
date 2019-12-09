@@ -755,12 +755,17 @@ public class Controller {
 	 */
 	private String removeStation() {
 		//TODO: implement using validateLine
-		Object stationObj = validateLine("Please enter the ID of the station:", VariableType.INT);
+		Object stationObj = validateLine("Please enter the ID of the station to remove", VariableType.INT);
 		if (stationObj == null) {
 			return "";
 		} else {
 			int id = (int)stationObj;
-			return valleyBike.removeStation(id);
+			if(valleyBike.stationExists(id)) {
+				return valleyBike.removeStation(id);
+			} else {
+				System.out.println("That station is not in our system");
+				return removeStation();
+			}
 		}
 	}
 	
