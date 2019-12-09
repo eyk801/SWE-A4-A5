@@ -256,9 +256,9 @@ public class Controller {
 				accountLogin();
 			}
 		} else if (choice.equalsIgnoreCase("n")) {
-			System.out.println("Enter username: ");
+			System.out.println("Enter username (minimum of 5 characters): ");
 			username = sc.next();
-			System.out.println("Enter password: ");
+			System.out.println("Enter password (minimum of 5 characters): ");
 			String password = sc.next();
 			
 			// Clear out scanner
@@ -364,7 +364,7 @@ public class Controller {
 			}
 			// Get card cvv
 			Object obj2 = validateLine("Please enter your CVV", VariableType.INT, 0, 999);
-			System.out.println("Object is: " + (int)(obj2));
+			System.out.println("hi");
 			if (obj2 == null) {
 				//TODO: figure out how to do this
 			} else {
