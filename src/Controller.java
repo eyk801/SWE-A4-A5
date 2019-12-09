@@ -114,11 +114,12 @@ public class Controller {
 	 */
 	public void executeEmployee() throws IOException, ParseException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
-				+ "1. View station list.\n" + "2. View map.\n" + "2. View current Rides\n" + "3. View Issues.\n" + "4. Resolve Issues.\n"
-				+ "5. Add Station.\n" + "6. View System Overview.\n" + "7. Check Stats.\n" + "8. Add Bikes.\n" + "9. Equalize Stations.\n");
+				+ "1. View station list.\n" + "2. View map.\n" + "3. View current Rides\n" + "4. View Issues.\n" + "5. Resolve Issues.\n"
+				+ "6. Add Station.\n" + "7. View System Overview.\n" + "8. Check Stats.\n" + "9. Add Bikes.\n" + "10. Equalize Stations.\n" 
+				+ "11. Delete Station.\n");
 
 		// Get user input
-		Object obj = validateLine("Please enter your selection (0-10)", VariableType.INT, 0, 10);
+		Object obj = validateLine("Please enter your selection (0-11)", VariableType.INT, 0, 11);
 		int option = (int)obj;
 		
 		switch (option) {
@@ -159,6 +160,9 @@ public class Controller {
 			break;
 		case 10:
 			System.out.println(valleyBike.equalizeStations());
+			break;
+		case 11: 
+			System.out.println(removeStation());
 			break;
 		default:
 			System.out.println("Input must be an integer from 0-9.");
@@ -635,7 +639,6 @@ public class Controller {
 					System.out.println(line);
 					obj = date(line, prompt, type, obj);
 					break;
-					break scannerLoop;
 				}
 			}
 			System.out.println("End of switch, inside while");
@@ -912,9 +915,9 @@ public class Controller {
 	 */
 	private String removeStation() {
 		
-		// Get id of station
 		System.out.println("Please enter the ID of the station: ");
-		String id = sc.nextLine();
+		int id = sc.nextInt();
+		sc.nextLine();
 		return valleyBike.removeStation(id);
 	}
 	

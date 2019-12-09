@@ -412,10 +412,15 @@ public class ValleyBikeSim {
 	 * @return String to show function success.
 	 * TODO look at this
 	 */
-	public String removeStation(String id) {
-		//this.lastStationId = this.lastStationId + 1;
-		int idNum = this.lastStationId;
-		this.stations.remove(idNum);
+	public String removeStation(int id) {
+		this.stations.remove(id);
+		// Save station data
+		try {
+			saveStationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Station successfully removed from the system.";
 	}
 
