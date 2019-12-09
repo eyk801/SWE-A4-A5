@@ -584,8 +584,10 @@ public class Controller {
 							System.out.println("Please enter a number in the range "+min+"-"+max);
 							return validateLine(prompt, type, min, max);
 						}
-					} else {			
+					} else {
+						
 						// Else, call the prompt again
+						sc.nextLine();
 						return validateLine(prompt, type, min, max);
 					}
 				case LONG:
