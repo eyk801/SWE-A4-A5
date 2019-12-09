@@ -418,7 +418,7 @@ public class ValleyBikeSim {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "Station successfully removed from the system.";
+		return "Station " + id + " successfully removed from the system.";
 	}
 
 	/**
