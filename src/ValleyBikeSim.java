@@ -33,13 +33,13 @@ public class ValleyBikeSim {
 	/** List of current ride ids)*/
 	private List<Integer> currRides = new ArrayList<>();
 	/** Value of last ride id */
-	private Integer lastRideId = 0;
+	private int lastRideId = 0;
 	/** Value of last bike id */
-	private Integer lastBikeId = 0;
+	private int lastBikeId = 0;
 	/** Value of last station id */
-	private Integer lastStationId = 0;
+	private int lastStationId = 0;
 	/** Value of last maintenance request id */
-	private Integer lastMainReqId = 0;
+	private int lastMainReqId = 0;
 	/** Instance of the payment system */
 	private PaymentSys paymentSystem = new PaymentSys();
 	/** Instance of the ValleyBikeSim */
@@ -371,7 +371,7 @@ public class ValleyBikeSim {
 		String stationList = "ID	Bikes	AvDocs	Capacity	Kiosk	Name - Address\n";
 		Iterator<Integer> keyIterator = stations.keySet().iterator();
 		while(keyIterator.hasNext()){
-			Integer id = (Integer) keyIterator.next();
+			int id = (int) keyIterator.next();
 			stationList = stationList + this.stations.get(id).toViewString();
 		}
 		return stationList;
@@ -448,7 +448,7 @@ public class ValleyBikeSim {
 		for (Station s : this.stations.values()) {
 			int stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
 			while (stationPercentage > percentBikes) {
-				Integer bikeToMove = s.getBikeIds().get(0);
+				int bikeToMove = s.getBikeIds().get(0);
 				s.removeBike(bikeToMove);
 				spareBikes.add(bikeToMove);
 				stationPercentage = (int)(((float) s.getNumBikes() / s.getCapacity() * 100));
@@ -521,7 +521,7 @@ public class ValleyBikeSim {
 		currentUser.setCurrentRideId(rideId);
 		// Get a bike from the station
 		Station s = stations.get(stationId);
-		Integer bikeId = s.getBikeIds().get(0);
+		int bikeId = s.getBikeIds().get(0);
 		// Create new Ride and add to current rides list
 		Ride ride = new Ride(rideId, username, bikeId, stationId);
 		currRides.add(rideId);
@@ -554,7 +554,7 @@ public class ValleyBikeSim {
 	 * @param stationId 	int of which station to place bike in
 	 * @return String 		verifying checkin and completion of ride
 	 */
-	public String checkInBike(String username, Integer stationId) {
+	public String checkInBike(String username, int stationId) {
 		User currentUser = users.get(username);
 		if (currentUser.onRide() == false) {
 			return "User does not currently have a bike to check in";
@@ -629,7 +629,7 @@ public class ValleyBikeSim {
 	 * @param issueMessage	message detailing request
 	 * @return report		String confirming issue has been created
 	 */
-	public String reportIssue(String username, Integer stationId, String issueMessage) {
+	public String reportIssue(String username, int stationId, String issueMessage) {
 		// Increment lastMainReqId var
 		this.lastMainReqId = this.lastMainReqId + 1;
 		// Get new id
@@ -670,7 +670,7 @@ public class ValleyBikeSim {
 			List<Integer> stationBikes = station.getBikeIds();
 			systemStats += ("\n" + "Station " + station.getId() + " Bike IDs: ");
 			// Add bike id to the return string
-			for (Integer id : stationBikes) {
+			for (int id : stationBikes) {
 				systemStats += (Integer.toString(id) + " ");
 			}
 			systemStats += "\n \n";
@@ -861,7 +861,7 @@ public class ValleyBikeSim {
 	 * creates a new User object and adds it to the global HashMap.
 	 * @return report	boolean declaring whether user was successfully made or not.
 	 */
-	public boolean createUser(String username, String password, Integer membership, long cardNum, Integer CVV, String expDate) {
+	public boolean createUser(String username, String password, int membership, long cardNum, Integer CVV, String expDate) {
 		if (paymentSystem.validate(cardNum, CVV, expDate)) {
 			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
 			int membershipCharge = newUser.getType();
@@ -979,56 +979,56 @@ public class ValleyBikeSim {
 	/**
 	 * @return the lastRideId
 	 */
-	public Integer getLastRideId() {
+	public int getLastRideId() {
 		return lastRideId;
 	}
 
 	/**
 	 * @param lastRideId the lastRideId to set
 	 */
-	public void setLastRideId(Integer lastRideId) {
+	public void setLastRideId(int lastRideId) {
 		this.lastRideId = lastRideId;
 	}
 
 	/**
 	 * @return the lastBikeId
 	 */
-	public Integer getLastBikeId() {
+	public int getLastBikeId() {
 		return lastBikeId;
 	}
 
 	/**
 	 * @param lastBikeId the lastBikeId to set
 	 */
-	public void setLastBikeId(Integer lastBikeId) {
+	public void setLastBikeId(int lastBikeId) {
 		this.lastBikeId = lastBikeId;
 	}
 
 	/**
 	 * @return the lastStationId
 	 */
-	public Integer getLastStationId() {
+	public int getLastStationId() {
 		return lastStationId;
 	}
 
 	/**
 	 * @param lastStationId the lastStationId to set
 	 */
-	public void setLastStationId(Integer lastStationId) {
+	public void setLastStationId(int lastStationId) {
 		this.lastStationId = lastStationId;
 	}
 
 	/**
 	 * @return the lastMainReqId
 	 */
-	public Integer getLastMainReqId() {
+	public int getLastMainReqId() {
 		return lastMainReqId;
 	}
 
 	/**
 	 * @param lastMainReqId the lastMainReqId to set
 	 */
-	public void setLastMainReqId(Integer lastMainReqId) {
+	public void setLastMainReqId(int lastMainReqId) {
 		this.lastMainReqId = lastMainReqId;
 	}	
 }
