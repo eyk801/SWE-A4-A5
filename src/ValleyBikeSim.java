@@ -451,14 +451,21 @@ public class ValleyBikeSim {
 		if (deleteBikes) {
 			Station s = this.stations.get(id);
 			List<Integer> bikes = s.getBikeIds();
+			this.stations.remove(id);
+			
 			for (int bike : bikes) {
 				this.bikes.remove(bike);
 			}
 			response = response + "All bikes at station " + id + " have been deleted from the system.\n";
+		} else {
+			List<Integer> dBikes = stations.get(id).getBikeIds();
+			// Delete the station
+			this.stations.remove(id);
+			// move bikes
+			moveBikes(dBikes);
 		}
-		// Delete the station
-		this.stations.remove(id);
-		// Save station and bike data
+		
+		//save station and bike data
 		try {
 			saveStationData();
 			saveBikeData();
@@ -468,10 +475,10 @@ public class ValleyBikeSim {
 		return response + "Station " + id + " successfully removed from the system.";
 	}
 	
-	public String moveBikes(int id) {
+	public String moveBikes(List<Integer> bikeIds) {
 		String response = "";
-		Station deletedStation = stations.get(id);
-		List<Integer> dBikes = deletedStation.getBikeIds();
+		//Station deletedStation = stations.get(id);
+		//List<Integer> dBikes = deletedStation.getBikeIds();
 		int numCurrRides = this.currRides.size();
 		// have to move bikes around to different stations
 		int avDocks = 0;
@@ -484,31 +491,31 @@ public class ValleyBikeSim {
 					continue;
 				} else {
 				// Loop through bikes that need to be placed
-				for (int j=0;j<dBikes.size();j++) {
+				for (int j=0;j<bikeIds.size();j++) {
 					// Leave enough spaces for all current rides to dock SOMEWHERE
 						// Add bike to station
-						s.addBike(dBikes.get(j));
-						Bike b = this.bikes.get(dBikes.get(j));
+						s.addBike(bikeIds.get(j));
+						Bike b = this.bikes.get(bikeIds.get(j));
 						// Set lastStationId to new station id
 						b.setLastStationId(s.getId());
 						// Remove from list of bikes that need to be placed
-						dBikes.remove(j);
+						bikeIds.remove(j);
 					}
 				}
 			}
 		}
 		// If there are still bikes in dBikes list
-		if (dBikes.size() != 0) {
+		if (bikeIds.size() != 0) {
 			int count = 0;
 			// Delete these bikes from the system
-			for (int bike : dBikes) {
+			for (int bike : bikeIds) {
 				count += count;
 				this.bikes.remove(bike);
 			}
 			response = response + "Note: " + count + " bikes were removed from the system due to lack of space.\n";
 		}
 		// Delete the station
-		this.stations.remove(id);
+		//this.stations.remove(id);
 		// Call equalize stations to distribute bikes evenly
 		equalizeStations();
 		

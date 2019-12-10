@@ -180,7 +180,29 @@ class ValleyBikeSimTest {
 		assertTrue(station2Percentage < finalStation2Percentage);
 		assertTrue(station3Percentage > finalStation3Percentage);
 		assertTrue(station4Percentage < finalStation4Percentage);
+	}
+	
+	@Test
+	void deleteStation_deleteBikes_stationAndBikesDeleted() {
+		int stationSize = vBSTester.getStations().size();
+		int bikesSize = vBSTester.getBikes().size();
+		vBSTester.removeStation(4, true);
 		
-
+		assertNull(vBSTester.getStations().get(4));
+		assertEquals(vBSTester.getStations().size(), stationSize-1);
+		assertEquals(vBSTester.getBikes().size(), bikesSize-1);
+	}
+	
+	@Test
+	void deleteStation_doNotDeleteBikes_stationDeletedBikesSaved() {
+		vBSTester.readStationData();
+		
+		int stationSize = vBSTester.getStations().size();
+		int bikesSize = vBSTester.getBikes().size();
+		vBSTester.removeStation(4, false);
+		
+		assertNull(vBSTester.getStations().get(4));
+		assertEquals(vBSTester.getStations().size(), stationSize-1);
+		assertEquals(vBSTester.getBikes().size(), bikesSize);
 	}
 }

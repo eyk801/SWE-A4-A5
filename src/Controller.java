@@ -815,7 +815,7 @@ public class Controller {
 						returnString = returnString + valleyBike.removeStation(id, true);
 					} else if (response.equalsIgnoreCase("n")) {
 						System.out.println("Bikes will be distributed amongst other stations in the system.");
-						returnString = returnString + valleyBike.moveBikes(id);
+						returnString = returnString + valleyBike.removeStation(id, false);
 					}
 				}
 				
@@ -824,7 +824,7 @@ public class Controller {
 				return removeStation();
 			}
 		}
-		return returnString + "\nStation " + id + " has been deleted.";
+		return returnString;
 	}
 	
 	/**
