@@ -522,8 +522,9 @@ public class Controller {
 			}
 		case LONG:
 			if (sc.hasNextLong()) {
-				String line = sc.nextLine();
-				long l = Long.parseLong(line);
+				//String line = sc.nextLine();
+				long l = sc.nextLong();
+				String line = Long.toString(l);
 				if (line.length() != 16 || l < 0) {
 					System.out.println("Please enter a valid credit card number. (16 digits)");
 					return validateLine(prompt, VariableType.LONG);
@@ -562,9 +563,8 @@ public class Controller {
 			return obj;
 		case CVV:
 			if (sc.hasNextInt()) {
-				System.out.println("hello");
-				String line = sc.nextLine();
-				int l = Integer.parseInt(line);
+				int l = sc.nextInt();
+				String line = Integer.toString(l);
 				// Check if 3 chars
 				if (line.length() != 3 || l < 0) {
 					System.out.println("CVV must be 3 digits long.");
@@ -581,7 +581,13 @@ public class Controller {
 				return validateLine(prompt, type);
 			}
 		case DATE:
+			
 			String line = sc.nextLine();
+			
+			while (line.toString().isEmpty()) {
+				line = sc.nextLine();
+			}
+			//String line = sc.nextLine();
 			String pattern = "../..";
 			// Check if input matches pattern
 			if (line.length() != 5 || !Pattern.matches(pattern, line)) {
@@ -685,13 +691,17 @@ public class Controller {
 						return validateLine(prompt, type, min, max);
 					}
 				case STRING:
-					String line = sc.nextLine();
+					obj = sc.nextLine();
 					
-					if(line.contains(" ") || line.contains(",")) {
+					while (obj.toString().isEmpty()) {
+						obj = sc.nextLine();
+					}
+					
+					if(obj.toString().contains(" ") || obj.toString().contains(",")) {
 						System.out.println("No spaces or commas are allowed, try again");
 						return validateLine(prompt, type, min, max);
-					} else if ((int)min <= line.length() && line.length() <= (int)max) {
-						obj = line;
+					} else if ((int)min <= obj.toString().length() && obj.toString().length() <= (int)max) {
+						//obj = line;
 						return obj;
 					} else {
 						System.out.println("Please ensure your input is in the range of "+min+"-"+max+" characters.");
