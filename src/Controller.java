@@ -518,6 +518,9 @@ public class Controller {
 				sc.nextLine();
 				return validateLine(prompt, type);
 			}
+		case STRING:
+			obj = sc.nextLine();
+			return obj;
 		case CVV:
 			if (sc.hasNextInt()) {
 				String line = sc.nextLine();
@@ -788,21 +791,39 @@ public class Controller {
 	 * </p>
 	 * Prompts user for bike info input
 	 * </p>
+	 * TODO: test this most extensively
 	 * @return confirmation String
 	 */
 	private String removeStation() {
+		int id = 0;
+		String returnString = "";
 		Object stationObj = validateLine("Please enter the ID of the station to remove", VariableType.INT);
 		if (stationObj == null) {
 			return "";
 		} else {
-			int id = (int)stationObj;
+			id = (int)stationObj;
 			if(valleyBike.stationExists(id)) {
-				return valleyBike.removeStation(id);
+				Object yn = validateLine("Would you like to remove all bikes associated with this station? (y/n)", VariableType.STRING);
+				// Quit to menu
+				if (yn == null) {
+					return "";
+				} else {
+					String response = (String)yn;
+					// If response == y
+					if (response.equalsIgnoreCase("y")) {
+						returnString = returnString + valleyBike.removeStation(id, true);
+					} else if (response.equalsIgnoreCase("n")) {
+						System.out.println("Bikes will be distributed amongst other stations in the system.");
+						returnString = returnString + valleyBike.moveBikes(id);
+					}
+				}
+				
 			} else {
-				System.out.println("That station is not in our system");
+				System.out.println("That station does not exist. Please enter an existing station id.");
 				return removeStation();
 			}
 		}
+		return returnString + "\nStation " + id + " has been deleted.";
 	}
 	
 	/**

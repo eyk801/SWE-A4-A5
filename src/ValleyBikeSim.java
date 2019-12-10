@@ -149,13 +149,21 @@ public class ValleyBikeSim {
 				if (Integer.parseInt(values[6]) != 0) {
 					user.setCurrentRideId(Integer.parseInt(values[6]));
 				}
-				// Check how many rides a user has, loop for that amount
+				
+				//TODO: check the numRides values[7], loop for that amount 
 				int numRides = Integer.parseInt(values[7]);
 				for (int i=8; i < 8+numRides;i++) {
 					rideHistory.add(Integer.parseInt(values[i]));
 				}
+				// Loop to end of line for all ride history
+//				for (int i=7; i < values.length;i++) {
+//					// Check if valid ride id
+//					if (Integer.parseInt(values[i]) != 0) {
+//						rideHistory.add(Integer.parseInt(values[i]));
+//					}
+//				}
 				user.setRides(rideHistory);
-				//Read in user bill history
+				//TODO: read in user bill history
 				List<String> billHistory = new ArrayList<>();
 				for (int i = numRides+8; i < values.length; i++) {
 					// If billHist == 0, don't do anything
@@ -437,15 +445,80 @@ public class ValleyBikeSim {
 	 * </p>
 	 * @return String to show function success.
 	 */
-	public String removeStation(int id) {
+	public String removeStation(int id, boolean deleteBikes) {
+		String response = "";
+		// If we want to delete all the bikes at the station
+		if (deleteBikes) {
+			Station s = this.stations.get(id);
+			List<Integer> bikes = s.getBikeIds();
+			for (int bike : bikes) {
+				this.bikes.remove(bike);
+			}
+			response = response + "All bikes at station " + id + " have been deleted from the system.\n";
+		}
+		// Delete the station
 		this.stations.remove(id);
-		// Save station data
+		// Save station and bike data
 		try {
 			saveStationData();
+			saveBikeData();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "Station " + id + " successfully removed from the system.";
+		return response + "Station " + id + " successfully removed from the system.";
+	}
+	
+	public String moveBikes(int id) {
+		String response = "";
+		Station deletedStation = stations.get(id);
+		List<Integer> dBikes = deletedStation.getBikeIds();
+		int numCurrRides = this.currRides.size();
+		// have to move bikes around to different stations
+		int avDocks = 0;
+		for (Station s : this.stations.values()) {
+			avDocks = s.getAvDocks();
+			// While there are still available docks at the stations
+			for (int i=0;i<avDocks+1;i++) {
+				if (numCurrRides != 0) {
+					numCurrRides -= numCurrRides;
+					continue;
+				} else {
+				// Loop through bikes that need to be placed
+				for (int j=0;j<dBikes.size();j++) {
+					// Leave enough spaces for all current rides to dock SOMEWHERE
+						// Add bike to station
+						s.addBike(dBikes.get(j));
+						Bike b = this.bikes.get(dBikes.get(j));
+						// Set lastStationId to new station id
+						b.setLastStationId(s.getId());
+						// Remove from list of bikes that need to be placed
+						dBikes.remove(j);
+					}
+				}
+			}
+		}
+		// If there are still bikes in dBikes list
+		if (dBikes.size() != 0) {
+			int count = 0;
+			// Delete these bikes from the system
+			for (int bike : dBikes) {
+				count += count;
+				this.bikes.remove(bike);
+			}
+			response = response + "Note: " + count + " bikes were removed from the system due to lack of space.\n";
+		}
+		// Delete the station
+		this.stations.remove(id);
+		// Call equalize stations to distribute bikes evenly
+		equalizeStations();
+		
+		try{ 
+			saveStationData();
+			saveBikeData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return response + "Bikes successfully distributed across system.";
 	}
 
 	/**
@@ -529,6 +602,9 @@ public class ValleyBikeSim {
 		// Get new ride id
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
+		// TODO: Right now, we have 3 types of membership
+		//With tiers (0,1,2) that each pay (2 per ride,15 per month,80 per year) respectively
+		
 		// Charge user account for ride
 		String charge = "";
 		int membership = currentUser.getType();
@@ -539,7 +615,7 @@ public class ValleyBikeSim {
 				charge = "Your account has been charged $2.";
 				break;
 			case 1:
-				charge = "Your account has been charged $20 for a 30-day pass.";
+				charge = "Your account has been charged $15 for a 30-day pass.";
 				break;
 			case 2:
 				charge = "Your account has been charged $80 for a 365-day pass.";
@@ -659,7 +735,7 @@ public class ValleyBikeSim {
 			charge = 2;
 			break;
 		case 1:
-			charge = 20;
+			charge = 15;
 			break;
 		case 2:
 			charge = 80;
