@@ -636,13 +636,34 @@ public class ValleyBikeSim {
 	 */
 	public String viewHistory(String username) {
 		User currentUser = users.get(username);
-		String rideList = "Ride id \t Start Time \t\t End Time \n";
+		int membership = currentUser.getType();
+		String rideList = "Ride Id \t Start Time \t\t End Time \n";
+		String billList = "Account Charged \t Amount Billed\n";
+		int charge = 0;
+		int totalCharge = 0;
 		// Loop through all rides in User
 		for (int r : currentUser.getRides()) {
 			Ride ride = rides.get(r);
 			rideList = rideList + ("Ride " + r + "\t\t" + ride.getStartTime() + "\t" + ride.getEndTime() + "\n");
 		}
-		return "Ride History: \n\n" + rideList;
+		// Set charge for different types of memberships
+		switch (membership) {
+		case 0:
+			charge = 2;
+			break;
+		case 1:
+			charge = 15;
+			break;
+		case 2:
+			charge = 80;
+			break;
+		}
+		// Loop through all times user was charged
+		for (String date : currentUser.getBills()) {
+			billList = billList + date + "\t\t $" + charge +"\n";
+			totalCharge = totalCharge + charge;
+		}
+		return "User History: \n\n" + rideList + "\n" + billList + "\n\nTotal Costs Incurred: $" + totalCharge +"\n";
 	}
 	
 	/**
