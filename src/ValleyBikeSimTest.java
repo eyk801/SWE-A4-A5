@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
  * ValleyBikeSim Testing Class
  * Be sure to change the path variable
  * in ValleyBikeSim before running!
+ * 
+ * NOTE: To test add station the MapApp will pop up
+ * Tester should click coordinates on the map to confirm add station
+ * And continue testing
  */
 class ValleyBikeSimTest {
 	
@@ -42,11 +46,10 @@ class ValleyBikeSimTest {
 		
 		int stationBikeSize = vBSTester.getStations().get(1).getNumBikes();
 		int currentRidesSize = vBSTester.getCurrRides().size();
-		
+
 		vBSTester.checkInBike(user2, 1);
 		assertEquals(vBSTester.getStations().get(1).getNumBikes(), stationBikeSize+1);
 		assertEquals(vBSTester.getCurrRides().size(), currentRidesSize-1);
-		
 	}
 	
 	@Test
@@ -60,8 +63,8 @@ class ValleyBikeSimTest {
 	
 	@Test
 	void testCreateUser_validUser_userCreated() {
-		String username = "alieshghi";
-		String password = "password3";
+		String username = "alieshghifake";
+		String password = "password3fake";
 		int membership = 0;
 		long cardNum = 1234567891;
 		int cVV = 123;
@@ -98,6 +101,7 @@ class ValleyBikeSimTest {
 	
 	@Test
 	void testAddBikes_bikesAdded() {
+		vBSTester.readStationData();
 		int numStationBikes = vBSTester.getStations().get(1).getNumBikes();
 		int numTotalBikes = vBSTester.getBikes().size();
 		int lastBikeId = vBSTester.getLastBikeId();
@@ -134,10 +138,12 @@ class ValleyBikeSimTest {
 	 * and stations 2 and 4 had increased in bike to capacity ratio
 	 */
 	void testEqualizeStations_stationsEqualized() {
-		int numStations = vBSTester.getStations().size();
-		vBSTester.readStationData();
+		vBSTester.setStations(vBSTester.readStationData());
+		vBSTester.setBikes(vBSTester.readBikeData());
 		
-		for (int i=0; i <numStations; i=i+2) {
+		int numStations = vBSTester.getStations().size();
+		
+		for (int i=0; i<numStations; i=i+2) {
 			int AvDocks = vBSTester.getStations().get(i+1).getAvDocks();
 			vBSTester.addBikes(i+1, AvDocks);
 		}
@@ -186,9 +192,9 @@ class ValleyBikeSimTest {
 	void deleteStation_deleteBikes_stationAndBikesDeleted() {
 		int stationSize = vBSTester.getStations().size();
 		int bikesSize = vBSTester.getBikes().size();
-		vBSTester.removeStation(4, true);
+		vBSTester.removeStation(3, true);
 		
-		assertNull(vBSTester.getStations().get(4));
+		assertNull(vBSTester.getStations().get(3));
 		assertEquals(vBSTester.getStations().size(), stationSize-1);
 		assertEquals(vBSTester.getBikes().size(), bikesSize-1);
 	}

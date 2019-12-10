@@ -18,7 +18,7 @@ public class ValleyBikeSim {
 	 * For dev: "data-files/"
 	 * For testing: "test-data-files/"
 	 */
-	private static String path = "data-files/" /*"test-data-files/"*/;
+	private static String path = "data-files/" /*"test-data-files/" */;
 	private static String savePath = "data-files/" /*"test-data-files-junk/"*/;
 	/** Hashmap of all station objects stationid:Station)*/
 	private Map<Integer, Station> stations = new HashMap<>();
@@ -705,7 +705,9 @@ public class ValleyBikeSim {
 		// Update user info (end ride), add ride to ride history
 		currentUser.endRide();
 		// Remove ride from current rides
-		currRides.remove(r);
+		
+		int index = currRides.indexOf(r.getId());
+		currRides.remove(index);
 		// Save data
 		try {
 			saveStationData();
