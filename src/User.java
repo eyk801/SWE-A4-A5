@@ -172,6 +172,15 @@ public class User {
 	}
 	
 	/**
+	 * Getter for user bill history
+	 * </p>
+	 * @return billHistory		List of dates when user was charged
+	 */
+	public List<String> getBills() {
+		return this.billHistory;
+	}
+	
+	/**
 	 * This method decides whether an account will be charged based on the membership type.
 	 * @return true if account was charged, false if not.
 	 */
