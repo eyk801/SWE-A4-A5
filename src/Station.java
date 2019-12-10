@@ -187,14 +187,14 @@ public class Station {
     	// Put bikeIds in csv format
     	String bikes = "";
     	for (int bike : bikeIds) {
-    		if (bikes.equals("")) {
-    			bikes = bikes + bike;
-    		} else {
-    			bikes = bikes  + "," + bike;
-    		}
+    		bikes = bikes  + "," + bike;
+    	}
+    	// If there are no bikes
+    	if (bikeIds.size() == 0) {
+    		bikes = "";
     	}
         return (this.id + "," + this.name + "," + this.avDocks + "," + this.capacity + "," +
-				this.kiosk + "," + this.address + "," + this.coordX + "," + this.coordY + "," + bikes + "\n");
+				this.kiosk + "," + this.address + "," + this.coordX + "," + this.coordY + bikes + "\n");
     }
     
     /**
