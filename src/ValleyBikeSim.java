@@ -145,14 +145,31 @@ public class ValleyBikeSim {
 				if (Integer.parseInt(values[6]) != 0) {
 					user.setCurrentRideId(Integer.parseInt(values[6]));
 				}
-				// Loop to end of line for all ride history
-				for (int i=7; i < values.length;i++) {
-					// Check if valid ride id
-					if (Integer.parseInt(values[i]) != 0) {
-						rideHistory.add(Integer.parseInt(values[i]));
-					}
+				
+				//TODO: check the numRides values[7], loop for that amount 
+				int numRides = Integer.parseInt(values[7]);
+				for (int i=8; i < 8+numRides;i++) {
+					rideHistory.add(Integer.parseInt(values[i]));
 				}
+				// Loop to end of line for all ride history
+//				for (int i=7; i < values.length;i++) {
+//					// Check if valid ride id
+//					if (Integer.parseInt(values[i]) != 0) {
+//						rideHistory.add(Integer.parseInt(values[i]));
+//					}
+//				}
 				user.setRides(rideHistory);
+				//TODO: read in user bill history
+				List<String> billHistory = new ArrayList<>();
+				for (int i = numRides+8; i < values.length; i++) {
+					// If billHist == 0, don't do anything
+					if (values[i].equalsIgnoreCase("0")) {
+						break;
+					}
+					billHistory.add(values[i]);
+				}
+				user.setBillHistory(billHistory);
+				
 				users.put(username,user);
 			}
 			br.close();
@@ -289,7 +306,7 @@ public class ValleyBikeSim {
 	 */
 	private void saveUserData() throws IOException {
 		FileWriter userWriter = new FileWriter(savePath + "user-data.csv");
-		userWriter.write("Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Ride History\n");
+		userWriter.write("Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Number of Rides,Ride History,Bill History\n");
 			for (User u : this.users.values()) {
 				userWriter.write(u.toSaveString());
 			}
@@ -503,25 +520,39 @@ public class ValleyBikeSim {
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
 		// TODO: Right now, we have 3 types of membership
-		//With tiers (0,1,2) that each pay (2,1,0) respectively
-		int cost = 0;
-		if (currentUser.getType() == 0) {
-			cost = 2;
-			// Check if card still valid
-			if (paymentSystem.validate(currentUser.getCard(), currentUser.getCVV(), currentUser.getExprDate())) {
-				currentUser.addToBill(cost);
-			} else {
-				//TODO: decide what to do here?
-				return "Your payment is invalid. Please check your credit card information.";
+		//With tiers (0,1,2) that each pay (2 per ride,15 per month,80 per year) respectively
+		
+		// Charge user account for ride
+		String charge = "";
+		int membership = currentUser.getType();
+		// If user was charged
+		if (currentUser.chargeAccount()) {
+			switch (membership) {
+			case 0: 
+				charge = "Your account has been charged $2.";
+				break;
+			case 1:
+				charge = "Your account has been charged $15 for a 30-day pass.";
+				break;
+			case 2:
+				charge = "Your account has been charged $80 for a 365-day pass.";
+				break;
+			default:
+				break;
 			}
-		}
-		if (currentUser.getType() == 1) {
-			cost = 1;
-			currentUser.addToBill(cost);
-		}
-		if (currentUser.getType() == 2) {
-			cost = 0;
-			currentUser.addToBill(cost);
+		} else { // If user was not charged
+			switch (membership) {
+			case 0:
+				break;
+			case 1:
+				charge = "You are using a 30-day pass.";
+				break;
+			case 2:
+				charge = "You are using a 365-day pass.";
+				break;
+			default:
+				break;
+			}
 		}
 		// Set as current ride for user
 		currentUser.setCurrentRideId(rideId);
@@ -547,7 +578,7 @@ public class ValleyBikeSim {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +". Your account has been charged $" + cost;
+		return "Bike " + bikeId + " successfully checked out. " + "Ride ID: " + rideId +".\n" + charge;
 	};
 	
 	/**
@@ -870,8 +901,7 @@ public class ValleyBikeSim {
 	public boolean createUser(String username, String password, int membership, long cardNum, Integer CVV, String expDate) {
 		if (paymentSystem.validate(cardNum, CVV, expDate)) {
 			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
-			int membershipCharge = newUser.getType();
-			newUser.addToBill(membershipCharge);
+			//A user will be charged upon the beginning of their first ride
 			users.put(username, newUser);
 			// Save user data
 			try {

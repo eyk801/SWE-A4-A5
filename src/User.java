@@ -1,6 +1,7 @@
 import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-
 /**
  * @author      Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
  * @version     1.0
@@ -20,10 +21,10 @@ public class User {
 	private String expirationDate = new String();
 	/** List of user's past ride ids */
 	private List<Integer> rideHistory = new ArrayList<>();
+	/** User bill history */
+	private List<String> billHistory = new ArrayList<>();
 	/** Ride id number for user current ride. Default to 0.*/
 	private int currentRideId = 0;
-	/** User total bill */
-	private int totalBill = 0;
 	
 	/**
 	 * User class constructor.
@@ -171,21 +172,51 @@ public class User {
 	}
 	
 	/**
-	 * Getter for user accumulated bill
-	 * </p>
-	 * @return totalBill
+	 * This method decides whether an account will be charged based on the membership type.
+	 * @return true if account was charged, false if not.
 	 */
-	public Integer getBill() {
-		return this.totalBill;
+	public boolean chargeAccount() {
+	    // Get current date/time
+     	LocalDate today = LocalDate.now();
+ 		// Get date info from the last bill charge
+     	System.out.println(billHistory.toString());
+ 		String entry = billHistory.get(billHistory.size()-1);
+ 		// Parses string to get local date object
+ 		LocalDate lastPayment = LocalDate.parse(entry);
+     	long difference = ChronoUnit.DAYS.between(lastPayment, today);
+     	// If pay-per-month
+     	if (membershipType == 1) {
+         	// If the difference is more than 30, charge the account
+         	if (difference > 30) {
+         		this.billHistory.add(today.toString());
+         		return true;
+         	} else {
+         		return false;
+         	}
+     	} else if (membershipType == 2) {
+     		// If the difference is more than 365, charge account
+     		if (difference > 365) {
+     			this.billHistory.add(today.toString());
+     			return true;
+     		} else {
+     			return false;
+     		}
+     	} else {
+     		 // If pay-per-ride, charge account
+     		System.out.println("day to string:");
+     		System.out.println(today.toString());
+     		this.billHistory.add(today.toString());
+     		return true;
+     	}
 	}
 	
 	/**
-	 * Add to user bill
-	 * </p>
-	 * @param bill		Amount to add to the user total bill
+	 * Set the bill history using read in data
+	 * @param billHistory list of dates when user was billed
 	 */
-	public void addToBill(Integer bill) {
-		this.totalBill += bill;
+	public void setBillHistory(List<String> billHistory) {
+		//TODO: convert from string 00/00 format to date
+		this.billHistory = billHistory;
 	}
 	
 	/**
@@ -236,18 +267,41 @@ public class User {
     	return rideIds;
 	}
 	
+	public String billToString() {
+		// Make bill history into a csv line
+    	String billString = "";
+    	for (String date : billHistory) {
+    		if (billString.equals("")) {
+    			billString = billString + date;
+    		} else {
+    			billString = billString + "," + date;
+    		}
+    	}
+    	// catch for when bill history is empty
+    	// autoset to 0
+    	if (billHistory.size() == 0) {
+    		billString = "0";
+    	}
+    	return billString;
+	}
+	
     /**
      * toString method for data to write to csv data files
      * </p>
      * @return toString	the string to store in the user-data.csv
      */
     public String toSaveString() {
-    	String rideIds = this.ridesToString();
+    	String rideIds = ridesToString();
+    	String billString = billToString();
+    	System.out.println("Bill string in save:");
+    	System.out.println(billString);
         return (this.username + "," + this.password + "," + this.membershipType + "," + 
         		this.creditCardNum + "," + this.CVV + "," +
         		this.expirationDate + "," +
         		this.currentRideId + "," + 
-        		rideIds + "\n");
+        		rideHistory.size() + "," +
+        		rideIds + "," +
+        		billString + "\n");
     }
     
     /**
