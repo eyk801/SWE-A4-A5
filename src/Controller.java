@@ -419,7 +419,7 @@ public class Controller {
 			}
 			//TODO: check if cvv has the right number of digits 
 			// Get card cvv
-			Object obj2 = validateLine("Please enter your CVV", VariableType.INT, 0, 999);
+			Object obj2 = validateLine("Please enter your CVV", VariableType.CVV);
 			if (obj2 == null) {
 				return "quit";
 			} else {
@@ -518,7 +518,26 @@ public class Controller {
 				obj = b;
 				return obj;
 			} else {
+				System.out.println("Input must be a boolean (true/false)");
 				// Else, call prompt again
+				sc.nextLine();
+				return validateLine(prompt, type);
+			}
+		case CVV:
+			if (sc.hasNextInt()) {
+				String line = sc.nextLine();
+				// Check if 3 chars
+				if (line.length() != 3) {
+					System.out.println("CVV must be 3 characters long.");
+					return validateLine(prompt,type);
+				} else {
+					int i = Integer.parseInt(line);
+					obj = i;
+					return obj;
+				}
+			} else {
+				// Else, call the prompt again
+				System.out.println("CVV must be a series of 3 numbers.");
 				sc.nextLine();
 				return validateLine(prompt, type);
 			}
