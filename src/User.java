@@ -179,7 +179,6 @@ public class User {
 	    // Get current date/time
      	LocalDate today = LocalDate.now();
  		// Get date info from the last bill charge
-     	System.out.println(billHistory.toString());
  		String entry = billHistory.get(billHistory.size()-1);
  		// Parses string to get local date object
  		LocalDate lastPayment = LocalDate.parse(entry);
@@ -203,8 +202,6 @@ public class User {
      		}
      	} else {
      		 // If pay-per-ride, charge account
-     		System.out.println("day to string:");
-     		System.out.println(today.toString());
      		this.billHistory.add(today.toString());
      		return true;
      	}
@@ -293,8 +290,6 @@ public class User {
     public String toSaveString() {
     	String rideIds = ridesToString();
     	String billString = billToString();
-    	System.out.println("Bill string in save:");
-    	System.out.println(billString);
         return (this.username + "," + this.password + "," + this.membershipType + "," + 
         		this.creditCardNum + "," + this.CVV + "," +
         		this.expirationDate + "," +
