@@ -9,5 +9,6 @@ public enum VariableType {
 	STRING,
 	LONG,
 	BOOLEAN,
-	DATE
+	DATE,
+	CVV,
 }
