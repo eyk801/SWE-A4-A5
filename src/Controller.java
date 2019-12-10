@@ -510,7 +510,6 @@ public class Controller {
 	private Object typeSwitch(String prompt, VariableType type, Object obj) {
 		switch (type) {
 		case INT:
-			System.out.println("in case int");
 			if (sc.hasNextInt()) {
 				int i = Integer.parseInt(sc.nextLine());
 				// Check if == 0
@@ -781,9 +780,12 @@ public class Controller {
 			int stationId = (int)obj;
 			if (valleyBike.stationExists(stationId)) {
 				// Get issue message
-				System.out.println("Please enter issue message: ");
-				String issueMessage = sc.nextLine();
-				response = valleyBike.reportIssue(username, stationId, issueMessage);
+				//System.out.println("Please enter issue message: ");
+				Object issueMessage = validateLine("Please enter issue message", VariableType.STRING);
+				if (issueMessage == null) {
+					return "";
+				}
+				response = valleyBike.reportIssue(username, stationId, issueMessage.toString());
 			} else {
 				System.out.println("The station you entered does not exist. Please enter an existing station id.");
 				// Call func again
