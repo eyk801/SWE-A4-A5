@@ -57,13 +57,14 @@ public class Controller {
 	 * Runs until user selects 0 to quit program.
 	 * </p>
 	 * @throws IOException
+	 * @throws ParseException 
 	 */
-	private void executeUser(String username) throws IOException {
+	private void executeUser(String username) throws IOException, ParseException {
 		System.out.println("Please choose from the following menu options:\n" + "0. Quit Program.\n"
 				+ "1. View station list.\n" + "2. View map. \n" + "3. Check out bike.\n" + "4. Check in bike.\n" + "5. View history.\n"
-				+ "6. View account info.\n" + "7. Report issue.\n");
+				+ "6. View account info.\n" + "7. Report issue.\n" + "8. Log out.\n");
 		// Get user input
-		Object obj = validateLine("Please enter your selection (0-7)", VariableType.INT, 0, 7);
+		Object obj = validateLine("Please enter your selection (0-8)", VariableType.INT, 0, 8);
 		// If user enters "q", exit to chooseView
 		if (obj == null) {
 			try {
@@ -106,8 +107,11 @@ public class Controller {
 		case 7:
 			System.out.println(reportIssue(username));
 			break;
+		case 8:
+			accountLogin();
+			break;
 		default:
-			System.out.println("Input must be an integer from 0-6.");
+			System.out.println("Input must be an integer from 1-8.");
 			executeUser(username);
 		}
 		// execute call again after each switch case
