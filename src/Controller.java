@@ -37,7 +37,7 @@ public class Controller {
 	private void chooseView() throws IOException, ParseException {
 		Object obj = validateLine("Welcome to ValleyBike! "
 				+ "Note: You may enter 'q' at any time to exit a feature. \n"
-				+ "Please enter 'user' for user and 'employee' for employee:", VariableType.STRING);
+				+ "Please enter 'user' for user and 'employee' for employee", VariableType.STRING);
 		if (obj == null) {
 			System.out.println("Invalid input. Please try again.");
 			chooseView();
@@ -511,7 +511,7 @@ public class Controller {
 		switch (type) {
 		case INT:
 			if (sc.hasNextInt()) {
-				int i = Integer.parseInt(sc.nextLine());
+				int i = sc.nextInt();
 				// Check if == 0
 				obj = i;
 				return obj;
@@ -653,7 +653,7 @@ public class Controller {
 				switch (type) {
 				case INT:
 					if (sc.hasNextInt()) {
-						int i = Integer.parseInt(sc.nextLine());
+						int i = sc.nextInt();
 						// Check if int is within bounds
 						if ((int)min <= i && i <= (int)max) {
 							obj = i;
@@ -670,7 +670,7 @@ public class Controller {
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
-						long l = Long.parseLong(sc.nextLine());
+						long l = sc.nextLong();
 						// Check if int is within bounds
 						if (min <= l && l <= max) {
 							obj = l;
