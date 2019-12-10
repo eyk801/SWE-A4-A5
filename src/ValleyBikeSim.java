@@ -295,7 +295,7 @@ public class ValleyBikeSim {
 	 */
 	private void saveStationData() throws IOException {
 		FileWriter stationWriter = new FileWriter(savePath + "station-data.csv");
-		stationWriter.write("ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids\n");
+		stationWriter.write("ID,Name,Available Docks,Capacity,Kiosk,Address,X Coord, Y Coord,Bike Ids\n");
 			for (Station s : this.stations.values()) {
 				stationWriter.write(s.toSaveString());
 			}
