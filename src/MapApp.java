@@ -43,7 +43,7 @@ public class MapApp{
 	 *  @version     1.0
 	 */ 
     public class App extends JPanel {
-    	
+    	private static final long serialVersionUID = (long) 0.01;
     	/** ArrayList of station points on the map */
     	private ArrayList<Point> points  = new ArrayList<Point>();
     	/** JFrame dialog box for station information and adding station confirmation */
