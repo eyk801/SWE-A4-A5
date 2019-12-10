@@ -50,6 +50,8 @@ public class MapApp{
     	private JFrame dialog;
     	/** Map image for map background */
     	BufferedImage mapImage;
+    	/** Logo image for dialog icon */
+    	ImageIcon icon;
     	
     	/**
     	 * App class constructor.
@@ -74,6 +76,8 @@ public class MapApp{
     			System.out.println("Invalid file name.");
     			e.printStackTrace();
     		}
+    		
+    		icon = new ImageIcon(new ImageIcon("data-files/ValleyBikeLogo.jpg").getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
     		
     		// Add MouseListener and declare protocol for action
     		addMouseListener(new MouseAdapter() {
@@ -166,7 +170,8 @@ public class MapApp{
         					"Available Bikes: " + s.getNumBikes() + "\n" +
         					"Available Docks: " + s.getAvDocks() + "\n",
             		"Station Information",
-            		JOptionPane.INFORMATION_MESSAGE);
+            		JOptionPane.INFORMATION_MESSAGE,
+            		icon);
         }
         
         /**
@@ -179,7 +184,9 @@ public class MapApp{
         	return JOptionPane.showConfirmDialog(dialog,
         			"Is this location correct?",
         			"Confirm Station",       		
-            	    JOptionPane.YES_NO_OPTION);
+            	    JOptionPane.YES_NO_OPTION,
+            	    JOptionPane.QUESTION_MESSAGE,
+            		icon);
         }
         
         /**
