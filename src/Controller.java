@@ -398,8 +398,8 @@ public class Controller {
 			System.out.println("createAccount called");
 			System.out.println("Types of ValleyBike Memberships:\n"
 					+ "0 = Pay-per-ride, $2 per ride.\n"
-					+ "1 = Pay-per-month, $12 per month \n"
-					+ "2 = Pay-per-year, $100 per year.");
+					+ "1 = Pay-per-month, $20 per month \n"
+					+ "2 = Pay-per-year, $80 per year.");
 			// Get membership type
 			Object obj = validateLine("Please enter your preferred membership type (0,1,2)", VariableType.INT, 0, 2);
 			if (obj == null) {
@@ -417,7 +417,6 @@ public class Controller {
 				// Set card num
 				cardNum = (long)obj1;
 			}
-			//TODO: check if cvv has the right number of digits 
 			// Get card cvv
 			Object obj2 = validateLine("Please enter your CVV", VariableType.CVV);
 			if (obj2 == null) {
@@ -792,7 +791,6 @@ public class Controller {
 	 * @return confirmation String
 	 */
 	private String removeStation() {
-		//TODO: implement using validateLine
 		Object stationObj = validateLine("Please enter the ID of the station to remove", VariableType.INT);
 		if (stationObj == null) {
 			return "";

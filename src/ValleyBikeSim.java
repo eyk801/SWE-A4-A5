@@ -149,21 +149,13 @@ public class ValleyBikeSim {
 				if (Integer.parseInt(values[6]) != 0) {
 					user.setCurrentRideId(Integer.parseInt(values[6]));
 				}
-				
-				//TODO: check the numRides values[7], loop for that amount 
+				// Check how many rides a user has, loop for that amount
 				int numRides = Integer.parseInt(values[7]);
 				for (int i=8; i < 8+numRides;i++) {
 					rideHistory.add(Integer.parseInt(values[i]));
 				}
-				// Loop to end of line for all ride history
-//				for (int i=7; i < values.length;i++) {
-//					// Check if valid ride id
-//					if (Integer.parseInt(values[i]) != 0) {
-//						rideHistory.add(Integer.parseInt(values[i]));
-//					}
-//				}
 				user.setRides(rideHistory);
-				//TODO: read in user bill history
+				//Read in user bill history
 				List<String> billHistory = new ArrayList<>();
 				for (int i = numRides+8; i < values.length; i++) {
 					// If billHist == 0, don't do anything
@@ -537,9 +529,6 @@ public class ValleyBikeSim {
 		// Get new ride id
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
-		// TODO: Right now, we have 3 types of membership
-		//With tiers (0,1,2) that each pay (2 per ride,15 per month,80 per year) respectively
-		
 		// Charge user account for ride
 		String charge = "";
 		int membership = currentUser.getType();
@@ -550,7 +539,7 @@ public class ValleyBikeSim {
 				charge = "Your account has been charged $2.";
 				break;
 			case 1:
-				charge = "Your account has been charged $15 for a 30-day pass.";
+				charge = "Your account has been charged $20 for a 30-day pass.";
 				break;
 			case 2:
 				charge = "Your account has been charged $80 for a 365-day pass.";
@@ -670,7 +659,7 @@ public class ValleyBikeSim {
 			charge = 2;
 			break;
 		case 1:
-			charge = 15;
+			charge = 20;
 			break;
 		case 2:
 			charge = 80;
