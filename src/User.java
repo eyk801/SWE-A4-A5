@@ -274,12 +274,12 @@ public class User {
     		if (billString.equals("")) {
     			billString = billString + date;
     		} else {
-    			billString = "," + date;
+    			billString = billString + "," + date;
     		}
     	}
     	// catch for when bill history is empty
     	// autoset to 0
-    	if (billString.equals("")) {
+    	if (billHistory.size() == 0) {
     		billString = "0";
     	}
     	return billString;
@@ -301,7 +301,7 @@ public class User {
         		this.currentRideId + "," + 
         		rideHistory.size() + "," +
         		rideIds + "," +
-        		billString + "," + "\n");
+        		billString + "\n");
     }
     
     /**
