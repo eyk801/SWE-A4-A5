@@ -324,10 +324,17 @@ public class User {
     		membership = "Pay-per-year";
     	}
     	String rideIds = this.ridesToString();
+    	// Set current ride bool
+    	String currRide = "";
+    	if (currentRideId == 0) {
+    		currRide = "false";
+    	} else {
+    		currRide = Integer.toString(currentRideId);
+    	}
     	return (" " + this.username + "\t" 
     					+ this.password + "\t"
     					+ membership + "\t"
-    					+ this.currentRideId + "\t\t" 
+    					+ currRide + "\t\t" 
     					+ this.creditCardNum + "\t"
     					+ rideIds + "\n");  
     }
