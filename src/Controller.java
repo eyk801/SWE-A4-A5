@@ -653,7 +653,7 @@ public class Controller {
 		while (sc.hasNext()) {
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
-				sc.nextLine();
+				sc.next();
 				return null;
 			} else {
 				switch (type) {
