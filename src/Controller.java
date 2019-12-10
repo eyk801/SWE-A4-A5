@@ -35,20 +35,32 @@ public class Controller {
 	 * @throws ParseException 
 	 */
 	private void chooseView() throws IOException, ParseException {
-		System.out.println("Welcome to ValleyBike! "
+		Object obj = validateLine("Welcome to ValleyBike! "
 				+ "Note: You may enter 'q' at any time to exit a feature. \n"
-				+ "Please enter 'user' for user and 'employee' for employee:");
-		String response = sc.next();
-		if (response.equalsIgnoreCase("user")) {
-			String username = accountLogin();
-			executeUser(username);
-		} else if (response.equalsIgnoreCase("employee")) {
-			employeeLogin();
-			executeEmployee();
-		} else {
-			System.out.println("Invalid input, try again.");
+				+ "Please enter 'user' for user and 'employee' for employee:", VariableType.STRING);
+		if (obj == null) {
+			System.out.println("Invalid input. Please try again.");
 			chooseView();
+		} else {
+			String response = (String)obj;
+			if (response.equalsIgnoreCase("user")) {
+				String username = accountLogin();
+				executeUser(username);
+			} else if (response.equalsIgnoreCase("employee")) {
+				employeeLogin();
+				executeEmployee();
+			} else {
+				System.out.println(response);
+				System.out.println("Invalid input, try again.");
+				chooseView();
+			}
 		}
+//		
+//		System.out.println("Welcome to ValleyBike! "
+//				+ "Note: You may enter 'q' at any time to exit a feature. \n"
+//				+ "Please enter 'user' for user and 'employee' for employee:");
+//		String response = sc.next();
+		
 	}
 	
 	/**
@@ -500,18 +512,18 @@ public class Controller {
 		case INT:
 			System.out.println("in case int");
 			if (sc.hasNextInt()) {
-				int i = Integer.parseInt(sc.next());
+				int i = Integer.parseInt(sc.nextLine());
 				// Check if == 0
 				obj = i;
 				return obj;
 			} else {
 				// Else, call the prompt again
-				sc.next();
+				sc.nextLine();
 				return validateLine(prompt, type);
 			}
 		case LONG:
 			if (sc.hasNextLong()) {
-				String line = sc.next();
+				String line = sc.nextLine();
 				long l = Long.parseLong(line);
 				if (line.length() != 16 || l < 0) {
 					System.out.println("Please enter a valid credit card number. (16 digits)");
@@ -523,7 +535,7 @@ public class Controller {
 				}
 			} else {
 				// Else, call the prompt again
-				sc.next();
+				sc.nextLine();
 				return validateLine(prompt, type);
 			}
 		case BOOLEAN: 
@@ -534,7 +546,7 @@ public class Controller {
 			} else {
 				System.out.println("Input must be a boolean (true/false)");
 				// Else, call prompt again
-				sc.next();
+				sc.nextLine();
 				return validateLine(prompt, type);
 			}
 		case STRING:
@@ -551,7 +563,8 @@ public class Controller {
 			return obj;
 		case CVV:
 			if (sc.hasNextInt()) {
-				String line = sc.next();
+				System.out.println("hello");
+				String line = sc.nextLine();
 				int l = Integer.parseInt(line);
 				// Check if 3 chars
 				if (line.length() != 3 || l < 0) {
@@ -565,11 +578,11 @@ public class Controller {
 			} else {
 				// Else, call the prompt again
 				System.out.println("CVV must be a series of 3 numbers.");
-				sc.next();
+				sc.nextLine();
 				return validateLine(prompt, type);
 			}
 		case DATE:
-			String line = sc.next();
+			String line = sc.nextLine();
 			String pattern = "../..";
 			// Check if input matches pattern
 			if (line.length() != 5 || !Pattern.matches(pattern, line)) {
@@ -641,7 +654,7 @@ public class Controller {
 				switch (type) {
 				case INT:
 					if (sc.hasNextInt()) {
-						int i = Integer.parseInt(sc.next());
+						int i = Integer.parseInt(sc.nextLine());
 						// Check if int is within bounds
 						if ((int)min <= i && i <= (int)max) {
 							obj = i;
@@ -653,12 +666,12 @@ public class Controller {
 					} else {
 						
 						// Else, call the prompt again
-						sc.next();
+						sc.nextLine();
 						return validateLine(prompt, type, min, max);
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
-						long l = Long.parseLong(sc.next());
+						long l = Long.parseLong(sc.nextLine());
 						// Check if int is within bounds
 						if (min <= l && l <= max) {
 							obj = l;
@@ -669,7 +682,7 @@ public class Controller {
 						}
 					} else {
 						// Else, call the prompt again
-						sc.next();
+						sc.nextLine();
 						return validateLine(prompt, type, min, max);
 					}
 				case STRING:
