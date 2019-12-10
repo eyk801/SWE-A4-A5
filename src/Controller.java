@@ -474,7 +474,7 @@ public class Controller {
 	private Object validateLine(String prompt, VariableType type) {
 		Object obj = null;
 		System.out.println(prompt + ": ");
-		while (sc.hasNextLine()) {
+		while (sc.hasNextLine()) { 
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
 				sc.nextLine();
@@ -498,19 +498,20 @@ public class Controller {
 	private Object typeSwitch(String prompt, VariableType type, Object obj) {
 		switch (type) {
 		case INT:
+			System.out.println("in case int");
 			if (sc.hasNextInt()) {
-				int i = Integer.parseInt(sc.nextLine());
+				int i = Integer.parseInt(sc.next());
 				// Check if == 0
 				obj = i;
 				return obj;
 			} else {
 				// Else, call the prompt again
-				sc.nextLine();
+				sc.next();
 				return validateLine(prompt, type);
 			}
 		case LONG:
 			if (sc.hasNextLong()) {
-				String line = sc.nextLine();
+				String line = sc.next();
 				long l = Long.parseLong(line);
 				if (line.length() != 16 || l < 0) {
 					System.out.println("Please enter a valid credit card number. (16 digits)");
@@ -522,26 +523,29 @@ public class Controller {
 				}
 			} else {
 				// Else, call the prompt again
-				sc.nextLine();
+				sc.next();
 				return validateLine(prompt, type);
 			}
 		case BOOLEAN: 
 			if (sc.hasNextBoolean()) {
-				boolean b = Boolean.parseBoolean(sc.nextLine());
+				boolean b = sc.nextBoolean();
 				obj = b;
 				return obj;
 			} else {
 				System.out.println("Input must be a boolean (true/false)");
 				// Else, call prompt again
-				sc.nextLine();
+				sc.next();
 				return validateLine(prompt, type);
 			}
 		case STRING:
 			obj = sc.nextLine();
+			while (obj.toString().isEmpty()) {
+				obj = sc.nextLine();
+			}
 			return obj;
 		case CVV:
 			if (sc.hasNextInt()) {
-				String line = sc.nextLine();
+				String line = sc.next();
 				int l = Integer.parseInt(line);
 				// Check if 3 chars
 				if (line.length() != 3 || l < 0) {
@@ -555,11 +559,11 @@ public class Controller {
 			} else {
 				// Else, call the prompt again
 				System.out.println("CVV must be a series of 3 numbers.");
-				sc.nextLine();
+				sc.next();
 				return validateLine(prompt, type);
 			}
 		case DATE:
-			String line = sc.nextLine();
+			String line = sc.next();
 			String pattern = "../..";
 			// Check if input matches pattern
 			if (line.length() != 5 || !Pattern.matches(pattern, line)) {
@@ -631,7 +635,7 @@ public class Controller {
 				switch (type) {
 				case INT:
 					if (sc.hasNextInt()) {
-						int i = Integer.parseInt(sc.nextLine());
+						int i = Integer.parseInt(sc.next());
 						// Check if int is within bounds
 						if ((int)min <= i && i <= (int)max) {
 							obj = i;
@@ -643,12 +647,12 @@ public class Controller {
 					} else {
 						
 						// Else, call the prompt again
-						sc.nextLine();
+						sc.next();
 						return validateLine(prompt, type, min, max);
 					}
 				case LONG:
 					if (sc.hasNextLong()) {
-						long l = Long.parseLong(sc.nextLine());
+						long l = Long.parseLong(sc.next());
 						// Check if int is within bounds
 						if (min <= l && l <= max) {
 							obj = l;
@@ -659,7 +663,7 @@ public class Controller {
 						}
 					} else {
 						// Else, call the prompt again
-						sc.nextLine();
+						sc.next();
 						return validateLine(prompt, type, min, max);
 					}
 				case STRING:
@@ -796,11 +800,24 @@ public class Controller {
 		} else {
 			kiosk = (boolean)kioskObj;
 		}
+
 		// Get station address and name
-		System.out.println("Please enter station address: ");
-		String address = sc.nextLine();
-		System.out.println("Please enter station name: ");
-		String name = sc.nextLine();
+		String name = "";
+		Object nameObj = validateLine("Please enter station name", VariableType.STRING);
+		if (nameObj == null) {
+			return "";
+		} else {
+			name = (String)nameObj;
+		}
+
+		String address = "";
+		Object addressObj = validateLine("Please enter station address", VariableType.STRING);
+		if (addressObj == null) {
+			return "";
+		} else {
+			address = (String)addressObj;
+		}
+
 		return valleyBike.addStation(capacity, kiosk, address, name);
 	}
 	
