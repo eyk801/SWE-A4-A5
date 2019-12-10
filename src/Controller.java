@@ -489,7 +489,7 @@ public class Controller {
 		while (sc.hasNextLine()) { 
 			// Global quit functionality
 			if (sc.hasNext(Pattern.compile("q"))) {
-				sc.nextLine();
+				sc.next();
 				return null;
 			} else {
 				obj = typeSwitch(prompt, type, obj);
