@@ -265,8 +265,10 @@ public class Controller {
 	 * New account prompts user to enter new account information and saves new user
 	 * </p>
 	 * @return username		current user's username
+	 * @throws ParseException 
+	 * @throws IOException 
 	 */
-	private String accountLogin() {
+	private String accountLogin() throws IOException, ParseException {
 		String username = "";
 		System.out.println("Would you like to login or create a new account? "
 				+"Type 'l' for login and 'n' for new account: " );
@@ -297,7 +299,10 @@ public class Controller {
 			} else {
 				return response;
 			}
-		} else {
+		} else if (choice.equalsIgnoreCase("q")) {
+			chooseView();
+		}
+		else {
 			System.out.println("Input invalid. Please enter 'l' or 'n'.");
 			accountLogin();
 		}
@@ -307,8 +312,10 @@ public class Controller {
 	/**
 	 * Takes in user input to create a new user account
 	 * @return the username of the new account
+	 * @throws ParseException 
+	 * @throws IOException 
 	 */
-	private String createUserCredentials() {
+	private String createUserCredentials() throws IOException, ParseException {
 		
 		String username = "";
 		String password = "";
@@ -339,12 +346,18 @@ public class Controller {
 		//return response;
 	}
 	
-	private String employeeLogin() {
+	private String employeeLogin() throws IOException, ParseException {
 		String employeeUsername = ""; 
 		System.out.println("Enter username: ");
 		employeeUsername = sc.next();
+		if (employeeUsername.equalsIgnoreCase("q")) {
+			chooseView();
+		}
 		System.out.println("Enter password: ");
 		String password = sc.next();
+		if (password.equalsIgnoreCase("q")) {
+			chooseView();
+		}
 
 		// Clear out scanner
 		sc.nextLine();
