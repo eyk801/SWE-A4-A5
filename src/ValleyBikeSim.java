@@ -42,6 +42,10 @@ public class ValleyBikeSim {
 	private int lastMainReqId = 0;
 	/** Instance of the payment system */
 	private PaymentSys paymentSystem = new PaymentSys();
+	/** Boolean var that states whether a window is open */
+	private boolean windowOpen = false;
+	/** Object LOCK */
+	private Object LOCK = new Object();
 	/** Instance of the ValleyBikeSim */
 	private static ValleyBikeSim instance = null;
 
@@ -397,6 +401,8 @@ public class ValleyBikeSim {
 	/**
 	 * Add a station to the system.
 	 * </p>
+	 * Locks until map app is closed
+	 * </p>
 	 * @return String to show function success.
 	 */
 	public String addStation(int capacity,boolean kiosk,String address,String name) {
@@ -410,6 +416,18 @@ public class ValleyBikeSim {
 		Station s = new Station(id, capacity, capacity, kiosk, address, name, bikeIds);
 		// Add the station to the map
 		MapApp map = new MapApp(false);
+		this.windowOpen = true;
+		// Lock program until user clicks to place station on map
+		// Wait on windowOpen boolean
+		synchronized (LOCK) {
+		    while (this.windowOpen) {
+		        try { LOCK.wait(); }
+		        catch (InterruptedException e) {
+		            // treat interrupt as exit request
+		            break;
+		        }
+		    }
+		}
 		// Set the station coordinates according to new point
 		s.setPoint(map.getPoint());
 		this.stations.put(id, s);
@@ -947,6 +965,18 @@ public class ValleyBikeSim {
 			exists = true;
 		}
 		return exists;
+	}
+	
+	public Object getLock() {
+		return this.LOCK;
+	}
+	
+	/**
+	 * Sets the windowOpen boolean within the MapApp class
+	 * @param b	boolean value
+	 */
+	public void setWindowOpen(boolean b) {
+		this.windowOpen = b;
 	}
 
 	/**

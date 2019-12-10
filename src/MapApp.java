@@ -102,6 +102,13 @@ public class MapApp{
     		                    g2d.dispose();
     		                    repaint();
     		                }
+    			            // Update valleybike window open
+    			            valleyBike.setWindowOpen(false);
+    			            // Unlock valleybike wait
+    			            Object LOCK = valleyBike.getLock();
+    			            synchronized (LOCK) {
+    			                LOCK.notifyAll();
+    			            }
     			            // close window
     			            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     					}
