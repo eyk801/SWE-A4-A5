@@ -413,7 +413,6 @@ public class Controller {
 		if (userAccounts.containsKey(username) == true) {
 			return "false";
 		} else {
-			System.out.println("createAccount called");
 			System.out.println("Types of ValleyBike Memberships:\n"
 					+ "0 = Pay-per-ride, $2 per ride.\n"
 					+ "1 = Pay-per-month, $20 per month \n"
@@ -512,11 +511,12 @@ public class Controller {
 		case LONG:
 			if (sc.hasNextLong()) {
 				String line = sc.nextLine();
-				if (line.length() != 16) {
+				long l = Long.parseLong(line);
+				if (line.length() != 16 || l < 0) {
 					System.out.println("Please enter a valid credit card number. (16 digits)");
 					return validateLine(prompt, VariableType.LONG);
 				} else {
-					long l = Long.parseLong(line);
+					//long l = Long.parseLong(line);
 					obj = l;
 					return obj;
 				}
@@ -542,9 +542,10 @@ public class Controller {
 		case CVV:
 			if (sc.hasNextInt()) {
 				String line = sc.nextLine();
+				int l = Integer.parseInt(line);
 				// Check if 3 chars
-				if (line.length() != 3) {
-					System.out.println("CVV must be 3 characters long.");
+				if (line.length() != 3 || l < 0) {
+					System.out.println("CVV must be 3 digits long.");
 					return validateLine(prompt,type);
 				} else {
 					int i = Integer.parseInt(line);
