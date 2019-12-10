@@ -187,32 +187,43 @@ public class User {
 	public boolean chargeAccount() {
 	    // Get current date/time
      	LocalDate today = LocalDate.now();
- 		// Get date info from the last bill charge
- 		String entry = billHistory.get(billHistory.size()-1);
- 		// Parses string to get local date object
- 		LocalDate lastPayment = LocalDate.parse(entry);
-     	long difference = ChronoUnit.DAYS.between(lastPayment, today);
-     	// If pay-per-month
-     	if (membershipType == 1) {
-         	// If the difference is more than 30, charge the account
-         	if (difference > 30) {
-         		this.billHistory.add(today.toString());
-         		return true;
-         	} else {
-         		return false;
-         	}
-     	} else if (membershipType == 2) {
-     		// If the difference is more than 365, charge account
-     		if (difference > 365) {
-     			this.billHistory.add(today.toString());
-     			return true;
-     		} else {
-     			return false;
-     		}
-     	} else {
-     		 // If pay-per-ride, charge account
+     	// Check if billHistory is empty
+     	if (billHistory.size() == 0) {
      		this.billHistory.add(today.toString());
      		return true;
+     	} else if (billHistory.size() == 1 && billHistory.get(0).equals("0")) {
+     		// Remove the catch 0
+     		billHistory.remove(0);
+     		this.billHistory.add(today.toString());
+     		return true;
+     	} else {
+     	// Get date info from the last bill charge
+     		String entry = billHistory.get(billHistory.size()-1);
+     		// Parses string to get local date object
+     		LocalDate lastPayment = LocalDate.parse(entry);
+         	long difference = ChronoUnit.DAYS.between(lastPayment, today);
+         	// If pay-per-month
+         	if (membershipType == 1) {
+             	// If the difference is more than 30, charge the account
+             	if (difference > 30) {
+             		this.billHistory.add(today.toString());
+             		return true;
+             	} else {
+             		return false;
+             	}
+         	} else if (membershipType == 2) {
+         		// If the difference is more than 365, charge account
+         		if (difference > 365) {
+         			this.billHistory.add(today.toString());
+         			return true;
+         		} else {
+         			return false;
+         		}
+         	} else {
+         		 // If pay-per-ride, charge account
+         		this.billHistory.add(today.toString());
+         		return true;
+         	}
      	}
 	}
 	

@@ -648,29 +648,40 @@ public class ValleyBikeSim {
 		String billList = "Account Charged \t Amount Billed\n";
 		int charge = 0;
 		int totalCharge = 0;
-		// Loop through all rides in User
-		for (int r : currentUser.getRides()) {
-			Ride ride = rides.get(r);
-			rideList = rideList + ("Ride " + r + "\t\t" + ride.getStartTime() + "\t" + ride.getEndTime() + "\n");
+		
+		// Check if user has any rides
+		if (currentUser.getRides().size() == 0) {
+			return "You have no account history. Check out a bike, and get started with ValleyBike!";
+		} else {
+			// Loop through all rides in User
+			for (int r : currentUser.getRides()) {
+				Ride ride = rides.get(r);
+				rideList = rideList + ("Ride " + r + "\t\t" + ride.getStartTime() + "\t" + ride.getEndTime() + "\n");
+			}
+			// Set charge for different types of memberships
+			switch (membership) {
+			case 0:
+				charge = 2;
+				break;
+			case 1:
+				charge = 20;
+				break;
+			case 2:
+				charge = 80;
+				break;
+			}
+			// Loop through all times user was charged
+			for (String date : currentUser.getBills()) {
+				// Check if no bills
+				if (date.equals("0")) {
+					billList = "";
+				} else {
+					billList = billList + date + "\t\t $" + charge +"\n";
+					totalCharge = totalCharge + charge;
+				}
+			}
+			return "User History: \n\n" + rideList + "\n" + billList + "\n\nTotal Costs Incurred: $" + totalCharge +"\n";
 		}
-		// Set charge for different types of memberships
-		switch (membership) {
-		case 0:
-			charge = 2;
-			break;
-		case 1:
-			charge = 20;
-			break;
-		case 2:
-			charge = 80;
-			break;
-		}
-		// Loop through all times user was charged
-		for (String date : currentUser.getBills()) {
-			billList = billList + date + "\t\t $" + charge +"\n";
-			totalCharge = totalCharge + charge;
-		}
-		return "User History: \n\n" + rideList + "\n" + billList + "\n\nTotal Costs Incurred: $" + totalCharge +"\n";
 	}
 	
 	/**
