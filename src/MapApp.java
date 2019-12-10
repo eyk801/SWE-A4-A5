@@ -79,6 +79,11 @@ public class MapApp{
     		
     		icon = new ImageIcon(new ImageIcon("data-files/ValleyBikeLogo.jpg").getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT));
     		
+    		// instruction dialog box for addStation
+    		if (user == false) {
+    			addInstruction();
+    		}
+    		
     		// Add MouseListener and declare protocol for action
     		addMouseListener(new MouseAdapter() {
                 @Override
@@ -170,6 +175,19 @@ public class MapApp{
         					"Available Bikes: " + s.getNumBikes() + "\n" +
         					"Available Docks: " + s.getAvDocks() + "\n",
             		"Station Information",
+            		JOptionPane.INFORMATION_MESSAGE,
+            		icon);
+        }
+        
+        /**
+    	 * Shows addStation instruction dialog
+    	 * </p>
+    	 * Creates a dialog box in a frame to provide instruction during addStation
+    	 */
+        public void addInstruction() {
+        	JOptionPane.showMessageDialog(dialog,
+        			"Please click the new station location on the map.",
+            		"Add Station",
             		JOptionPane.INFORMATION_MESSAGE,
             		icon);
         }
