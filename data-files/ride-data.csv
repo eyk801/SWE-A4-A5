@@ -7,3 +7,4 @@ ID,Username,Bike Id,Start Station Id,End Station Id,Start Time,End Time,Current 
 6,alieshghi,6,4,5,2019-11-13 12:00:00,2019-11-13 13:00:00,false
 7,aliciagrubb,7,5,6,2019-11-15 12:00:00,2019-11-15 13:00:00,false
 8,aliciagrubb,8,6,7,2019-11-16 12:00:00,2019-11-16 13:00:00,false
+9,esterzhao,17,1,1,2019-12-09 19:47:10,2019-12-09 19:47:45,false
