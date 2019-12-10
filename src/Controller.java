@@ -63,6 +63,14 @@ public class Controller {
 				+ "6. View account info.\n" + "7. Report issue.\n");
 		// Get user input
 		Object obj = validateLine("Please enter your selection (0-7)", VariableType.INT, 0, 7);
+		// If user enters "q", exit to chooseView
+		if (obj == null) {
+			try {
+				chooseView();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 		int option = (int)obj;
 		
 		switch (option) {
@@ -121,6 +129,14 @@ public class Controller {
 
 		// Get user input
 		Object obj = validateLine("Please enter your selection (0-11)", VariableType.INT, 0, 11);
+		// If user enters "q", exit to chooseView
+		if (obj == null) {
+			try {
+				chooseView();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 		int option = (int)obj;
 		
 		switch (option) {
