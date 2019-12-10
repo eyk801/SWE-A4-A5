@@ -877,17 +877,25 @@ public class Controller {
 		
 		ArrayList<Integer> issues = new ArrayList<Integer>();
 		String response = "y";
-		while (response.equalsIgnoreCase("y")) {
-			Object obj = validateLine("Please enter issue number", VariableType.INT);
-			if (obj == null) {
-				// Global quit functionality - return to menu
+		while (response.equalsIgnoreCase("y") || !response.equalsIgnoreCase("n")) {
+			if (response.equalsIgnoreCase("q")) {
 				return "";
-			} else {
-				int issue = (int)obj;
-				issues.add(issue);
+			} else if (!response.equalsIgnoreCase("y")) {
+				System.out.println("Invalid input");
 				System.out.println("Would you like to add another issue to resolve? (y/n): ");
 				response = sc.next();
-			}	
+			} else {
+				Object obj = validateLine("Please enter issue number", VariableType.INT);
+				if (obj == null) {
+					// Global quit functionality - return to menu
+					return "";
+				} else {
+					int issue = (int)obj;
+					issues.add(issue);
+					System.out.println("Would you like to add another issue to resolve? (y/n): ");
+					response = sc.next();
+				}	
+			}
 		}
 		sc.nextLine();
 		return valleyBike.resolveIssues(issues);
