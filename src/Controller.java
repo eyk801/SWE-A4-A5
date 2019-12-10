@@ -542,6 +542,12 @@ public class Controller {
 			while (obj.toString().isEmpty()) {
 				obj = sc.nextLine();
 			}
+			
+			if(obj.toString().indexOf(",") != -1) {
+				System.out.println("Sorry no commas allowed");
+				sc.nextLine();
+				return validateLine(prompt, type);
+			}
 			return obj;
 		case CVV:
 			if (sc.hasNextInt()) {
@@ -669,8 +675,8 @@ public class Controller {
 				case STRING:
 					String line = sc.nextLine();
 					
-					if(line.contains(" ")) {
-						System.out.println("No spaces are allowed, try again");
+					if(line.contains(" ") || line.contains(",")) {
+						System.out.println("No spaces or commas are allowed, try again");
 						return validateLine(prompt, type, min, max);
 					} else if ((int)min <= line.length() && line.length() <= (int)max) {
 						obj = line;
