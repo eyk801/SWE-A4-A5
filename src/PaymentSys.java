@@ -9,13 +9,6 @@ import java.util.Random;
 public class PaymentSys {
 	
 	/**
-	 * Payment System constructor.
-	 */
-	public PaymentSys() {
-		
-	}
-	
-	/**
 	 * Validate input credit card information. Validates 90% of requests.
 	 * </p>
 	 * @param creditNum			credit card number
