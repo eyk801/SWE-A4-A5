@@ -36,7 +36,8 @@ public class Controller {
 	 */
 	private void chooseView() throws IOException, ParseException {
 		System.out.println("Welcome to ValleyBike! "
-				+ "Please enter 'user' for user and 'employee' for employee: ");
+				+ "Note: You may enter 'q' at any time to exit a feature. \n"
+				+ "Please enter 'user' for user and 'employee' for employee:");
 		String response = sc.next();
 		if (response.equalsIgnoreCase("user")) {
 			String username = accountLogin();

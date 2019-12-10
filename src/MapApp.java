@@ -187,7 +187,7 @@ public class MapApp{
     	 * </p>
     	 * @return true if the click was inside the coordinates + tolerance, else false
     	 */
-    	boolean inBounds(int mouseX, int mouseY, int x, int y) {
+    	private boolean inBounds(int mouseX, int mouseY, int x, int y) {
     	    return ((mouseX >= x - 10) && (mouseY >= y - 10) && (mouseX < x + 10) && (mouseY < y + 10));
     	}
     	
