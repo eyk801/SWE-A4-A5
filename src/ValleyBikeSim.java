@@ -162,6 +162,10 @@ public class ValleyBikeSim {
 				//TODO: read in user bill history
 				List<String> billHistory = new ArrayList<>();
 				for (int i = numRides+8; i < values.length; i++) {
+					// If billHist == 0, don't do anything
+					if (values[i].equalsIgnoreCase("0")) {
+						break;
+					}
 					billHistory.add(values[i]);
 				}
 				user.setBillHistory(billHistory);
