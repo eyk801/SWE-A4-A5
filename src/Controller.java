@@ -480,10 +480,6 @@ public class Controller {
 	 */
 	private Object typeSwitch(String prompt, VariableType type, Object obj) {
 		switch (type) {
-		// Catch case
-		default:
-			System.out.println("In default");
-			return validateLine(prompt, type);
 		case INT:
 			if (sc.hasNextInt()) {
 				int i = Integer.parseInt(sc.nextLine());
@@ -568,6 +564,10 @@ public class Controller {
 			    	return validateLine(prompt, type);
 			    }  
 			}
+			// Catch case
+			default:
+				System.out.println("In default");
+				return validateLine(prompt, type);
 		}
 	}
 	
