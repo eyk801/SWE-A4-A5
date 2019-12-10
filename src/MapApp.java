@@ -38,7 +38,10 @@ public class MapApp{
         });
 	}
 
-	 
+	/**
+	 *  @author      Charlotte Gephart, Ester Zhao
+	 *  @version     1.0
+	 */ 
     public class App extends JPanel {
     	
     	/** ArrayList of station points on the map */
