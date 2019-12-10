@@ -146,22 +146,11 @@ public class ValleyBikeSim {
 									Long.parseLong(values[3]),Integer.parseInt(values[4]),
 									values[5]);
 				// Check if user is currently on a ride to set currentRideId
-				if (Integer.parseInt(values[6]) != 0) {
-					user.setCurrentRideId(Integer.parseInt(values[6]));
-				}
-				
-				//TODO: check the numRides values[7], loop for that amount 
+				user.setCurrentRideId(Integer.parseInt(values[6]));				
 				int numRides = Integer.parseInt(values[7]);
 				for (int i=8; i < 8+numRides;i++) {
 					rideHistory.add(Integer.parseInt(values[i]));
 				}
-				// Loop to end of line for all ride history
-//				for (int i=7; i < values.length;i++) {
-//					// Check if valid ride id
-//					if (Integer.parseInt(values[i]) != 0) {
-//						rideHistory.add(Integer.parseInt(values[i]));
-//					}
-//				}
 				user.setRides(rideHistory);
 				//TODO: read in user bill history
 				List<String> billHistory = new ArrayList<>();
