@@ -1,5 +1,5 @@
 CSC223: Introduction to Software Engineering
-Project A4 readme.txt
+Project A5 readme.txt
 G2 members: Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
 
 How to run A4
