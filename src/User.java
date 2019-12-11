@@ -232,7 +232,6 @@ public class User {
 	 * @param billHistory list of dates when user was billed
 	 */
 	public void setBillHistory(List<String> billHistory) {
-		//TODO: convert from string 00/00 format to date
 		this.billHistory = billHistory;
 	}
 	

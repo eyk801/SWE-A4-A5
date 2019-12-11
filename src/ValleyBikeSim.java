@@ -161,7 +161,6 @@ public class ValleyBikeSim {
 					billHistory.add(values[i]);
 				}
 				user.setBillHistory(billHistory);
-				
 				users.put(username,user);
 			}
 			br.close();
@@ -369,7 +368,6 @@ public class ValleyBikeSim {
 		saveMainReqData();
 		return "System data successfully saved.";
 	}
-
 	
 	/**
 	 * Generates a string of station info.
@@ -502,8 +500,6 @@ public class ValleyBikeSim {
 			}
 			response = response + "Note: " + count + " bikes were removed from the system due to lack of space.\n";
 		}
-		// Delete the station
-		//this.stations.remove(id);
 		// Call equalize stations to distribute bikes evenly
 		equalizeStations();
 		
@@ -558,7 +554,7 @@ public class ValleyBikeSim {
 					Integer bikeToAdd = spareBikes.remove(0);
 					s.addBike(bikeToAdd);					
 					bikes.get(bikeToAdd).setLastStationId(s.getId());
-					}
+				}
 			}
 		}
 		// Save station and bike data
@@ -570,7 +566,6 @@ public class ValleyBikeSim {
 		}
 		return "The number of bikes at all stations have been equalized.";
 	}
-	
 	
 	/**
 	 * Assigns a bike to the user and creates a new ride.
@@ -671,7 +666,7 @@ public class ValleyBikeSim {
 		if (currentUser.onRide() == false) {
 			return "User does not currently have a bike to check in";
 		}
-		
+		// If there are no available docks
 		if(stations.get(stationId).getAvDocks() == 0) {
 			return "No available docks for this station.\n "
 					+ "Please visit another station.";
@@ -690,7 +685,6 @@ public class ValleyBikeSim {
 		// Update user info (end ride), add ride to ride history
 		currentUser.endRide();
 		// Remove ride from current rides
-		
 		int index = currRides.indexOf(r.getId());
 		currRides.remove(index);
 		// Save data
@@ -846,13 +840,12 @@ public class ValleyBikeSim {
 		int numRides = rides.size();
 		int numWeeklyRides = 0;
 		HashMap<String, Integer> userRideStats = new HashMap<>();
-		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Timestamp currentDate = new Timestamp(System.currentTimeMillis());
 		Date date = new Date();
 		//sets date to a week ago
 		date.setTime(currentDate.getTime()-604800000);
-		
+		// Get all rides within the last week
 		for(Ride ride : rides.values()) {
 			String rideDateString = ride.getStartTime();
 			Date rideDate = formatter.parse(rideDateString);
@@ -865,13 +858,12 @@ public class ValleyBikeSim {
 					int rides = userRideStats.get(userId);
 					userRideStats.replace(userId, rides+1);
 				}
-			};
+			}
 		}
-		
+		// Get stats on user with the most rides
 		String bestUser = "";
 		int maxRides = 0;
 		String maxUser = "";
-		
 		Iterator<Entry<String, Integer>> userIterator = userRideStats.entrySet().iterator();
 		while(userIterator.hasNext()) {
 			Map.Entry<String, Integer> userElement = (Map.Entry<String, Integer>)userIterator.next();
@@ -880,18 +872,13 @@ public class ValleyBikeSim {
 				maxUser = userElement.getKey();
 			}
 		}
-		
 		if(maxRides != 0 && !maxUser.equalsIgnoreCase("")) {
 			bestUser = "\nUser with most rides this week is "
 					+ maxUser + " with " + maxRides + " rides!";
 		}
-	
-		
-		
 		String stats = "In the past week there were a total of "+ numWeeklyRides + " ride(s) with "
 				+ userRideStats.size() + " user(s)" + "\nThere are a total of " + numRides + " rides and "
 						+ numUsers + " users in the system." + bestUser;
-				
 		return stats;
 	}
 	
@@ -941,9 +928,7 @@ public class ValleyBikeSim {
 			return "Station " + stationId + " only has available docks for " + avDocks + " new bikes\n"
 					+ "Please try again.";
 		}
-		
 		Station s = stations.get(stationId);
-		
 		for (int i = 0; i < numBikes; i++) {
 			// Increment last bike id
 			this.lastBikeId = this.lastBikeId + 1; 
@@ -963,7 +948,6 @@ public class ValleyBikeSim {
 		}
 		return "Bikes added.";
 	}
-	
 	
 	/**
 	 * Resolve maintenance request issues.
@@ -1022,6 +1006,7 @@ public class ValleyBikeSim {
 			return false;
 		}
 	}
+	
 	/**
 	 * Checks whether a station exists or not.
 	 * </p>
@@ -1036,6 +1021,10 @@ public class ValleyBikeSim {
 		return exists;
 	}
 	
+	/**
+	 * Getter for LOCK object
+	 * @return LOCK object
+	 */
 	public Object getLock() {
 		return this.LOCK;
 	}

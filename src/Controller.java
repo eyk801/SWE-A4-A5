@@ -871,7 +871,6 @@ public class Controller {
 	 * </p>
 	 * Prompts user for bike info input
 	 * </p>
-	 * TODO: test this most extensively
 	 * @return confirmation String
 	 */
 	private String removeStation() {
