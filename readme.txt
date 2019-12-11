@@ -10,6 +10,7 @@ username and password5 as the password (or look through controller-employees.csv
 controller-users.csv for a more extensive list of viable usernames/passwords).
 3. Interact with program via Eclipse console
 
+NOTE: When opening the map multiple times during use, the map may open behind the console instead of in front. If the map does not appear to open when it should, it will be behind the console.
 
 Testing:
 How to run tests:
