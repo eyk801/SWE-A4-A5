@@ -949,8 +949,13 @@ public class Controller {
 				} else {
 					int issue = (int)obj;
 					issues.add(issue);
-					System.out.println("Would you like to add another issue to resolve? (y/n): ");
-					response = sc.next();
+					//System.out.println("Would you like to add another issue to resolve? (y/n): ");
+					Object resObj = validateLine("Would you like to add another issue to resolve? (y/n)", VariableType.STRING);
+					if (resObj == null) {
+						return "";
+					}else {
+						response = resObj.toString();
+					}
 				}	
 			}
 		}
