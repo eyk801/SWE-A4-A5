@@ -982,7 +982,6 @@ public class Controller {
 				}	
 			}
 		}
-		sc.nextLine();
 		return valleyBike.resolveIssues(issues);
 	}
 	
