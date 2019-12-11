@@ -924,7 +924,7 @@ public class Controller {
 		} else {
 			int stationId = (int)stationObj;
 			if (valleyBike.stationExists(stationId)) {
-				Object bikesObj = validateLine("Please enter the number of bikes you would like to add", VariableType.INT, 0, 40);
+				Object bikesObj = validateLine("Please enter the number of bikes you would like to add", VariableType.INT, 0, 27);
 				if (bikesObj == null) {
 					response = "";
 					return response;
