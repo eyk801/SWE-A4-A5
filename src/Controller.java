@@ -868,7 +868,6 @@ public class Controller {
 		return valleyBike.addStation(capacity, kiosk, address, name);
 	}
 	
-	
 	/**
 	 * Allows employee to remove stations.
 	 * </p>
