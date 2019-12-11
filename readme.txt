@@ -2,7 +2,7 @@ CSC223: Introduction to Software Engineering
 Project A5 readme.txt
 G2 members: Ali Eshghi, Charlotte Gephart, Emily Kim, Ester Zhao
 
-How to run A4
+How to run A5
 1. Open Controller class
 2. Run program via Controller
 	When choosing the option to login as an employee or user, use aliciagrubb as the 
