@@ -511,8 +511,11 @@ public class Controller {
 				obj = i;
 				return obj;
 			} else {
+				String res = sc.nextLine();
+				while (res.isEmpty()) {
+					res = sc.nextLine();
+				}
 				// Else, call the prompt again
-				sc.nextLine();
 				return validateLine(prompt, type);
 			}
 		case LONG:
@@ -530,7 +533,10 @@ public class Controller {
 				}
 			} else {
 				// Else, call the prompt again
-				sc.nextLine();
+				String res = sc.nextLine();
+				while (res.isEmpty()) {
+					res = sc.nextLine();
+				}
 				return validateLine(prompt, type);
 			}
 		case BOOLEAN: 
@@ -541,7 +547,10 @@ public class Controller {
 			} else {
 				System.out.println("Input must be a boolean (true/false)");
 				// Else, call prompt again
-				sc.nextLine();
+				String res = sc.nextLine();
+				while (res.isEmpty()) {
+					res = sc.nextLine();
+				}
 				return validateLine(prompt, type);
 			}
 		case STRING:
@@ -552,7 +561,6 @@ public class Controller {
 			
 			if(obj.toString().indexOf(",") != -1) {
 				System.out.println("Please do not include commas.");
-				sc.nextLine();
 				return validateLine(prompt, type);
 			}
 			return obj;
@@ -572,7 +580,10 @@ public class Controller {
 			} else {
 				// Else, call the prompt again
 				System.out.println("CVV must be a series of 3 numbers.");
-				sc.nextLine();
+				String res = sc.nextLine();
+				while (res.isEmpty()) {
+					res = sc.nextLine();
+				}
 				return validateLine(prompt, type);
 			}
 		case DATE:
@@ -665,7 +676,10 @@ public class Controller {
 					} else {
 						
 						// Else, call the prompt again
-						sc.nextLine();
+						String res = sc.nextLine();
+						while (res.isEmpty()) {
+							res = sc.nextLine();
+						}
 						return validateLine(prompt, type, min, max);
 					}
 				case LONG:
@@ -681,7 +695,10 @@ public class Controller {
 						}
 					} else {
 						// Else, call the prompt again
-						sc.nextLine();
+						String res = sc.nextLine();
+						while (res.isEmpty()) {
+							res = sc.nextLine();
+						}
 						return validateLine(prompt, type, min, max);
 					}
 				case STRING:
@@ -703,6 +720,10 @@ public class Controller {
 					}
 					
 				default: // catch case
+					String res = sc.nextLine();
+					while (res.isEmpty()) {
+						res = sc.nextLine();
+					}
 					return validateLine(prompt, type, min, max);
 				}
 			}
