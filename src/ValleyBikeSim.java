@@ -143,7 +143,7 @@ public class ValleyBikeSim {
 				String username = values[0];
 				List<Integer> rideHistory = new ArrayList<>();
 				User user = new User(username,values[1],Integer.parseInt(values[2]),
-									Long.parseLong(values[3]),Integer.parseInt(values[4]),
+									Long.parseLong(values[3]),values[4],
 									values[5]);
 				// Check if user is currently on a ride to set currentRideId
 				user.setCurrentRideId(Integer.parseInt(values[6]));				
@@ -990,7 +990,7 @@ public class ValleyBikeSim {
 	 * creates a new User object and adds it to the global HashMap.
 	 * @return report	boolean declaring whether user was successfully made or not.
 	 */
-	public boolean createUser(String username, String password, int membership, long cardNum, Integer CVV, String expDate) {
+	public boolean createUser(String username, String password, int membership, long cardNum, String CVV, String expDate) {
 		if (paymentSystem.validate(cardNum, CVV, expDate)) {
 			User newUser = new User(username,password,membership,cardNum,CVV, expDate);
 			//A user will be charged upon the beginning of their first ride

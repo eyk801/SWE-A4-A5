@@ -414,7 +414,7 @@ public class Controller {
 	private String createAccount(String username, String password){
 		int membership = 0;
 		long cardNum = 0;
-		int CVV = 0;
+		String CVV = "";
 		String expDate = new String();
 		
 		if (userAccounts.containsKey(username) == true) {
@@ -447,7 +447,7 @@ public class Controller {
 				return "quit";
 			} else {
 				// Set cvv
-				CVV = (int)obj2;
+				CVV = obj2.toString();
 			}
 			// Get card expiration date
 			Object obj3 = validateLine("Please enter expiration date(MM/YY)", VariableType.DATE);
@@ -566,16 +566,19 @@ public class Controller {
 			return obj;
 		case CVV:
 			if (sc.hasNextInt()) {
-				int l = sc.nextInt();
-				String line = Integer.toString(l);
+				String cVV = sc.nextLine();
+				while (cVV.isEmpty()) {
+					cVV = sc.nextLine();
+				}
+				int l = Integer.parseInt(cVV);
 				// Check if 3 chars
-				if (line.length() != 3 || l < 0) {
+				if (cVV.length() != 3 || l < 0) {
 					System.out.println("CVV must be 3 digits long.");
 					return validateLine(prompt,type);
 				} else {
-					int i = Integer.parseInt(line);
-					obj = i;
-					return obj;
+					//int i = Integer.parseInt(line);
+					obj = cVV;
+					return cVV;
 				}
 			} else {
 				// Else, call the prompt again

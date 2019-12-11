@@ -67,7 +67,7 @@ class ValleyBikeSimTest {
 		String password = "password3fake";
 		int membership = 0;
 		long cardNum = 1234567891;
-		int cVV = 123;
+		String cVV = "123";
 		String expDate = "11/25";
 		int usersSize = vBSTester.getUsers().size();
 		vBSTester.createUser(username, password, membership, cardNum, cVV, expDate);

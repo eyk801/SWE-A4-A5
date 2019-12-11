@@ -16,7 +16,7 @@ public class PaymentSys {
 	 * @param expirationDate	credit card expiration date
 	 * @return
 	 */
-	public boolean validate(long creditNum, int CVV, String expirationDate) {
+	public boolean validate(long creditNum, String CVV, String expirationDate) {
 		if (checkExprDate(expirationDate)) {
 			Random rand = new Random();
 			int i = rand.nextInt(10);

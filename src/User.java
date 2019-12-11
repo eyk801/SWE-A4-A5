@@ -16,7 +16,7 @@ public class User {
 	/** User credit card number */
 	private long creditCardNum = 0;
 	/** User credit card CVV number */
-	private int CVV = 0;
+	private String CVV = "";
 	/** User credit card expiration date */
 	private String expirationDate = new String();
 	/** List of user's past ride ids */
@@ -37,7 +37,7 @@ public class User {
 	 * @param expirationDate
 	 */
 	public User(String username, String password, int membershipType, 
-			long creditCardNum, int CVV, String expirationDate) {
+			long creditCardNum, String CVV, String expirationDate) {
 		this.username = username;
 		this.password = password;
 		this.membershipType = membershipType;
@@ -69,7 +69,7 @@ public class User {
 	 * </p>
 	 * @return int credit card CVV
 	 */
-	public int getCVV() {
+	public String getCVV() {
 		return this.CVV;
 	}
 	
