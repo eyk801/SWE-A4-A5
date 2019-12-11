@@ -187,7 +187,7 @@ public class Controller {
 			System.out.println(valleyBike.viewStats());
 			break;
 		case 9:
-			System.out.println(addBikes());
+			System.out.println(addBikes());;
 			break;
 		case 10:
 			System.out.println(valleyBike.equalizeStations());
@@ -927,18 +927,21 @@ public class Controller {
 				Object bikesObj = validateLine("Please enter the number of bikes you would like to add", VariableType.INT, 0, 40);
 				if (bikesObj == null) {
 					response = "";
+					return response;
 				} else {
 					int numBikes = (int)bikesObj;
 					if (numBikes <= 0) {
 						response = "No bikes added.";
+						return response;
 					} else {
 						response = valleyBike.addBikes(stationId, numBikes);
+						return response;
 					}
 				}
 			} else {
 				System.out.println("The station you entered does not exist. Please enter an existing station id.");
 				// Call func again
-				addBikes();
+				return addBikes();
 			}
 		}
 		return response;
