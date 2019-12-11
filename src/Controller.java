@@ -103,6 +103,7 @@ public class Controller {
 			break;
 		case 2:
 			new MapApp(true);
+			System.out.println("Map opened.");
 			break;
 		case 3:
 			System.out.println(checkOutBike(username));
@@ -171,6 +172,7 @@ public class Controller {
 			break;
 		case 2:
 			new MapApp(true);
+			System.out.println("Map opened.");
 			break;
 		case 3:
 			// Take in all ride data
@@ -831,7 +833,6 @@ public class Controller {
 		} else {
 			kiosk = (boolean)kioskObj;
 		}
-
 		// Get station address and name
 		String name = "";
 		Object nameObj = validateLine("Please enter station name", VariableType.STRING);
@@ -848,7 +849,7 @@ public class Controller {
 		} else {
 			address = (String)addressObj;
 		}
-
+		System.out.println("Map opened.");
 		return valleyBike.addStation(capacity, kiosk, address, name);
 	}
 	
