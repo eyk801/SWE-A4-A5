@@ -50,17 +50,10 @@ public class Controller {
 				employeeLogin();
 				executeEmployee();
 			} else {
-				System.out.println(response);
 				System.out.println("Invalid input, try again.");
 				chooseView();
 			}
 		}
-//		
-//		System.out.println("Welcome to ValleyBike! "
-//				+ "Note: You may enter 'q' at any time to exit a feature. \n"
-//				+ "Please enter 'user' for user and 'employee' for employee:");
-//		String response = sc.next();
-		
 	}
 	
 	/**
@@ -558,7 +551,7 @@ public class Controller {
 			}
 			
 			if(obj.toString().indexOf(",") != -1) {
-				System.out.println("Sorry no commas allowed");
+				System.out.println("Please do not include commas.");
 				sc.nextLine();
 				return validateLine(prompt, type);
 			}
@@ -618,7 +611,6 @@ public class Controller {
 			}
 			// Catch case
 			default:
-				System.out.println("In default");
 				return validateLine(prompt, type);
 		}
 	}
@@ -700,7 +692,7 @@ public class Controller {
 					}
 					
 					if(obj.toString().contains(" ") || obj.toString().contains(",")) {
-						System.out.println("No spaces or commas are allowed, try again");
+						System.out.println("Please do not enter commas or spaces.");
 						return validateLine(prompt, type, min, max);
 					} else if ((int)min <= obj.toString().length() && obj.toString().length() <= (int)max) {
 						//obj = line;
@@ -792,7 +784,6 @@ public class Controller {
 			int stationId = (int)obj;
 			if (valleyBike.stationExists(stationId)) {
 				// Get issue message
-				//System.out.println("Please enter issue message: ");
 				Object issueMessage = validateLine("Please enter issue message", VariableType.STRING);
 				if (issueMessage == null) {
 					return "";
@@ -948,8 +939,7 @@ public class Controller {
 			if (response.equalsIgnoreCase("q")) {
 				return "";
 			} else if (!response.equalsIgnoreCase("y")) {
-				System.out.println("Invalid input");
-				System.out.println("Would you like to add another issue to resolve? (y/n): ");
+				System.out.println("Invalid input.\nWould you like to add another issue to resolve? (y/n): ");
 				response = sc.next();
 			} else {
 				Object obj = validateLine("Please enter issue number", VariableType.INT);

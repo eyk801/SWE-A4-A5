@@ -152,7 +152,6 @@ public class ValleyBikeSim {
 					rideHistory.add(Integer.parseInt(values[i]));
 				}
 				user.setRides(rideHistory);
-				//TODO: read in user bill history
 				List<String> billHistory = new ArrayList<>();
 				for (int i = numRides+8; i < values.length; i++) {
 					// If billHist == 0, don't do anything
@@ -598,9 +597,6 @@ public class ValleyBikeSim {
 		// Get new ride id
 		int rideId = this.lastRideId;
 		// Check membership status and charge accordingly
-		// TODO: Right now, we have 3 types of membership
-		//With tiers (0,1,2) that each pay (2 per ride,15 per month,80 per year) respectively
-		
 		// Charge user account for ride
 		String charge = "";
 		int membership = currentUser.getType();
