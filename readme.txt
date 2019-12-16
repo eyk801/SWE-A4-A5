@@ -12,12 +12,12 @@ controller-users.csv for a more extensive list of viable usernames/passwords).
 
 NOTE: When opening the map multiple times during use, the map may open behind the console instead of in front. If the map does not appear to open when it should, it will be behind the console.
 
-Testing:
+Testing using JUnit:
 How to run tests:
 1. Open ValleyBikeSim.java
 2. Change flags path and savepath to "test-data-files/" and "test-data-files-junk/" respectively
 3. Open ValleyBikeSimTest.java
-4. Run the program
+4. Run the test program
 
 NOTE: When testing add station the MapApp will pop up. Tester should click coordinates on the map to confirm add station and continue testing.
 
@@ -44,4 +44,5 @@ https://www.baeldung.com/java-wait-and-sleep.
 15. “Wrapper Classes in Java.” GeeksforGeeks, 28 Aug. 2018, https://www.geeksforgeeks.org/wrapper-classes-java/.
 16. W10 Notes: Architecture, CSC 223 Course Moodle Page
 
+Libraries Used: JUnit 5
 
