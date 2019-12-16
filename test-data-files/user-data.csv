@@ -1,3 +1,3 @@
 Username,Password,Membership Type,Credit Card Num,CVV,Expiration Date,Current Ride,Number of Rides,Ride History,Bill History
-emilykim,password2,1,1234567812345678,123,01/21,0,1,3,2019-11-10
-esterzhao,password1,0,1234123412341234,123,01/21,0,2,1,2,2019-11-10,2019-11-10,
+emilykim,password2,1,1234567812345678,123,01/21,0,2,1,3,2019-11-10
+esterzhao,password1,0,1234123412341234,123,01/21,0,3,2,1,2,2019-11-10,2019-11-10,

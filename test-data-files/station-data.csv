@@ -1,5 +1,5 @@
 ID,Name,Available Docks,Capacity,Kiosk,Address,Bike Ids
-1,Village Hill/State Hospital,13,14,false,Village Hill/State Hospital,1,2,3
-2,Florence Bank Station,7,7,false,19 Meadow Street Florence Ma @ Lilly Library,
-3,YMCA/Childs Park,13,17,false,YMCA/Childs Park,
-4,Forbes Library,9,13,false,20 West Street Northampton Ma,
+1,Village Hill/State Hospital,13,14,false,Village Hill/State Hospital,700,850,1,2,3
+2,Florence Bank Station,7,7,false,19 Meadow Street Florence Ma @ Lilly Library,96,153,
+3,YMCA/Childs Park,13,17,false,YMCA/Childs Park,790,373
+4,Forbes Library,9,13,false,20 West Street Northampton Ma,984,743,

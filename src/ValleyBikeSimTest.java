@@ -192,11 +192,12 @@ class ValleyBikeSimTest {
 	void deleteStation_deleteBikes_stationAndBikesDeleted() {
 		int stationSize = vBSTester.getStations().size();
 		int bikesSize = vBSTester.getBikes().size();
+		int stationBikes = vBSTester.getStations().get(3).getNumBikes();
 		vBSTester.removeStation(3, true);
 		
 		assertNull(vBSTester.getStations().get(3));
 		assertEquals(vBSTester.getStations().size(), stationSize-1);
-		assertEquals(vBSTester.getBikes().size(), bikesSize-1);
+		assertEquals(vBSTester.getBikes().size(), bikesSize-stationBikes);
 	}
 	
 	@Test
